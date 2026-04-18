@@ -1,7 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FileText, CreditCard, Mail, Bell, Shield, BarChart3 } from "lucide-react";
+import {
+  FileText,
+  CreditCard,
+  Mail,
+  Bell,
+  Shield,
+  BarChart3,
+} from "lucide-react";
 
 const features = [
   {
@@ -51,7 +58,7 @@ const features = [
 // Scroll-triggered fade-up for each card with stagger
 const cardVariants = {
   hidden: { opacity: 0, y: 32 },
-  show:   (i: number) => ({
+  show: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: { duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] },
@@ -60,9 +67,11 @@ const cardVariants = {
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-24 bg-gray-50 border-y border-gray-100">
+    <section
+      id="features"
+      className="py-24 bg-gray-50 border-y border-gray-100"
+    >
       <div className="max-w-6xl mx-auto px-6">
-
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -74,7 +83,7 @@ export function FeaturesSection() {
           <span className="inline-block text-xs font-semibold text-brand-600 uppercase tracking-widest mb-4 bg-brand-50 px-3 py-1 rounded-full border border-brand-100">
             Features
           </span>
-          <h2 className="font-display text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+          <h2 className="font-display text-4xl font-semibold text-gray-900 mb-4 tracking-tight">
             Everything you need to get paid
           </h2>
           <p className="text-gray-500 max-w-xl mx-auto text-lg leading-relaxed">
@@ -99,14 +108,19 @@ export function FeaturesSection() {
                           transition-shadow duration-300 cursor-default overflow-hidden`}
             >
               {/* Subtle gradient background on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300 rounded-2xl"
-                style={{ background: `linear-gradient(135deg, ${feature.gradient.replace("from-", "").replace("to-", ", ")})` }}
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity duration-300 rounded-2xl"
+                style={{
+                  background: `linear-gradient(135deg, ${feature.gradient.replace("from-", "").replace("to-", ", ")})`,
+                }}
               />
 
               {/* Icon */}
-              <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${feature.gradient}
+              <div
+                className={`w-11 h-11 rounded-xl bg-gradient-to-br ${feature.gradient}
                                flex items-center justify-center mb-5 shadow-sm
-                               group-hover:scale-110 transition-transform duration-300`}>
+                               group-hover:scale-110 transition-transform duration-300`}
+              >
                 <feature.icon size={20} className="text-white" />
               </div>
 

@@ -7,7 +7,6 @@ import { ArrowRight, Github } from "lucide-react";
 export function CTASection() {
   return (
     <section id="cta" className="py-24 relative overflow-hidden">
-
       {/* Dark gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-slate-900 to-brand-900" />
 
@@ -15,11 +14,19 @@ export function CTASection() {
       <div className="absolute inset-0 bg-dot-grid opacity-10" />
 
       {/* Glow orbs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-10 pointer-events-none"
-        style={{ background: "radial-gradient(circle, #3b82f6, transparent)", filter: "blur(80px)" }}
+      <div
+        className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-10 pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, #3b82f6, transparent)",
+          filter: "blur(80px)",
+        }}
       />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full opacity-10 pointer-events-none"
-        style={{ background: "radial-gradient(circle, #7c3aed, transparent)", filter: "blur(80px)" }}
+      <div
+        className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full opacity-10 pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, #7c3aed, transparent)",
+          filter: "blur(80px)",
+        }}
       />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
@@ -33,12 +40,13 @@ export function CTASection() {
             Free forever
           </span>
 
-          <h2 className="font-display text-4xl sm:text-5xl font-extrabold text-white mb-6 tracking-tight leading-tight">
+          <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
             Ready to get paid on time?
           </h2>
           <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
             Join developers who use InvoiceDev to send professional invoices,
-            automate follow-ups, and collect payments — without the enterprise price tag.
+            automate follow-ups, and collect payments — without the enterprise
+            price tag.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

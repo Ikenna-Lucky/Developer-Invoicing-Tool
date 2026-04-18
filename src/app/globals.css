@@ -2,24 +2,31 @@
 
 /* ─── Google Fonts ───────────────────────────────────────────────────────────
  *
- * Plus Jakarta Sans  → headings, hero text, logo, nav items
- *   Why: Geometric, modern, strong at large sizes — used by top SaaS products
+ * Bricolage Grotesque → hero headlines, display text, big statements
+ *   Why: Variable weight (400–800), distinctive personality, widely used by
+ *   design-forward startups in 2024/2025 (Resend, etc.). Looks extraordinary
+ *   at large sizes. The slight quirks in letterforms give it premium character.
  *
- * Inter              → body text, labels, table data, form fields, buttons
- *   Why: The most readable small-size UI font ever made. Industry standard.
+ * Inter → body text, UI labels, table data, form inputs, buttons, captions
+ *   Why: Purpose-built for screen readability. Optimised pixel-by-pixel at
+ *   small sizes. Still the undisputed standard for product UI in 2025.
  *
- * JetBrains Mono     → invoice numbers, amounts, IDs, any numeric/code values
- *   Why: Monospaced fonts make numbers easier to scan in tables
+ * JetBrains Mono → invoice numbers, amounts, IDs, date values in tables
+ *   Why: Monospaced digits align perfectly in columns. Numbers are easier
+ *   to compare and scan when they all take the same horizontal space.
  */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* ─── Theme tokens ───────────────────────────────────────────────────────────
- * Tailwind v4 reads these to generate utility classes like font-sans, font-display
+ * Tailwind v4 reads @theme to generate utility classes.
+ * font-display → Bricolage Grotesque   (use on h1, h2, logo, hero text)
+ * font-sans    → Inter                 (default for everything else)
+ * font-mono    → JetBrains Mono        (numbers, amounts, IDs)
  */
 @theme {
-  --font-sans:    "Inter", system-ui, sans-serif;
-  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-mono:    "JetBrains Mono", "Fira Code", monospace;
+  --font-sans:    "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", "Fira Code", ui-monospace, monospace;
 
   /* Brand colours */
   --color-brand-50:  #eff6ff;
@@ -39,23 +46,52 @@
 
   body {
     font-family: var(--font-sans);
+    font-optical-sizing: auto;
     background-color: #ffffff;
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Headings use display font — Plus Jakarta Sans */
-  h1, h2, h3, h4, h5, h6 {
+  /*
+   * WHERE EACH FONT IS USED:
+   *
+   * font-display (Bricolage Grotesque):
+   *   - Landing page hero H1
+   *   - Section headings on landing page
+   *   - Sidebar logo text
+   *   - Page titles inside the app (h1 on each page)
+   *   - Any text > 24px that needs visual impact
+   *
+   * font-sans (Inter) — the DEFAULT, no class needed:
+   *   - Navigation labels
+   *   - Button text
+   *   - Body paragraphs
+   *   - Form labels and inputs
+   *   - Table data
+   *   - Badges and chips
+   *   - Any text under 20px
+   *
+   * font-mono (JetBrains Mono):
+   *   - Invoice numbers (INV-0001)
+   *   - Currency amounts ($4,200.00)
+   *   - Date values in table cells
+   *   - Any ID or reference number
+   */
+
+  /* Headings inherit display font by default */
+  h1, h2, h3 {
     font-family: var(--font-display);
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
     color: #0f172a;
   }
 
-  /* Mono class for invoice numbers, amounts etc. */
-  .font-mono {
-    font-family: var(--font-mono);
+  /* h4-h6 stay in Inter — they're small enough that display font adds no value */
+  h4, h5, h6 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    color: #0f172a;
   }
 }
 
@@ -73,12 +109,12 @@
     font-weight: 600;
     color: #fff;
     letter-spacing: -0.01em;
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.12);
     transition: all 150ms ease;
   }
   .btn-primary:hover {
     background-color: var(--color-brand-700);
-    box-shadow: 0 4px 12px 0 rgb(37 99 235 / 0.3);
+    box-shadow: 0 4px 14px 0 rgb(37 99 235 / 0.35);
     transform: translateY(-1px);
   }
   .btn-primary:active { transform: translateY(0); }
@@ -112,55 +148,53 @@
   }
 }
 
-/* ─── Landing page animations ────────────────────────────────────────────────
- *
- * These are CSS keyframe animations used on the landing page.
- * We use CSS for the persistent/looping effects (like background blobs)
- * and Framer Motion for scroll-triggered and interaction animations.
- */
+/* ─── Keyframe animations ────────────────────────────────────────────────────*/
 
-/* Slowly drifting background blobs */
-@keyframes blob {
-  0%, 100% { transform: translate(0, 0)    scale(1);   }
-  33%       { transform: translate(40px, -60px) scale(1.15); }
-  66%       { transform: translate(-30px, 30px) scale(0.9);  }
-}
-
-/* Gentle floating for hero elements */
 @keyframes float {
-  0%, 100% { transform: translateY(0);    }
-  50%       { transform: translateY(-10px); }
+  0%, 100% { transform: translateY(0px);   }
+  50%       { transform: translateY(-8px);  }
 }
 
-/* Gradient text shimmer */
 @keyframes shimmer {
   0%   { background-position: 0% 50%;   }
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%;   }
 }
 
-.animate-blob    { animation: blob 8s ease-in-out infinite; }
-.animate-float   { animation: float 5s ease-in-out infinite; }
-.animate-shimmer {
-  background-size: 200% 200%;
-  animation: shimmer 4s ease infinite;
+/* Slow Ken Burns zoom on the hero video fallback image */
+@keyframes kenburns {
+  0%   { transform: scale(1)    translateX(0);    }
+  100% { transform: scale(1.08) translateX(-1%);  }
 }
 
-.animation-delay-2 { animation-delay: 2s; }
-.animation-delay-4 { animation-delay: 4s; }
+.animate-float    { animation: float 5s ease-in-out infinite; }
+.animate-kenburns { animation: kenburns 20s ease-out infinite alternate; }
 
-/* Dot grid background pattern */
-.bg-dot-grid {
-  background-image: radial-gradient(circle, #e2e8f0 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-
-/* Gradient text utility */
+/* Gradient text — used on landing hero */
 .gradient-text {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #2563eb 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f0abfc 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 4s ease infinite;
+  animation: shimmer 5s ease infinite;
+}
+
+/* Dot grid — subtle background pattern */
+.bg-dot-grid {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ─── Reduced motion — respect user OS preference ────────────────────────────
+ * If the user has "Reduce Motion" enabled in their OS accessibility settings,
+ * we disable all animations. This is both an accessibility requirement and
+ * good practice — some users get motion sickness from animations.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

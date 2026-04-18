@@ -1,9 +1,9 @@
-import { LandingNav }       from "@/components/landing/LandingNav";
-import { HeroSection }      from "@/components/landing/HeroSection";
-import { FeaturesSection }  from "@/components/landing/FeaturesSection";
+import { LandingNav } from "@/components/landing/LandingNav";
+import { HeroSection } from "@/components/landing/HeroSection";
+import { FeaturesSection } from "@/components/landing/FeaturesSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
-import { CTASection }       from "@/components/landing/CTASection";
-import { LandingFooter }    from "@/components/landing/LandingFooter";
+import { CTASection } from "@/components/landing/CTASection";
+import { LandingFooter } from "@/components/landing/LandingFooter";
 
 /**
  * LANDING PAGE

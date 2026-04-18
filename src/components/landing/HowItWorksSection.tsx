@@ -42,7 +42,6 @@ export function HowItWorksSection() {
   return (
     <section id="how-it-works" className="py-24 bg-white">
       <div className="max-w-6xl mx-auto px-6">
-
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -54,8 +53,8 @@ export function HowItWorksSection() {
           <span className="inline-block text-xs font-semibold text-brand-600 uppercase tracking-widest mb-4 bg-brand-50 px-3 py-1 rounded-full border border-brand-100">
             How it works
           </span>
-          <h2 className="font-display text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-            From signup to getting paid
+          <h2 className="font-display text-4xl font-semibold text-gray-900 mb-4 tracking-tight">
+            From sign-up to getting paid
           </h2>
           <p className="text-gray-500 max-w-xl mx-auto text-lg leading-relaxed">
             Four simple steps. No learning curve, no complicated setup.
@@ -74,7 +73,11 @@ export function HowItWorksSection() {
                 initial={{ opacity: 0, y: 32 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.55, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                transition={{
+                  duration: 0.55,
+                  delay: i * 0.1,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
                 className="flex flex-col items-center text-center"
               >
                 {/* Icon bubble */}
@@ -86,9 +89,11 @@ export function HowItWorksSection() {
                 >
                   <step.icon size={28} />
                   {/* Step number badge */}
-                  <span className={`absolute -top-2.5 -right-2.5 w-6 h-6 ${step.iconBg}
+                  <span
+                    className={`absolute -top-2.5 -right-2.5 w-6 h-6 ${step.iconBg}
                                     text-white text-[10px] font-bold rounded-full
-                                    flex items-center justify-center shadow-sm`}>
+                                    flex items-center justify-center shadow-sm`}
+                  >
                     {i + 1}
                   </span>
                 </motion.div>

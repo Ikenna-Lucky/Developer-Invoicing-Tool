@@ -44,7 +44,9 @@ export function LandingNav() {
             >
               <Receipt size={16} className="text-white" />
             </motion.div>
-            <span className="font-display font-bold text-gray-900 text-[15px] tracking-tight">
+            <span className={`font-display font-bold text-[15px] tracking-tight transition-colors duration-300 ${
+              scrolled ? "text-gray-900" : "text-white"
+            }`}>
               InvoiceDev
             </span>
           </Link>
@@ -55,8 +57,11 @@ export function LandingNav() {
               <a
                 key={link.href}
                 href={link.href}
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900
-                           rounded-lg hover:bg-gray-100 transition-colors"
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${
+                  scrolled
+                    ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                    : "text-white/80 hover:text-white hover:bg-white/10"
+                }`}
               >
                 {link.label}
               </a>
@@ -67,16 +72,20 @@ export function LandingNav() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/sign-in"
-              className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors px-3 py-2"
+              className={`text-sm font-semibold transition-colors duration-300 px-3 py-2 ${
+                scrolled ? "text-gray-600 hover:text-gray-900" : "text-white/80 hover:text-white"
+              }`}
             >
               Sign in
             </Link>
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/sign-up"
-                className="inline-flex items-center gap-1.5 bg-brand-600 hover:bg-brand-700
-                           text-white text-sm font-semibold px-4 py-2 rounded-xl
-                           shadow-sm transition-colors"
+                className={`inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl shadow-sm transition-all duration-300 ${
+                  scrolled
+                    ? "bg-brand-600 hover:bg-brand-700 text-white"
+                    : "bg-white text-gray-900 hover:bg-gray-100"
+                }`}
               >
                 Get started free
                 <ArrowRight size={14} />
@@ -87,7 +96,9 @@ export function LandingNav() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+            className={`md:hidden p-2 rounded-lg transition-colors duration-300 ${
+              scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"
+            }`}
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
