@@ -117,7 +117,7 @@ export function FeaturesSection() {
 
               {/* Icon */}
               <div
-                className={`w-11 h-11 rounded-xl bg-gradient-to-br ${feature.gradient}
+                className={`w-11 h-11 rounded-xl bg-linear-to-br ${feature.gradient}
                                flex items-center justify-center mb-5 shadow-sm
                                group-hover:scale-110 transition-transform duration-300`}
               >

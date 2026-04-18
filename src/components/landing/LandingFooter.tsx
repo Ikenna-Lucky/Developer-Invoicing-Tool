@@ -9,7 +9,7 @@ export function LandingFooter() {
         <BilldLogo href="/" size="sm" />
 
         {/* Copyright */}
-        <p className="text-xs text-gray-400 order-last sm:order-none">
+        <p className="text-xs text-gray-400 order-last sm:order-0">
           © {new Date().getFullYear()} Billd. Open source under the MIT License.
         </p>
 

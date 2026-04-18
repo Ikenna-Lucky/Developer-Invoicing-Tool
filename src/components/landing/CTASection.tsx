@@ -8,7 +8,7 @@ export function CTASection() {
   return (
     <section id="cta" className="py-24 relative overflow-hidden">
       {/* Dark gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-slate-900 to-brand-900" />
+      <div className="absolute inset-0 bg-linear-to-br from-gray-900 via-slate-900 to-brand-900" />
 
       {/* Subtle grid overlay */}
       <div className="absolute inset-0 bg-dot-grid opacity-10" />

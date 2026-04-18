@@ -64,7 +64,7 @@ export function HowItWorksSection() {
         {/* Steps */}
         <div className="relative">
           {/* Connecting line — desktop only */}
-          <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+          <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-px bg-linear-to-r from-transparent via-gray-200 to-transparent" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step, i) => (
@@ -101,7 +101,7 @@ export function HowItWorksSection() {
                 <h3 className="font-display font-semibold text-gray-900 mb-2">
                   {step.title}
                 </h3>
-                <p className="text-sm text-gray-500 leading-relaxed max-w-[200px]">
+                <p className="text-sm text-gray-500 leading-relaxed max-w-50">
                   {step.desc}
                 </p>
               </motion.div>

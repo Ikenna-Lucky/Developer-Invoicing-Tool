@@ -34,7 +34,7 @@ export function HeroSection() {
       </video>
 
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/75 pointer-events-none" />
+      <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/60 to-black/75 pointer-events-none" />
 
       {/* Vignette */}
       <div
