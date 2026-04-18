@@ -63,7 +63,7 @@ export function Sidebar() {
           <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center shrink-0">
             <Receipt size={16} className="text-white" />
           </div>
-          <span className="font-bold text-gray-900 text-[15px]">InvoiceDev</span>
+          <span className="font-display font-bold text-gray-900 text-[15px] tracking-tight">InvoiceDev</span>
         </Link>
       </div>
 
