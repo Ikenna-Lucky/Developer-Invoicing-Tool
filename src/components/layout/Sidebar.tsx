@@ -26,8 +26,8 @@ import {
   FileText,
   Settings,
   LogOut,
-  Receipt,
 } from "lucide-react";
+import { BilldLogo } from "@/components/ui/BilldLogo";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 
@@ -59,12 +59,7 @@ export function Sidebar() {
 
       {/* ── Logo ── */}
       <div className="h-16 flex items-center px-5 border-b border-gray-100">
-        <Link href="/dashboard" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center shrink-0">
-            <Receipt size={16} className="text-white" />
-          </div>
-          <span className="font-display font-bold text-gray-900 text-[15px] tracking-tight">InvoiceDev</span>
-        </Link>
+        <BilldLogo href="/dashboard" size="sm" />
       </div>
 
       {/* ── Navigation ── */}

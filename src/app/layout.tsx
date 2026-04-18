@@ -3,7 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
-  title: "InvoiceDev — Developer Invoicing Tool",
+  title: "Billd — Invoice clients. Get paid faster.",
   description: "Create, send, and get paid for your freelance work.",
 };
 

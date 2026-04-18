@@ -3,142 +3,157 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Receipt, Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
+import { BilldLogo } from "@/components/ui/BilldLogo";
 
 const navLinks = [
-  { label: "Features",    href: "#features"    },
+  { label: "Features", href: "#features" },
   { label: "How it works", href: "#how-it-works" },
-  { label: "Pricing",     href: "#cta"          },
+  { label: "Pricing", href: "#cta" },
 ];
 
 export function LandingNav() {
-  const [scrolled,     setScrolled]     = useState(false);
-  const [mobileOpen,   setMobileOpen]   = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Add a shadow + bg opacity increase once user scrolls down
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-white/90 backdrop-blur-lg border-b border-gray-200/80 shadow-sm"
-            : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      {/* Floating pill — centered, not full-width */}
+      <div className="fixed top-5 right-0 left-0 z-50 flex justify-center px-4">
+        <motion.nav
+          initial={{ y: -60, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          className={`flex items-center gap-1 p-4 rounded-full transition-all duration-300 ${
+            scrolled
+              ? "bg-white/95 backdrop-blur-xl border border-gray-200/80 shadow-xl shadow-black/10"
+              : "bg-black/25 backdrop-blur-md border border-white/15"
+          }`}
+        >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <motion.div
-              whileHover={{ rotate: -8, scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 400 }}
-              className="w-8 h-8 bg-brand-600 rounded-xl flex items-center justify-center shadow-sm"
-            >
-              <Receipt size={16} className="text-white" />
-            </motion.div>
-            <span className={`font-display font-bold text-[15px] tracking-tight transition-colors duration-300 ${
-              scrolled ? "text-gray-900" : "text-white"
-            }`}>
-              InvoiceDev
-            </span>
-          </Link>
+          <motion.div whileHover={{ scale: 1.04 }} transition={{ type: "spring", stiffness: 400 }} className="pl-1 pr-2">
+            <BilldLogo href="/" size="sm" />
+          </motion.div>
 
-          {/* Desktop nav links */}
-          <nav className="hidden md:flex items-center gap-1">
+          {/* Divider */}
+          <div
+            className={`hidden md:block w-px h-4 mx-1 transition-colors duration-300 ${
+              scrolled ? "bg-gray-200" : "bg-white/20"
+            }`}
+          />
+
+          {/* Nav links */}
+          <div className="hidden md:flex items-center">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${
+                className={`px-3.5 py-1.5 text-sm font-medium rounded-full transition-all duration-200 ${
                   scrolled
                     ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                    : "text-white/80 hover:text-white hover:bg-white/10"
+                    : "text-white/75 hover:text-white hover:bg-white/10"
                 }`}
               >
                 {link.label}
               </a>
             ))}
-          </nav>
+          </div>
 
-          {/* Desktop CTAs */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Divider */}
+          <div
+            className={`hidden md:block w-px h-4 mx-1 transition-colors duration-300 ${
+              scrolled ? "bg-gray-200" : "bg-white/20"
+            }`}
+          />
+
+          {/* CTA group */}
+          <div className="hidden md:flex items-center gap-1 pl-1">
             <Link
               href="/sign-in"
-              className={`text-sm font-semibold transition-colors duration-300 px-3 py-2 ${
-                scrolled ? "text-gray-600 hover:text-gray-900" : "text-white/80 hover:text-white"
+              className={`px-3.5 py-1.5 text-sm font-semibold rounded-full transition-all duration-200 ${
+                scrolled
+                  ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  : "text-white/75 hover:text-white hover:bg-white/10"
               }`}
             >
               Sign in
             </Link>
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/sign-up"
-                className={`inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-xl shadow-sm transition-all duration-300 ${
+                className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${
                   scrolled
-                    ? "bg-brand-600 hover:bg-brand-700 text-white"
+                    ? "bg-gray-900 text-white hover:bg-gray-700"
                     : "bg-white text-gray-900 hover:bg-gray-100"
                 }`}
               >
-                Get started free
-                <ArrowRight size={14} />
+                Get started
+                <ArrowRight size={13} />
               </Link>
             </motion.div>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className={`md:hidden p-2 rounded-lg transition-colors duration-300 ${
-              scrolled ? "text-gray-600 hover:bg-gray-100" : "text-white hover:bg-white/10"
+            className={`md:hidden ml-1 p-2 rounded-full transition-colors duration-200 ${
+              scrolled
+                ? "text-gray-600 hover:bg-gray-100"
+                : "text-white hover:bg-white/10"
             }`}
           >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
-        </div>
-      </motion.header>
+        </motion.nav>
 
-      {/* Mobile drawer */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed top-16 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-lg md:hidden"
-          >
-            <div className="px-6 py-4 space-y-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-2.5 text-sm font-medium text-gray-700
-                             hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
-              <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
-                <Link href="/sign-in" className="btn-secondary w-full justify-center">
-                  Sign in
-                </Link>
-                <Link href="/sign-up" className="btn-primary w-full justify-center">
-                  Get started free
-                </Link>
+        {/* Mobile dropdown — drops below the pill */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -8, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.97 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              className="absolute top-[calc(100%+8px)] left-0 right-0 mx-4"
+            >
+              <div className="bg-white/95 backdrop-blur-xl rounded-2xl border border-gray-200/80 shadow-xl shadow-black/10 overflow-hidden">
+                <div className="p-2 space-y-0.5">
+                  {navLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-xl transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+                <div className="p-3 border-t border-gray-100 flex flex-col gap-2">
+                  <Link
+                    href="/sign-in"
+                    className="btn-secondary w-full justify-center text-sm"
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    href="/sign-up"
+                    className="btn-primary w-full justify-center text-sm"
+                  >
+                    Get started free
+                  </Link>
+                </div>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </>
   );
 }

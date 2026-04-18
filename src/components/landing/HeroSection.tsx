@@ -11,13 +11,16 @@ const container = {
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
 };
 
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-16">
-
       {/* Video background */}
       <video
         autoPlay
@@ -36,7 +39,10 @@ export function HeroSection() {
       {/* Vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%)" }}
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.55) 100%)",
+        }}
       />
 
       {/* Content */}
@@ -69,13 +75,20 @@ export function HeroSection() {
             variants={fadeUp}
             className="text-lg sm:text-xl text-white/65 max-w-2xl leading-relaxed mb-10"
           >
-            The professional invoicing tool built for freelancers and developers.
-            Auto-generate PDFs, send by email, and collect Stripe payments — all in one place.
+            The professional invoicing tool built for freelancers and
+            developers. Auto-generate PDFs, send by email, and collect Stripe
+            payments — all in one place.
           </motion.p>
 
           {/* CTAs */}
-          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center gap-4 mb-10">
-            <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-col sm:flex-row items-center gap-4 mb-10"
+          >
+            <motion.div
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+            >
               <Link
                 href="/sign-up"
                 className="inline-flex items-center gap-2 bg-white text-gray-900 font-semibold px-8 py-3.5 rounded-xl shadow-xl shadow-black/30 hover:bg-gray-50 transition-all duration-200 text-sm"
@@ -84,7 +97,10 @@ export function HeroSection() {
                 <ArrowRight size={16} />
               </Link>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}>
+            <motion.div
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+            >
               <Link
                 href="/sign-in"
                 className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-sm text-white font-semibold px-8 py-3.5 rounded-xl border border-white/20 transition-all duration-200 text-sm"
@@ -95,8 +111,15 @@ export function HeroSection() {
           </motion.div>
 
           {/* Trust bullets */}
-          <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-white/50">
-            {["No credit card required", "Free forever plan", "Open source on GitHub"].map((item) => (
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-white/50"
+          >
+            {[
+              "No credit card required",
+              "Free forever plan",
+              "Open source on GitHub",
+            ].map((item) => (
               <span key={item} className="flex items-center gap-1.5">
                 <CheckCircle size={13} className="text-green-400" />
                 {item}
@@ -113,13 +136,23 @@ export function HeroSection() {
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
           className="flex flex-col items-center gap-1.5 text-white/30"
         >
-          <span className="text-[10px] uppercase tracking-widest font-medium">Scroll</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <span className="text-[10px] uppercase tracking-widest font-medium">
+            Scroll
+          </span>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d="M12 5v14M5 12l7 7 7-7" />
           </svg>
         </motion.div>
       </div>
-
     </section>
   );
 }

@@ -33,7 +33,7 @@ export default function SignInPage() {
     <div className="card">
       <h2 className="text-center mb-1">Welcome back</h2>
       <p className="text-center text-sm text-gray-500 mb-6">
-        Sign in to your InvoiceDev account
+        Sign in to your Billd account
       </p>
 
       {error && (

@@ -44,7 +44,7 @@ export function CTASection() {
             Ready to get paid on time?
           </h2>
           <p className="text-slate-400 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-            Join developers who use InvoiceDev to send professional invoices,
+            Join developers who use Billd to send professional invoices,
             automate follow-ups, and collect payments — without the enterprise
             price tag.
           </p>
