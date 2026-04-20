@@ -1,33 +1,20 @@
-/**
- * API client — thin wrapper around fetch that points to the Hono backend.
- * Every request automatically attaches the Clerk auth token (added in Step 2).
- */
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 type RequestOptions = {
-  method?: "GET" | "POST" | "PUT" | "DELETE";
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: unknown;
-  token?: string; // Clerk JWT — wired up in Step 2
 };
 
 export async function apiRequest<T>(
   path: string,
   options: RequestOptions = {}
 ): Promise<T> {
-  const { method = "GET", body, token } = options;
-
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
+  const { method = "GET", body } = options;
 
   const res = await fetch(`${API_URL}${path}`, {
     method,
-    headers,
+    credentials: "include", // always send httpOnly cookies
+    headers: { "Content-Type": "application/json" },
     body: body ? JSON.stringify(body) : undefined,
   });
 
@@ -38,3 +25,5 @@ export async function apiRequest<T>(
 
   return res.json() as Promise<T>;
 }
+
+export const API_BASE = API_URL;

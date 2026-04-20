@@ -1,37 +1,14 @@
-/**
- * SIDEBAR COMPONENT
- *
- * This is the main navigation panel fixed to the left side of the screen.
- *
- * `usePathname()` is a Next.js hook that returns the current URL path
- * (e.g. "/clients"). We use it to highlight the active nav item.
- *
- * `Link` from next/link is Next.js's client-side navigation component.
- * Unlike a regular <a> tag, it doesn't do a full page reload — it just
- * swaps the content, making the app feel instant.
- *
- * The sidebar has three sections:
- * 1. Logo at the top
- * 2. Navigation items in the middle
- * 3. User profile + logout at the bottom
- */
-
 "use client";
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  LayoutDashboard,
-  Users,
-  FileText,
-  Settings,
-  LogOut,
+  LayoutDashboard, Users, FileText, Settings, LogOut,
 } from "lucide-react";
 import { BilldLogo } from "@/components/ui/BilldLogo";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 
-// ─── Nav item definition ──────────────────────────────────────────────────────
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/clients",   icon: Users,           label: "Clients"   },
@@ -49,24 +26,34 @@ export function Sidebar() {
     router.push("/sign-in");
   };
 
-  // Get user's initials for the avatar — e.g. "Ikenna Obi" → "IO"
   const initials = user?.fullName
     ? user.fullName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
     : "??";
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 flex flex-col z-40">
+    <aside
+      className="fixed left-0 top-0 h-full w-64 flex flex-col z-40"
+      style={{ background: "#0a0f1e" }}
+    >
+      {/* Subtle right border */}
+      <div className="absolute right-0 top-0 bottom-0 w-px bg-white/[0.07]" />
 
-      {/* ── Logo ── */}
-      <div className="h-16 flex items-center px-5 border-b border-gray-100">
+      {/* Logo */}
+      <div className="h-[70px] flex items-center px-6 shrink-0">
         <BilldLogo href="/dashboard" size="sm" />
       </div>
 
-      {/* ── Navigation ── */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+      {/* Divider */}
+      <div className="mx-4 h-px bg-white/[0.07]" />
+
+      {/* Nav label */}
+      <p className="px-6 pt-5 pb-2 text-[10px] font-semibold text-white/25 uppercase tracking-[0.12em]">
+        Menu
+      </p>
+
+      {/* Navigation */}
+      <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
         {navItems.map(({ href, icon: Icon, label }) => {
-          // A route is active if the path starts with the href
-          // e.g. /clients/add is still "active" for /clients
           const isActive = pathname === href || pathname.startsWith(href + "/");
 
           return (
@@ -74,42 +61,54 @@ export function Sidebar() {
               key={href}
               href={href}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium transition-all duration-150",
                 isActive
-                  ? "bg-brand-50 text-brand-700"   // Active: blue tint
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900" // Idle
+                  ? "bg-white/[0.1] text-white"
+                  : "text-white/50 hover:text-white/80 hover:bg-white/[0.05]"
               )}
             >
               <Icon
-                size={18}
+                size={17}
                 className={cn(
-                  isActive ? "text-brand-600" : "text-gray-400"
+                  "shrink-0",
+                  isActive ? "text-white" : "text-white/40"
                 )}
               />
               {label}
+
+              {/* Active dot indicator */}
+              {isActive && (
+                <span className="ml-auto w-1.5 h-1.5 rounded-full bg-brand-400" />
+              )}
             </Link>
           );
         })}
       </nav>
 
-      {/* ── User profile + logout ── */}
-      <div className="border-t border-gray-100 p-3">
-        <div className="flex items-center gap-3 px-2 py-2 rounded-lg">
-          {/* Avatar with user initials */}
-          <div className="w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xs font-bold shrink-0">
+      {/* Divider */}
+      <div className="mx-4 h-px bg-white/[0.07]" />
+
+      {/* User profile */}
+      <div className="p-4 shrink-0">
+        <div className="flex items-center gap-3 px-2 py-2.5 rounded-xl hover:bg-white/[0.05] transition-colors group">
+          {/* Avatar */}
+          <div className="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 truncate">{user?.fullName}</p>
-            <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+            <p className="text-[13px] font-medium text-white/90 truncate leading-tight">
+              {user?.fullName}
+            </p>
+            <p className="text-[11px] text-white/35 truncate leading-tight mt-0.5">
+              {user?.email}
+            </p>
           </div>
-          {/* Logout button */}
           <button
             onClick={handleLogout}
             title="Log out"
-            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-lg text-white/25 hover:text-white/70 transition-colors opacity-0 group-hover:opacity-100"
           >
-            <LogOut size={15} />
+            <LogOut size={14} />
           </button>
         </div>
       </div>

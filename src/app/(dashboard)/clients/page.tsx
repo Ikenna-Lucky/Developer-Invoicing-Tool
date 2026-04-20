@@ -1,26 +1,3 @@
-/**
- * CLIENTS PAGE
- *
- * This is a full CRUD page — it handles listing, creating, editing,
- * and deleting clients all in one component using React state.
- *
- * Key patterns used here:
- *
- * 1. `useEffect` for data fetching — runs once on mount to load clients
- *    from the backend. The empty [] dependency array means "run once".
- *
- * 2. `useState` for UI state — tracks which modal is open, which client
- *    is selected, form data, loading state, and errors.
- *
- * 3. Optimistic-style updates — after a create/edit/delete API call succeeds,
- *    we update the local state immediately instead of re-fetching from the DB.
- *    This makes the UI feel instant.
- *
- * 4. `credentials: "include"` on every fetch — this is required to send the
- *    httpOnly cookies (access_token) with cross-origin requests to our backend.
- *    Without this, the browser won't attach cookies and every request returns 401.
- */
-
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -90,7 +67,7 @@ export default function ClientsPage() {
 
   useEffect(() => { fetchClients(); }, [fetchClients]);
 
-  // Debounce search — wait 400ms after the user stops typing before searching
+  // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => fetchClients(searchQuery), 400);
     return () => clearTimeout(timer);
@@ -157,11 +134,9 @@ export default function ClientsPage() {
       if (!res.ok) throw new Error(json.error ?? "Something went wrong");
 
       if (isEditing) {
-        // Replace the old client in state with the updated one
         setClients((prev) => prev.map((c) => c.id === json.data.id ? json.data : c));
         toast.success("Client updated successfully");
       } else {
-        // Prepend new client to the top of the list
         setClients((prev) => [json.data, ...prev]);
         toast.success("Client created successfully");
       }
@@ -208,31 +183,41 @@ export default function ClientsPage() {
       {/* ── Page Header ── */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Clients</h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <h1 className="text-[28px] font-bold text-white tracking-tight">Clients</h1>
+          <p className="text-[15px] text-white/40 mt-1">
             Manage your clients and their information
           </p>
         </div>
         <Button onClick={openAddModal} size="md">
           <Plus size={16} />
-          Add Client
+          Add client
         </Button>
       </div>
 
       {/* ── Content Card ── */}
-      <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-
+      <div
+        className="rounded-2xl overflow-hidden"
+        style={{ background: "#161b27", border: "1px solid rgba(255,255,255,0.07)" }}
+      >
         {/* ── Search bar ── */}
-        <div className="px-6 py-4 border-b border-gray-100">
-          <div className="relative max-w-xs">
-            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+        <div
+          className="px-6 py-5"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        >
+          <div className="relative max-w-sm">
+            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30" />
             <input
               type="text"
               placeholder="Search clients..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50
-                         focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2.5 text-[14px] rounded-xl
+                         text-white placeholder:text-white/25
+                         focus:outline-none focus:ring-2 focus:ring-brand-500/40 transition-all"
+              style={{
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.09)",
+              }}
             />
           </div>
         </div>
@@ -253,33 +238,35 @@ export default function ClientsPage() {
           />
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Client</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Email</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Phone</th>
-                  <th className="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Added</th>
-                  <th className="px-6 py-3" />
+                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
+                  <th className="text-left px-6 py-4 text-[11px] font-semibold text-white/30 uppercase tracking-widest">Client</th>
+                  <th className="text-left px-6 py-4 text-[11px] font-semibold text-white/30 uppercase tracking-widest">Email</th>
+                  <th className="text-left px-6 py-4 text-[11px] font-semibold text-white/30 uppercase tracking-widest">Phone</th>
+                  <th className="text-left px-6 py-4 text-[11px] font-semibold text-white/30 uppercase tracking-widest">Added</th>
+                  <th className="px-6 py-4" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody>
                 {clients.map((client) => (
                   <tr
                     key={client.id}
-                    className="hover:bg-gray-50 transition-colors group"
+                    className="group transition-colors"
+                    style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.03)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   >
                     {/* Name + company */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        {/* Initials avatar */}
-                        <div className="w-9 h-9 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center text-xs font-bold shrink-0">
+                    <td className="px-6 py-5">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center text-[13px] font-bold text-white shrink-0">
                           {client.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">{client.name}</p>
+                          <p className="text-[15px] font-semibold text-white leading-tight">{client.name}</p>
                           {client.companyName && (
-                            <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
+                            <p className="text-[13px] text-white/40 flex items-center gap-1 mt-0.5">
                               <Building2 size={11} /> {client.companyName}
                             </p>
                           )}
@@ -288,49 +275,41 @@ export default function ClientsPage() {
                     </td>
 
                     {/* Email */}
-                    <td className="px-6 py-4">
-                      <a
-                        href={`mailto:${client.email}`}
-                        className="text-gray-600 hover:text-brand-600 flex items-center gap-1.5"
-                      >
-                        <Mail size={13} />
+                    <td className="px-6 py-5">
+                      <a href={`mailto:${client.email}`}
+                        className="text-[14px] text-white/60 hover:text-brand-400 flex items-center gap-2 transition-colors">
+                        <Mail size={14} />
                         {client.email}
                       </a>
                     </td>
 
                     {/* Phone */}
-                    <td className="px-6 py-4 text-gray-500">
+                    <td className="px-6 py-5 text-[14px] text-white/50">
                       {client.phone ? (
-                        <span className="flex items-center gap-1.5">
-                          <Phone size={13} />
+                        <span className="flex items-center gap-2">
+                          <Phone size={14} />
                           {client.phone}
                         </span>
                       ) : (
-                        <span className="text-gray-300">—</span>
+                        <span className="text-white/20">—</span>
                       )}
                     </td>
 
                     {/* Date added */}
-                    <td className="px-6 py-4 text-gray-500">
+                    <td className="px-6 py-5 text-[14px] text-white/35">
                       {formatDate(client.createdAt)}
                     </td>
 
-                    {/* Actions — visible on hover */}
-                    <td className="px-6 py-4">
+                    {/* Actions */}
+                    <td className="px-6 py-5">
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => openEditModal(client)}
-                          className="p-1.5 rounded-lg text-gray-400 hover:text-brand-600 hover:bg-brand-50 transition-colors"
-                          title="Edit client"
-                        >
-                          <Pencil size={14} />
+                        <button onClick={() => openEditModal(client)}
+                          className="p-2 rounded-lg text-white/30 hover:text-brand-400 hover:bg-white/[0.06] transition-colors">
+                          <Pencil size={15} />
                         </button>
-                        <button
-                          onClick={() => openDeleteModal(client)}
-                          className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-                          title="Delete client"
-                        >
-                          <Trash2 size={14} />
+                        <button onClick={() => openDeleteModal(client)}
+                          className="p-2 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-colors">
+                          <Trash2 size={15} />
                         </button>
                       </div>
                     </td>
@@ -343,8 +322,11 @@ export default function ClientsPage() {
 
         {/* ── Footer count ── */}
         {clients.length > 0 && (
-          <div className="px-6 py-3 border-t border-gray-100 bg-gray-50">
-            <p className="text-xs text-gray-500">
+          <div
+            className="px-6 py-4"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.01)" }}
+          >
+            <p className="text-[13px] text-white/30">
               {clients.length} {clients.length === 1 ? "client" : "clients"}
             </p>
           </div>
@@ -428,15 +410,18 @@ export default function ClientsPage() {
         }
       >
         <div className="flex gap-4">
-          <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center shrink-0">
-            <Trash2 size={18} className="text-red-600" />
+          <div
+            className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+            style={{ background: "rgba(239,68,68,0.15)" }}
+          >
+            <Trash2 size={18} className="text-red-400" />
           </div>
           <div>
-            <p className="text-sm text-gray-700">
+            <p className="text-[14px] text-white/80">
               Are you sure you want to delete{" "}
-              <span className="font-semibold">{selectedClient?.name}</span>?
+              <span className="font-semibold text-white">{selectedClient?.name}</span>?
             </p>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-[13px] text-white/40 mt-1.5 leading-relaxed">
               This will also delete all invoices associated with this client. This action cannot be undone.
             </p>
           </div>
