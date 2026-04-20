@@ -167,8 +167,34 @@
   100% { transform: scale(1.08) translateX(-1%);  }
 }
 
+/* Auth panel — slow drifting gradient sweep */
+@keyframes auth-gradient {
+  0%   { background-position: 0% 50%;   }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%;   }
+}
+
+/* Auth panel — glow orb drift */
+@keyframes orb-drift {
+  0%   { transform: translate(0px, 0px) scale(1);        }
+  25%  { transform: translate(80px, -60px) scale(1.12);  }
+  50%  { transform: translate(40px, 80px) scale(0.92);   }
+  75%  { transform: translate(-60px, 30px) scale(1.06);  }
+  100% { transform: translate(0px, 0px) scale(1);        }
+}
+
+@keyframes orb-drift-b {
+  0%   { transform: translate(0px, 0px) scale(1);        }
+  25%  { transform: translate(-80px, 40px) scale(1.08);  }
+  50%  { transform: translate(-30px, -70px) scale(0.9);  }
+  75%  { transform: translate(70px, -20px) scale(1.1);   }
+  100% { transform: translate(0px, 0px) scale(1);        }
+}
+
 .animate-float    { animation: float 5s ease-in-out infinite; }
 .animate-kenburns { animation: kenburns 20s ease-out infinite alternate; }
+.animate-orb-a    { animation: orb-drift   14s ease-in-out infinite; }
+.animate-orb-b    { animation: orb-drift-b 18s ease-in-out infinite; }
 
 /* Gradient text — used on landing hero */
 .gradient-text {
