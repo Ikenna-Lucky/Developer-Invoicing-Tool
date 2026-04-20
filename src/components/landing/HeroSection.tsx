@@ -57,7 +57,7 @@ export function HeroSection() {
           <motion.div variants={fadeUp}>
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 text-white/90 text-xs font-semibold px-4 py-2 rounded-full mb-8 shadow-sm">
               <Zap size={12} className="fill-blue-400 text-blue-400" />
-              Open source · Free to use · No credit card needed
+              Built for freelancers · Open source on GitHub
             </div>
           </motion.div>
 
@@ -66,18 +66,18 @@ export function HeroSection() {
             variants={fadeUp}
             className="font-display text-5xl sm:text-6xl lg:text-[4.5rem] font-bold text-white leading-[1.05] tracking-tight mb-6 max-w-4xl"
           >
-            Invoice clients, <br />{" "}
+            Invoice clients. <br />
             <span className="gradient-text">Get paid faster.</span>
           </motion.h1>
 
           {/* Subtext */}
           <motion.p
             variants={fadeUp}
-            className="text-lg sm:text-xl text-white/65 max-w-2xl leading-relaxed mb-10"
+            className="text-lg sm:text-xl text-white/65 max-w-xl leading-relaxed mb-10"
           >
-            The professional invoicing tool built for freelancers and
-            developers. Auto-generate PDFs, send by email, and collect Stripe
-            payments — all in one place.
+            Stop chasing payments. Billd turns your work into a polished
+            invoice, emails it to your client, and collects Stripe payments —
+            automatically.
           </motion.p>
 
           {/* CTAs */}
@@ -93,7 +93,7 @@ export function HeroSection() {
                 href="/sign-up"
                 className="inline-flex items-center gap-2 bg-white text-gray-900 font-semibold px-8 py-3.5 rounded-xl shadow-xl shadow-black/30 hover:bg-gray-50 transition-all duration-200 text-sm"
               >
-                Start invoicing for free
+                Send your first invoice free
                 <ArrowRight size={16} />
               </Link>
             </motion.div>
@@ -105,23 +105,23 @@ export function HeroSection() {
                 href="/sign-in"
                 className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-sm text-white font-semibold px-8 py-3.5 rounded-xl border border-white/20 transition-all duration-200 text-sm"
               >
-                Sign in to your account
+                Sign in
               </Link>
             </motion.div>
           </motion.div>
 
-          {/* Trust bullets */}
+          {/* Trust line */}
           <motion.div
             variants={fadeUp}
-            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-white/50"
+            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-white/45"
           >
             {[
-              "No credit card required",
-              "Free forever plan",
-              "Open source on GitHub",
+              "First invoice in under 60 seconds",
+              "Stripe-powered payments",
+              "MIT licensed · always free",
             ].map((item) => (
               <span key={item} className="flex items-center gap-1.5">
-                <CheckCircle size={13} className="text-green-400" />
+                <CheckCircle size={13} className="text-green-400/80" />
                 {item}
               </span>
             ))}
