@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { User, Building2, SlidersHorizontal, Check } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { User, Building2, SlidersHorizontal, Check, Camera, X, Upload } from "lucide-react";
 import { Input, Textarea } from "@/components/ui/Input";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/components/ui/Toast";
@@ -76,30 +76,109 @@ function Section({
   );
 }
 
-// ─── Avatar preview ────────────────────────────────────────────────────────────
+// ─── Avatar editor ─────────────────────────────────────────────────────────────
 
-function AvatarPreview({ name }: { name: string }) {
+function AvatarEditor({
+  name,
+  avatarUrl,
+  onAvatarChange,
+}: {
+  name: string;
+  avatarUrl: string;
+  onAvatarChange: (url: string) => void;
+}) {
+  const fileRef  = useRef<HTMLInputElement>(null);
+  const [drag, setDrag] = useState(false);
+
   const initials = name
-    .split(" ")
-    .filter(Boolean)
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 2) || "??";
+    .split(" ").filter(Boolean).map((n) => n[0]).join("").toUpperCase().slice(0, 2) || "??";
+
+  const handleFile = (file: File) => {
+    if (!file.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onload = (e) => onAvatarChange(e.target?.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDrag(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  };
 
   return (
-    <div className="flex items-center gap-4 p-4 rounded-xl"
+    <div className="flex items-center gap-6 p-5 rounded-xl"
       style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
-      <div
-        className="w-14 h-14 rounded-full flex items-center justify-center text-[18px] font-bold text-white shrink-0"
-        style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
-      >
-        {initials}
+      {/* Avatar circle with upload overlay */}
+      <div className="relative shrink-0 group/av">
+        <div
+          className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center text-[22px] font-bold text-white"
+          style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)", boxShadow: "0 8px 24px rgba(124,58,237,0.3)" }}
+        >
+          {avatarUrl ? (
+            <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
+          ) : (
+            initials
+          )}
+        </div>
+        {/* Hover overlay */}
+        <button
+          onClick={() => fileRef.current?.click()}
+          className="absolute inset-0 rounded-full flex items-center justify-center
+                     opacity-0 group-hover/av:opacity-100 transition-opacity duration-200"
+          style={{ background: "rgba(0,0,0,0.55)" }}
+        >
+          <Camera size={18} className="text-white" />
+        </button>
+        {/* Remove button */}
+        {avatarUrl && (
+          <button
+            onClick={() => onAvatarChange("")}
+            title="Remove photo"
+            className="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center
+                       opacity-0 group-hover/av:opacity-100 transition-opacity duration-200 z-10"
+            style={{ background: "#ef4444", border: "1.5px solid #0d1117" }}
+          >
+            <X size={10} className="text-white" />
+          </button>
+        )}
       </div>
-      <div>
-        <p className="text-[14px] font-semibold text-white">{name || "Your Name"}</p>
-        <p className="text-[12px] text-white/35 mt-0.5">Avatar is generated from your initials</p>
+
+      <div className="flex-1">
+        <p className="text-[15px] font-semibold text-white mb-0.5">{name || "Your Name"}</p>
+        <p className="text-[12px] text-white/35 mb-3">
+          {avatarUrl ? "Photo uploaded — hover avatar to change" : "Upload a photo or leave blank for initials"}
+        </p>
+
+        {/* Drop zone / button */}
+        <div
+          onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
+          onDragLeave={() => setDrag(false)}
+          onDrop={onDrop}
+          onClick={() => fileRef.current?.click()}
+          className="flex items-center gap-2.5 px-4 py-2 rounded-xl cursor-pointer transition-all duration-150 w-fit"
+          style={{
+            background: drag ? "rgba(37,99,235,0.15)" : "rgba(255,255,255,0.05)",
+            border: `1px solid ${drag ? "rgba(37,99,235,0.4)" : "rgba(255,255,255,0.1)"}`,
+          }}
+        >
+          <Upload size={13} className="text-white/40" />
+          <span className="text-[13px] font-semibold text-white/50">
+            {drag ? "Drop to upload" : "Upload photo"}
+          </span>
+        </div>
+        <p className="text-[11px] text-white/20 mt-2">JPG, PNG or GIF · max 4 MB</p>
       </div>
+
+      {/* Hidden file input */}
+      <input
+        ref={fileRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
+      />
     </div>
   );
 }
@@ -121,8 +200,9 @@ export default function SettingsPage() {
 
   // ── Form state (loads from localStorage) ──────────────────────────────────
   const [profile, setProfile] = useState({
-    fullName: user?.fullName ?? "",
-    phone:    "",
+    fullName:  user?.fullName ?? "",
+    phone:     "",
+    avatarUrl: "",
   });
 
   const [business, setBusiness] = useState({
@@ -172,6 +252,9 @@ export default function SettingsPage() {
       [section === "profile" ? "profile" : section === "business" ? "business" : "prefs"]:
         section === "profile" ? profile : section === "business" ? business : prefs,
     }));
+    if (section === "profile") {
+      window.dispatchEvent(new Event("billd:avatar-updated"));
+    }
     toast.success(
       section === "profile"     ? "Profile saved"
       : section === "business" ? "Business info saved"
@@ -197,7 +280,7 @@ export default function SettingsPage() {
 
         {/* ── Left tab rail ── */}
         <div
-          className="w-52 shrink-0 rounded-2xl p-2 sticky top-6"
+          className="w-52 shrink-0 rounded-2xl p-2 sticky top-[80px]"
           style={{ background: "#161b27", border: "1px solid rgba(255,255,255,0.07)" }}
         >
           {TABS.map(({ id, label, icon: Icon }) => {
@@ -232,7 +315,11 @@ export default function SettingsPage() {
                 accent="#60a5fa"
               >
                 <div className="space-y-5">
-                  <AvatarPreview name={profile.fullName} />
+                  <AvatarEditor
+                    name={profile.fullName}
+                    avatarUrl={profile.avatarUrl}
+                    onAvatarChange={(url) => setProfile(p => ({ ...p, avatarUrl: url }))}
+                  />
 
                   <Divider />
 
