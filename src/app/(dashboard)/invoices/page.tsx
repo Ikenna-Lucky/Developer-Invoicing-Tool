@@ -115,14 +115,45 @@ export default function InvoicesPage() {
         </div>
         <Link
           href="/invoices/create"
-          className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white
-                     font-semibold text-[14px] px-5 py-2.5 rounded-xl transition-colors duration-150
-                     shadow-lg shadow-brand-600/20"
+          className="inline-flex items-center gap-2 text-white font-semibold text-[14px]
+                     px-5 py-2.5 rounded-xl transition-all duration-150 shadow-lg shadow-brand-600/20"
+          style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
         >
           <Plus size={16} />
           New invoice
         </Link>
       </div>
+
+      {/* ── Stats bar ── */}
+      {!loading && invoices.length > 0 && (() => {
+        const total      = invoices.reduce((s, i) => s + Number(i.totalAmount), 0);
+        const paid       = invoices.filter(i => i.status === "paid").reduce((s, i) => s + Number(i.totalAmount), 0);
+        const outstanding = invoices.filter(i => i.status === "sent" || i.status === "overdue").reduce((s, i) => s + Number(i.totalAmount), 0);
+        const overdueAmt  = invoices.filter(i => i.status === "overdue").reduce((s, i) => s + Number(i.totalAmount), 0);
+
+        const chips = [
+          { label: "Total value",   value: formatCurrency(total),       color: "rgba(255,255,255,0.55)", dot: "rgba(255,255,255,0.25)" },
+          { label: "Collected",     value: formatCurrency(paid),        color: "#4ade80",                dot: "#4ade80" },
+          { label: "Outstanding",   value: formatCurrency(outstanding), color: "#60a5fa",                dot: "#60a5fa" },
+          { label: "Overdue",       value: formatCurrency(overdueAmt),  color: overdueAmt > 0 ? "#f87171" : "rgba(255,255,255,0.3)", dot: overdueAmt > 0 ? "#f87171" : "rgba(255,255,255,0.15)" },
+        ];
+
+        return (
+          <div className="flex flex-wrap gap-3 mb-5">
+            {chips.map((chip) => (
+              <div
+                key={chip.label}
+                className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl"
+                style={{ background: "#161b27", border: "1px solid rgba(255,255,255,0.07)" }}
+              >
+                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: chip.dot }} />
+                <span className="text-[13px] text-white/40">{chip.label}</span>
+                <span className="text-[14px] font-bold font-mono" style={{ color: chip.color }}>{chip.value}</span>
+              </div>
+            ))}
+          </div>
+        );
+      })()}
 
       {/* Content card */}
       <div

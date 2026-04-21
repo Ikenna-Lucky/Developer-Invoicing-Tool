@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Plus, Search, Pencil, Trash2, Users, Mail, Phone, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
@@ -29,7 +30,8 @@ const emptyForm: ClientFormData = {
 // ─── Main Page Component ──────────────────────────────────────────────────────
 
 export default function ClientsPage() {
-  const toast = useToast();
+  const toast  = useToast();
+  const router = useRouter();
 
   // ── Data state ──
   const [clients,     setClients]     = useState<Client[]>([]);
@@ -252,7 +254,8 @@ export default function ClientsPage() {
                 {clients.map((client) => (
                   <tr
                     key={client.id}
-                    className="group transition-colors"
+                    onClick={() => router.push(`/clients/${client.id}`)}
+                    className="group transition-colors cursor-pointer"
                     style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
                     onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.03)")}
                     onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
@@ -275,7 +278,7 @@ export default function ClientsPage() {
                     </td>
 
                     {/* Email */}
-                    <td className="px-6 py-5">
+                    <td className="px-6 py-5" onClick={(e) => e.stopPropagation()}>
                       <a href={`mailto:${client.email}`}
                         className="text-[14px] text-white/60 hover:text-brand-400 flex items-center gap-2 transition-colors">
                         <Mail size={14} />
@@ -301,7 +304,7 @@ export default function ClientsPage() {
                     </td>
 
                     {/* Actions */}
-                    <td className="px-6 py-5">
+                    <td className="px-6 py-5" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button onClick={() => openEditModal(client)}
                           className="p-2 rounded-lg text-white/30 hover:text-brand-400 hover:bg-white/[0.06] transition-colors">

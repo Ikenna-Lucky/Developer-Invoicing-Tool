@@ -6,6 +6,7 @@ import {
   LayoutDashboard, Users, FileText, Settings, LogOut,
 } from "lucide-react";
 import { BilldLogo } from "@/components/ui/BilldLogo";
+import { CmdKHint } from "@/components/ui/CommandPalette";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 
@@ -84,6 +85,14 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      {/* ⌘K search hint */}
+      <div className="px-3 pb-3">
+        <CmdKHint onClick={() => {
+          const e = new KeyboardEvent("keydown", { key: "k", metaKey: true, bubbles: true });
+          window.dispatchEvent(e);
+        }} />
+      </div>
 
       {/* Divider */}
       <div className="mx-4 h-px bg-white/[0.07]" />

@@ -32,7 +32,7 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="py-28 bg-white overflow-hidden">
+    <section id="how-it-works" className="py-28 overflow-hidden" style={{ background: "#0d1117" }}>
       <div className="max-w-6xl mx-auto px-6">
         {/* Section header */}
         <motion.div
@@ -42,14 +42,21 @@ export function HowItWorksSection() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="mb-20"
         >
-          <span className="inline-block text-[11px] font-semibold text-brand-600 uppercase tracking-widest mb-4 bg-brand-50 px-3 py-1 rounded-full border border-brand-100">
+          <span
+            className="inline-block text-[11px] font-semibold uppercase tracking-widest mb-4 px-3 py-1 rounded-full"
+            style={{
+              color: "#60a5fa",
+              background: "rgba(59,130,246,0.1)",
+              border: "1px solid rgba(59,130,246,0.2)",
+            }}
+          >
             How it works
           </span>
           <div className="flex flex-col gap-4">
-            <h2 className="font-display text-4xl font-bold text-gray-900 tracking-tight max-w-lg leading-tight">
+            <h2 className="font-display text-4xl font-bold tracking-tight max-w-lg leading-tight text-white">
               From signed off to money in.
             </h2>
-            <p className="text-gray-400 max-w-4xl text-base leading-relaxed">
+            <p className="max-w-4xl text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
               Most users send their first invoice within 5 minutes of signing
               up. Here&apos;s how it flows.
             </p>
@@ -57,7 +64,10 @@ export function HowItWorksSection() {
         </motion.div>
 
         {/* Steps */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-gray-100 rounded-2xl overflow-hidden border border-gray-100">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl overflow-hidden"
+          style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.07)" }}
+        >
           {steps.map((step, i) => (
             <motion.div
               key={step.number}
@@ -69,42 +79,45 @@ export function HowItWorksSection() {
                 delay: i * 0.1,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="group relative bg-white p-8 hover:bg-gray-50 transition-colors duration-300 flex flex-col"
+              className="group relative p-8 flex flex-col transition-colors duration-300"
+              style={{ background: "#161b27" }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#1a2035")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#161b27")}
             >
               {/* Large ghost number */}
               <span
-                className="font-display text-[5rem] font-bold leading-none text-gray-100
-                               group-hover:text-brand-50 transition-colors duration-300 select-none mb-4 -ml-1"
+                className="font-display text-[5rem] font-bold leading-none select-none mb-4 -ml-1 transition-colors duration-300"
+                style={{ color: "rgba(255,255,255,0.05)" }}
               >
                 {step.number}
               </span>
 
               {/* Icon */}
               <div
-                className="w-9 h-9 rounded-lg bg-gray-900 flex items-center justify-center mb-5
-                              group-hover:bg-brand-600 transition-colors duration-300"
+                className="w-9 h-9 rounded-lg flex items-center justify-center mb-5 transition-colors duration-300 group-hover:scale-110 transform"
+                style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
               >
                 <step.icon size={16} className="text-white" />
               </div>
 
-              <h3 className="font-display font-semibold text-gray-900 mb-2 text-base">
+              <h3 className="font-display font-semibold mb-2 text-base text-white">
                 {step.title}
               </h3>
-              <p className="text-sm text-gray-500 leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
                 {step.desc}
               </p>
 
               {/* Arrow connector — hidden on last */}
               {i < steps.length - 1 && (
                 <div
-                  className="hidden lg:block absolute -right-3 top-1/2 -translate-y-1/2 z-10
-                                w-6 h-6 bg-white border border-gray-100 rounded-full
-                                items-center justify-center shadow-sm"
+                  className="hidden lg:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10
+                              w-6 h-6 rounded-full items-center justify-center"
+                  style={{ background: "#1a2035", border: "1px solid rgba(255,255,255,0.1)" }}
                 >
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                     <path
                       d="M3 2l4 3-4 3"
-                      stroke="#d1d5db"
+                      stroke="rgba(255,255,255,0.3)"
                       strokeWidth="1.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"

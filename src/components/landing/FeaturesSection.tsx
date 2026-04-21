@@ -123,7 +123,8 @@ export function FeaturesSection() {
               <h3 className="font-display font-semibold text-white mb-2 text-[15px] leading-snug">
                 {feature.title}
               </h3>
-              <p className="text-sm text-gray-500 leading-relaxed">
+
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
                 {feature.desc}
               </p>
             </motion.div>
@@ -133,3 +134,4 @@ export function FeaturesSection() {
     </section>
   );
 }
+          

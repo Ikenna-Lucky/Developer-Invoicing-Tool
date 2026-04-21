@@ -1,40 +1,35 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { BilldLogo } from "@/components/ui/BilldLogo";
 
 const navLinks = [
-  { label: "Features", href: "#features" },
+  { label: "Features",     href: "#features"    },
   { label: "How it works", href: "#how-it-works" },
-  { label: "Pricing", href: "#cta" },
+  { label: "Pricing",      href: "#cta"          },
 ];
 
 export function LandingNav() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <>
-      {/* Floating pill — centered, not full-width */}
+      {/* Floating pill */}
       <div className="fixed top-5 right-0 left-0 z-50 flex justify-center px-4">
         <motion.nav
           initial={{ y: -60, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className={`flex items-center gap-1 p-4 rounded-full transition-all duration-300 ${
-            scrolled
-              ? "bg-white/95 backdrop-blur-xl border border-gray-200/80 shadow-xl shadow-black/10"
-              : "bg-black/25 backdrop-blur-md border border-white/15"
-          }`}
+          className="flex items-center gap-1 p-4 rounded-full"
+          style={{
+            background: "rgba(10,15,30,0.85)",
+            backdropFilter: "blur(20px)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+          }}
         >
           {/* Logo */}
           <motion.div whileHover={{ scale: 1.04 }} transition={{ type: "spring", stiffness: 400 }} className="pl-1 pr-2">
@@ -42,11 +37,7 @@ export function LandingNav() {
           </motion.div>
 
           {/* Divider */}
-          <div
-            className={`hidden md:block w-px h-4 mx-1 transition-colors duration-300 ${
-              scrolled ? "bg-gray-200" : "bg-white/20"
-            }`}
-          />
+          <div className="hidden md:block w-px h-4 mx-1" style={{ background: "rgba(255,255,255,0.12)" }} />
 
           {/* Nav links */}
           <div className="hidden md:flex items-center">
@@ -54,11 +45,16 @@ export function LandingNav() {
               <a
                 key={link.href}
                 href={link.href}
-                className={`px-3.5 py-1.5 text-sm font-medium rounded-full transition-all duration-200 ${
-                  scrolled
-                    ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                    : "text-white/75 hover:text-white hover:bg-white/10"
-                }`}
+                className="px-3.5 py-1.5 text-sm font-medium rounded-full transition-all duration-200"
+                style={{ color: "rgba(255,255,255,0.55)" }}
+                onMouseEnter={(e) => {
+                  (e.target as HTMLElement).style.color = "white";
+                  (e.target as HTMLElement).style.background = "rgba(255,255,255,0.08)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.target as HTMLElement).style.color = "rgba(255,255,255,0.55)";
+                  (e.target as HTMLElement).style.background = "transparent";
+                }}
               >
                 {link.label}
               </a>
@@ -66,32 +62,30 @@ export function LandingNav() {
           </div>
 
           {/* Divider */}
-          <div
-            className={`hidden md:block w-px h-4 mx-1 transition-colors duration-300 ${
-              scrolled ? "bg-gray-200" : "bg-white/20"
-            }`}
-          />
+          <div className="hidden md:block w-px h-4 mx-1" style={{ background: "rgba(255,255,255,0.12)" }} />
 
           {/* CTA group */}
           <div className="hidden md:flex items-center gap-1 pl-1">
             <Link
               href="/sign-in"
-              className={`px-3.5 py-1.5 text-sm font-semibold rounded-full transition-all duration-200 ${
-                scrolled
-                  ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                  : "text-white/75 hover:text-white hover:bg-white/10"
-              }`}
+              className="px-3.5 py-1.5 text-sm font-semibold rounded-full transition-all duration-200"
+              style={{ color: "rgba(255,255,255,0.55)" }}
+              onMouseEnter={(e) => {
+                (e.target as HTMLElement).style.color = "white";
+                (e.target as HTMLElement).style.background = "rgba(255,255,255,0.08)";
+              }}
+              onMouseLeave={(e) => {
+                (e.target as HTMLElement).style.color = "rgba(255,255,255,0.55)";
+                (e.target as HTMLElement).style.background = "transparent";
+              }}
             >
               Sign in
             </Link>
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/sign-up"
-                className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-200 ${
-                  scrolled
-                    ? "bg-gray-900 text-white hover:bg-gray-700"
-                    : "bg-white text-gray-900 hover:bg-gray-100"
-                }`}
+                className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold text-white transition-all duration-200"
+                style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
               >
                 Get started
                 <ArrowRight size={13} />
@@ -102,17 +96,14 @@ export function LandingNav() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className={`md:hidden ml-1 p-2 rounded-full transition-colors duration-200 ${
-              scrolled
-                ? "text-gray-600 hover:bg-gray-100"
-                : "text-white hover:bg-white/10"
-            }`}
+            className="md:hidden ml-1 p-2 rounded-full transition-colors duration-200"
+            style={{ color: "rgba(255,255,255,0.7)" }}
           >
             {mobileOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </motion.nav>
 
-        {/* Mobile dropdown — drops below the pill */}
+        {/* Mobile dropdown */}
         <AnimatePresence>
           {mobileOpen && (
             <motion.div
@@ -122,29 +113,52 @@ export function LandingNav() {
               transition={{ duration: 0.18, ease: "easeOut" }}
               className="absolute top-[calc(100%+8px)] left-0 right-0 mx-4"
             >
-              <div className="bg-white/95 backdrop-blur-xl rounded-2xl border border-gray-200/80 shadow-xl shadow-black/10 overflow-hidden">
+              <div
+                className="rounded-2xl overflow-hidden"
+                style={{
+                  background: "rgba(14,20,32,0.96)",
+                  backdropFilter: "blur(20px)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  boxShadow: "0 16px 48px rgba(0,0,0,0.5)",
+                }}
+              >
                 <div className="p-2 space-y-0.5">
                   {navLinks.map((link) => (
                     <a
                       key={link.href}
                       href={link.href}
                       onClick={() => setMobileOpen(false)}
-                      className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-xl transition-colors"
+                      className="block px-4 py-2.5 text-sm font-medium rounded-xl transition-colors"
+                      style={{ color: "rgba(255,255,255,0.65)" }}
+                      onMouseEnter={(e) => {
+                        (e.target as HTMLElement).style.color = "white";
+                        (e.target as HTMLElement).style.background = "rgba(255,255,255,0.07)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.target as HTMLElement).style.color = "rgba(255,255,255,0.65)";
+                        (e.target as HTMLElement).style.background = "transparent";
+                      }}
                     >
                       {link.label}
                     </a>
                   ))}
                 </div>
-                <div className="p-3 border-t border-gray-100 flex flex-col gap-2">
+                <div className="p-3 flex flex-col gap-2" style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}>
                   <Link
                     href="/sign-in"
-                    className="btn-secondary w-full justify-center text-sm"
+                    className="w-full text-center py-2.5 text-sm font-semibold rounded-xl transition-colors"
+                    style={{
+                      color: "rgba(255,255,255,0.6)",
+                      background: "rgba(255,255,255,0.05)",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                    }}
                   >
                     Sign in
                   </Link>
                   <Link
                     href="/sign-up"
-                    className="btn-primary w-full justify-center text-sm"
+                    className="w-full text-center py-2.5 text-sm font-semibold rounded-xl text-white"
+                    style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
                   >
                     Get started free
                   </Link>
