@@ -1,35 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
-const LS_KEY = "billd_settings";
-
-function readAvatarUrl(): string {
-  try {
-    const saved = localStorage.getItem(LS_KEY);
-    if (!saved) return "";
-    const parsed = JSON.parse(saved);
-    return parsed.profile?.avatarUrl ?? "";
-  } catch {
-    return "";
-  }
-}
+import { useAuth } from "@/context/AuthContext";
 
 /**
- * Returns the stored avatar data-URL from localStorage.
- * Re-renders automatically when billd:avatar-updated is dispatched.
+ * Returns the current user's avatar URL.
+ *
+ * The value lives in AuthContext so every component that calls this hook
+ * re-renders automatically whenever the avatar changes — whether the update
+ * came from an upload, a DB sync, or a login.
+ *
+ * No localStorage polling, no custom events, no timing issues.
  */
 export function useAvatar(): string {
-  const [avatarUrl, setAvatarUrl] = useState<string>("");
-
-  useEffect(() => {
-    // Sync immediately on mount (after hydration)
-    setAvatarUrl(readAvatarUrl());
-
-    const onUpdate = () => setAvatarUrl(readAvatarUrl());
-    window.addEventListener("billd:avatar-updated", onUpdate);
-    return () => window.removeEventListener("billd:avatar-updated", onUpdate);
-  }, []);
-
+  const { avatarUrl } = useAuth();
   return avatarUrl;
 }

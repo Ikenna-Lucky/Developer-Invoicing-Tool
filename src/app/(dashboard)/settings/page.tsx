@@ -5,6 +5,7 @@ import { User, Building2, SlidersHorizontal, Check, Camera, X, Upload } from "lu
 import { Input, Textarea } from "@/components/ui/Input";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/components/ui/Toast";
+import { apiRequest } from "@/lib/api";
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -194,7 +195,7 @@ const Divider = () => (
 const LS_KEY = "billd_settings";
 
 export default function SettingsPage() {
-  const { user } = useAuth();
+  const { user, refreshUser, setAvatarUrl } = useAuth();
   const toast    = useToast();
   const [tab, setTab] = useState<Tab>("profile");
 
@@ -231,18 +232,24 @@ export default function SettingsPage() {
     } catch { /* ignore */ }
   }, []);
 
-  // Sync name from auth user if not locally overridden
+  // Sync auth user fields if not locally overridden — ensures DB values pre-fill on fresh sessions
   useEffect(() => {
-    if (user?.fullName) {
-      setProfile(p => p.fullName ? p : { ...p, fullName: user.fullName });
-    }
+    if (!user) return;
+    setProfile(p => ({
+      ...p,
+      fullName:  p.fullName  || user.fullName  || "",
+      phone:     p.phone     || user.phone     || "",
+      avatarUrl: p.avatarUrl || user.logoUrl   || "",
+    }));
   }, [user]);
 
   // ── Save helpers ───────────────────────────────────────────────────────────
   const [saving, setSaving] = useState<Tab | null>(null);
 
-  const save = (section: Tab) => {
+  const save = async (section: Tab) => {
     setSaving(section);
+
+    // Always persist to localStorage immediately (fast, optimistic)
     const current = (() => {
       try { return JSON.parse(localStorage.getItem(LS_KEY) ?? "{}"); }
       catch { return {}; }
@@ -252,9 +259,29 @@ export default function SettingsPage() {
       [section === "profile" ? "profile" : section === "business" ? "business" : "prefs"]:
         section === "profile" ? profile : section === "business" ? business : prefs,
     }));
+
+    // For the profile section — persist to backend so avatar survives across devices/sessions
     if (section === "profile") {
-      window.dispatchEvent(new Event("billd:avatar-updated"));
+      // Push avatar into context immediately (covers the case where user
+      // clicked Save without having touched the upload widget this session)
+      if (profile.avatarUrl) setAvatarUrl(profile.avatarUrl);
+
+      try {
+        await apiRequest("/auth/me", {
+          method: "PATCH",
+          body: {
+            fullName:  profile.fullName  || undefined,
+            phone:     profile.phone     || undefined,
+            logoUrl:   profile.avatarUrl || undefined,
+          },
+        });
+        // Re-sync from DB — sets avatarUrl from the server-confirmed logoUrl
+        await refreshUser();
+      } catch {
+        // Non-blocking — AuthContext already has the local value
+      }
     }
+
     toast.success(
       section === "profile"     ? "Profile saved"
       : section === "business" ? "Business info saved"
@@ -318,7 +345,12 @@ export default function SettingsPage() {
                   <AvatarEditor
                     name={profile.fullName}
                     avatarUrl={profile.avatarUrl}
-                    onAvatarChange={(url) => setProfile(p => ({ ...p, avatarUrl: url }))}
+                    onAvatarChange={(url) => {
+                      // Update local form state
+                      setProfile(p => ({ ...p, avatarUrl: url }));
+                      // Push into AuthContext immediately — header + sidebar re-render right now
+                      setAvatarUrl(url);
+                    }}
                   />
 
                   <Divider />

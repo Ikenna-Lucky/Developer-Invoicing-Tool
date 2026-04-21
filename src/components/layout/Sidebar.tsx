@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  LayoutDashboard, Users, FileText, Settings, LogOut,
+  LayoutDashboard, Users, FileText, Settings, LogOut, Loader2,
 } from "lucide-react";
 import { BilldLogo } from "@/components/ui/BilldLogo";
 import { cn } from "@/lib/utils";
@@ -22,9 +23,17 @@ export function Sidebar() {
   const router   = useRouter();
   const { user, logout } = useAuth();
   const avatarUrl = useAvatar();
+  const [signingOut, setSigningOut] = useState(false);
 
-  const handleLogout = async () => {
-    await logout();
+  const handleLogout = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSigningOut(true);
+    try {
+      await logout();
+    } finally {
+      setSigningOut(false);
+    }
     router.push("/sign-in");
   };
 
@@ -116,11 +125,15 @@ export function Sidebar() {
             </p>
           </div>
           <button
-            onClick={(e) => { e.preventDefault(); handleLogout(); }}
-            title="Log out"
-            className="p-1.5 rounded-lg text-white/25 hover:text-white/70 transition-colors opacity-0 group-hover:opacity-100"
+            onClick={handleLogout}
+            disabled={signingOut}
+            title={signingOut ? "Signing out…" : "Sign out"}
+            className="p-1.5 rounded-lg text-white/25 hover:text-white/70 transition-colors opacity-0 group-hover:opacity-100 disabled:cursor-not-allowed"
           >
-            <LogOut size={14} />
+            {signingOut
+              ? <Loader2 size={14} className="animate-spin" />
+              : <LogOut  size={14} />
+            }
           </button>
         </Link>
       </div>
