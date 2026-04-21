@@ -13,14 +13,14 @@ function FieldWrapper({ label, error, hint, required, children }: FieldWrapperPr
   return (
     <div className="flex flex-col gap-1.5">
       {label && (
-        <label className="text-[13px] font-semibold text-white/60 uppercase tracking-wider">
+        <label className="text-[14px] font-semibold text-white/60 uppercase tracking-wider">
           {label}
           {required && <span className="text-red-400 ml-0.5">*</span>}
         </label>
       )}
       {children}
-      {error && <p className="text-[12px] text-red-400">{error}</p>}
-      {hint && !error && <p className="text-[12px] text-white/40">{hint}</p>}
+      {error && <p className="text-[13px] text-red-400">{error}</p>}
+      {hint && !error && <p className="text-[13px] text-white/40">{hint}</p>}
     </div>
   );
 }

@@ -200,13 +200,13 @@ export default function CreateInvoicePage() {
 
           {/* Client + dates card */}
           <div className="rounded-2xl p-6" style={cardStyle}>
-            <h2 className="text-[14px] font-semibold text-white/60 uppercase tracking-widest mb-5">
+            <h2 className="text-[15px] font-semibold text-white/60 uppercase tracking-widest mb-5">
               Invoice details
             </h2>
 
             {/* Client selector */}
             <div className="mb-5">
-              <label className="block text-[13px] font-semibold text-white/50 uppercase tracking-wider mb-2">
+              <label className="block text-[14px] font-semibold text-white/50 uppercase tracking-wider mb-2">
                 Bill to <span className="text-red-400 ml-0.5">*</span>
               </label>
               {loadingClients ? (
@@ -273,14 +273,14 @@ export default function CreateInvoicePage() {
 
           {/* Line items card */}
           <div className="rounded-2xl p-6" style={cardStyle}>
-            <h2 className="text-[14px] font-semibold text-white/60 uppercase tracking-widest mb-5">
+            <h2 className="text-[15px] font-semibold text-white/60 uppercase tracking-widest mb-5">
               Line items
             </h2>
 
             {/* Table header */}
             <div className="grid grid-cols-[1fr_80px_100px_80px_36px] gap-3 mb-3 px-1">
               {["Description", "Qty", "Rate", "Amount", ""].map((h) => (
-                <p key={h} className="text-[11px] font-semibold text-white/30 uppercase tracking-widest">
+                <p key={h} className="text-[12px] font-semibold text-white/30 uppercase tracking-widest">
                   {h}
                 </p>
               ))}
@@ -336,7 +336,7 @@ export default function CreateInvoicePage() {
 
                     {/* Computed amount */}
                     <div className="flex items-center py-2.5">
-                      <span className="font-mono text-[13px] font-medium text-white/60">
+                      <span className="font-mono text-[14px] font-medium text-white/60">
                         {amount > 0 ? formatCurrency(amount) : "—"}
                       </span>
                     </div>
@@ -365,7 +365,7 @@ export default function CreateInvoicePage() {
             <button
               type="button"
               onClick={addItem}
-              className="flex items-center gap-1.5 text-[13px] font-semibold text-brand-400
+              className="flex items-center gap-1.5 text-[14px] font-semibold text-brand-400
                          hover:text-brand-300 transition-colors"
             >
               <Plus size={14} />
@@ -388,7 +388,7 @@ export default function CreateInvoicePage() {
         {/* ── Sidebar: totals + actions ── */}
         <div className="space-y-4">
           <div className="rounded-2xl p-5 sticky top-6" style={cardStyle}>
-            <h2 className="text-[14px] font-semibold text-white/60 uppercase tracking-widest mb-5">
+            <h2 className="text-[15px] font-semibold text-white/60 uppercase tracking-widest mb-5">
               Summary
             </h2>
 
@@ -420,7 +420,7 @@ export default function CreateInvoicePage() {
               >
                 Save as draft
               </Button>
-              <p className="text-[11px] text-center text-white/25">
+              <p className="text-[13px] text-center text-white/25">
                 You can send it to the client from the invoice page.
               </p>
             </div>

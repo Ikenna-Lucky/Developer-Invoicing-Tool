@@ -241,10 +241,10 @@ export default function ClientsPage() {
             <table className="w-full">
               <thead>
                 <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
-                  <th className="text-left px-6 py-4 text-[11px] font-semibold text-white/30 uppercase tracking-widest">Client</th>
-                  <th className="text-left px-6 py-4 text-[11px] font-semibold text-white/30 uppercase tracking-widest">Email</th>
-                  <th className="text-left px-6 py-4 text-[11px] font-semibold text-white/30 uppercase tracking-widest">Phone</th>
-                  <th className="text-left px-6 py-4 text-[11px] font-semibold text-white/30 uppercase tracking-widest">Added</th>
+                  <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">Client</th>
+                  <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">Email</th>
+                  <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">Phone</th>
+                  <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">Added</th>
                   <th className="px-6 py-4" />
                 </tr>
               </thead>
@@ -266,8 +266,8 @@ export default function ClientsPage() {
                         <div>
                           <p className="text-[15px] font-semibold text-white leading-tight">{client.name}</p>
                           {client.companyName && (
-                            <p className="text-[13px] text-white/40 flex items-center gap-1 mt-0.5">
-                              <Building2 size={11} /> {client.companyName}
+                            <p className="text-[13px] text-white/40 flex items-center gap-1.5 mt-0.5">
+                              <Building2 size={12} /> {client.companyName}
                             </p>
                           )}
                         </div>
@@ -326,7 +326,7 @@ export default function ClientsPage() {
             className="px-6 py-4"
             style={{ borderTop: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.01)" }}
           >
-            <p className="text-[13px] text-white/30">
+            <p className="text-[14px] text-white/30">
               {clients.length} {clients.length === 1 ? "client" : "clients"}
             </p>
           </div>
@@ -417,11 +417,11 @@ export default function ClientsPage() {
             <Trash2 size={18} className="text-red-400" />
           </div>
           <div>
-            <p className="text-[14px] text-white/80">
+            <p className="text-[15px] text-white/80">
               Are you sure you want to delete{" "}
               <span className="font-semibold text-white">{selectedClient?.name}</span>?
             </p>
-            <p className="text-[13px] text-white/40 mt-1.5 leading-relaxed">
+            <p className="text-[14px] text-white/40 mt-1.5 leading-relaxed">
               This will also delete all invoices associated with this client. This action cannot be undone.
             </p>
           </div>

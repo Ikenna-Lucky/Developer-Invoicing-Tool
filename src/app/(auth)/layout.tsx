@@ -91,7 +91,7 @@ export default function AuthLayout({
       </div>
 
       {/* ── Right panel ── */}
-      <div className="w-full lg:w-[46%] flex flex-col items-center justify-center bg-white px-8 py-12 min-h-screen relative">
+      <div className="w-full lg:w-[46%] flex flex-col items-center justify-center bg-[#0d1117] px-8 py-12 min-h-screen relative" style={{ borderLeft: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-brand-600 lg:hidden" />
 
         <div className="flex justify-center mb-10 lg:hidden">

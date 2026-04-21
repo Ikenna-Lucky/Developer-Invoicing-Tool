@@ -143,7 +143,7 @@ export default function InvoicesPage() {
               <button
                 key={f.value}
                 onClick={() => setStatusFilter(f.value)}
-                className="px-3 py-1.5 rounded-lg text-[12px] font-semibold transition-all duration-150"
+                className="px-3 py-1.5 rounded-lg text-[13px] font-semibold transition-all duration-150"
                 style={
                   statusFilter === f.value
                     ? { background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.9)" }
@@ -153,7 +153,7 @@ export default function InvoicesPage() {
                 {f.label}
                 {f.value !== "all" && counts[f.value] != null && (
                   <span
-                    className="ml-1.5 text-[10px] px-1.5 py-0.5 rounded-full"
+                    className="ml-1.5 text-[11px] px-1.5 py-0.5 rounded-full"
                     style={{ background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.5)" }}
                   >
                     {counts[f.value]}
@@ -206,7 +206,7 @@ export default function InvoicesPage() {
               <thead>
                 <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
                   {["Invoice", "Client", "Amount", "Status", "Due date", "Created", ""].map((h) => (
-                    <th key={h} className="text-left px-6 py-4 text-[11px] font-semibold text-white/30 uppercase tracking-widest">
+                    <th key={h} className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">
                       {h}
                     </th>
                   ))}
@@ -227,7 +227,7 @@ export default function InvoicesPage() {
                       onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                     >
                       <td className="px-6 py-5">
-                        <span className="font-mono font-semibold text-white/70 text-[13px] tracking-wide">
+                        <span className="font-mono font-semibold text-white/70 text-[14px] tracking-wide">
                           {inv.invoiceNumber}
                         </span>
                       </td>
@@ -284,7 +284,7 @@ export default function InvoicesPage() {
             className="px-6 py-4"
             style={{ borderTop: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.01)" }}
           >
-            <p className="text-[13px] text-white/30">
+            <p className="text-[14px] text-white/30">
               {invoices.length} {invoices.length === 1 ? "invoice" : "invoices"}
             </p>
           </div>
@@ -312,10 +312,10 @@ export default function InvoicesPage() {
             <Trash2 size={18} className="text-red-400" />
           </div>
           <div>
-            <p className="text-[14px] text-white/80">
+            <p className="text-[15px] text-white/80">
               Delete <span className="font-semibold font-mono text-white">{deleteTarget?.invoiceNumber}</span>?
             </p>
-            <p className="text-[13px] text-white/40 mt-1.5 leading-relaxed">
+            <p className="text-[14px] text-white/40 mt-1.5 leading-relaxed">
               All line items will be removed. This cannot be undone.
             </p>
           </div>

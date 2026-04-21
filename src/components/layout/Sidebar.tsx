@@ -47,7 +47,7 @@ export function Sidebar() {
       <div className="mx-4 h-px bg-white/[0.07]" />
 
       {/* Nav label */}
-      <p className="px-6 pt-5 pb-2 text-[10px] font-semibold text-white/25 uppercase tracking-[0.12em]">
+      <p className="px-6 pt-5 pb-2 text-[12px] font-semibold text-white/25 uppercase tracking-[0.12em]">
         Menu
       </p>
 
@@ -61,14 +61,14 @@ export function Sidebar() {
               key={href}
               href={href}
               className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13.5px] font-medium transition-all duration-150",
+                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-medium transition-all duration-150",
                 isActive
                   ? "bg-white/[0.1] text-white"
                   : "text-white/50 hover:text-white/80 hover:bg-white/[0.05]"
               )}
             >
               <Icon
-                size={17}
+                size={18}
                 className={cn(
                   "shrink-0",
                   isActive ? "text-white" : "text-white/40"
@@ -96,10 +96,10 @@ export function Sidebar() {
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-medium text-white/90 truncate leading-tight">
+            <p className="text-[14px] font-medium text-white/90 truncate leading-tight">
               {user?.fullName}
             </p>
-            <p className="text-[11px] text-white/35 truncate leading-tight mt-0.5">
+            <p className="text-[12px] text-white/35 truncate leading-tight mt-0.5">
               {user?.email}
             </p>
           </div>
