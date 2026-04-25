@@ -14,17 +14,17 @@ import type { Client, ApiResponse, Invoice } from "@/types";
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
 interface LineItem {
-  id:          string;
+  id: string;
   description: string;
-  quantity:    string;
-  rate:        string;
+  quantity: string;
+  rate: string;
 }
 
 const emptyItem = (): LineItem => ({
-  id:          crypto.randomUUID(),
+  id: crypto.randomUUID(),
   description: "",
-  quantity:    "1",
-  rate:        "",
+  quantity: "1",
+  rate: "",
 });
 
 // ─── Shared dark input class ────────────────────────────────────────────────────
@@ -47,21 +47,23 @@ const darkInputErrorStyle = {
 
 export default function CreateInvoicePage() {
   const router = useRouter();
-  const toast  = useToast();
+  const toast = useToast();
 
   // ── Form state ──────────────────────────────────────────────────────────────
-  const [clients,        setClients]        = useState<Client[]>([]);
-  const [clientId,       setClientId]       = useState("");
-  const [issueDate,      setIssueDate]      = useState(() => new Date().toISOString().split("T")[0]);
-  const [dueDate,        setDueDate]        = useState(() => {
+  const [clients, setClients] = useState<Client[]>([]);
+  const [clientId, setClientId] = useState("");
+  const [issueDate, setIssueDate] = useState(
+    () => new Date().toISOString().split("T")[0],
+  );
+  const [dueDate, setDueDate] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() + 14);
     return d.toISOString().split("T")[0];
   });
-  const [notes,          setNotes]          = useState("");
-  const [items,          setItems]          = useState<LineItem[]>([emptyItem()]);
-  const [errors,         setErrors]         = useState<Record<string, string>>({});
-  const [submitting,     setSubmitting]     = useState(false);
+  const [notes, setNotes] = useState("");
+  const [items, setItems] = useState<LineItem[]>([emptyItem()]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
   const [loadingClients, setLoadingClients] = useState(true);
 
   // ── Load clients on mount ────────────────────────────────────────────────────
@@ -69,7 +71,9 @@ export default function CreateInvoicePage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch(`${API_BASE}/clients`, { credentials: "include" });
+        const res = await fetch(`${API_BASE}/clients`, {
+          credentials: "include",
+        });
         if (!res.ok) throw new Error();
         const { data } = await res.json();
         setClients(data);
@@ -92,17 +96,21 @@ export default function CreateInvoicePage() {
     setItems((prev) => prev.filter((i) => i.id !== id));
   };
 
-  const updateItem = (id: string, field: keyof Omit<LineItem, "id">, value: string) => {
+  const updateItem = (
+    id: string,
+    field: keyof Omit<LineItem, "id">,
+    value: string,
+  ) => {
     setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item)),
     );
   };
 
   // ── Live totals ──────────────────────────────────────────────────────────────
 
   const subtotal = items.reduce((sum, item) => {
-    const qty  = parseFloat(item.quantity) || 0;
-    const rate = parseFloat(item.rate)     || 0;
+    const qty = parseFloat(item.quantity) || 0;
+    const rate = parseFloat(item.rate) || 0;
     return sum + qty * rate;
   }, 0);
 
@@ -111,15 +119,18 @@ export default function CreateInvoicePage() {
   const validate = (): boolean => {
     const errs: Record<string, string> = {};
 
-    if (!clientId)   errs.clientId  = "Please select a client";
-    if (!issueDate)  errs.issueDate = "Issue date is required";
-    if (!dueDate)    errs.dueDate   = "Due date is required";
+    if (!clientId) errs.clientId = "Please select a client";
+    if (!issueDate) errs.issueDate = "Issue date is required";
+    if (!dueDate) errs.dueDate = "Due date is required";
     if (dueDate < issueDate) errs.dueDate = "Due date must be after issue date";
 
     items.forEach((item, i) => {
-      if (!item.description.trim()) errs[`item_${i}_desc`] = "Description required";
-      if (!item.quantity || parseFloat(item.quantity) <= 0) errs[`item_${i}_qty`] = "Invalid";
-      if (!item.rate     || parseFloat(item.rate)     <= 0) errs[`item_${i}_rate`] = "Invalid";
+      if (!item.description.trim())
+        errs[`item_${i}_desc`] = "Description required";
+      if (!item.quantity || parseFloat(item.quantity) <= 0)
+        errs[`item_${i}_qty`] = "Invalid";
+      if (!item.rate || parseFloat(item.rate) <= 0)
+        errs[`item_${i}_rate`] = "Invalid";
     });
 
     setErrors(errs);
@@ -136,18 +147,18 @@ export default function CreateInvoicePage() {
       const payload = {
         clientId,
         issueDate: new Date(issueDate).toISOString(),
-        dueDate:   new Date(dueDate).toISOString(),
-        notes:     notes.trim() || undefined,
+        dueDate: new Date(dueDate).toISOString(),
+        notes: notes.trim() || undefined,
         items: items.map((item) => ({
           description: item.description.trim(),
-          quantity:    parseFloat(item.quantity),
-          rate:        parseFloat(item.rate),
+          quantity: parseFloat(item.quantity),
+          rate: parseFloat(item.rate),
         })),
       };
 
       const res = await apiRequest<ApiResponse<Invoice>>("/invoices", {
         method: "POST",
-        body:   payload,
+        body: payload,
       });
 
       toast.success(`${res.data.invoiceNumber} created successfully`);
@@ -175,29 +186,37 @@ export default function CreateInvoicePage() {
         <Link
           href="/invoices"
           className="w-9 h-9 rounded-xl flex items-center justify-center transition-colors"
-          style={{ border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.4)" }}
+          style={{
+            border: "1px solid rgba(255,255,255,0.1)",
+            color: "rgba(255,255,255,0.4)",
+          }}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.07)";
-            (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.8)";
+            (e.currentTarget as HTMLElement).style.background =
+              "rgba(255,255,255,0.07)";
+            (e.currentTarget as HTMLElement).style.color =
+              "rgba(255,255,255,0.8)";
           }}
           onMouseLeave={(e) => {
             (e.currentTarget as HTMLElement).style.background = "transparent";
-            (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)";
+            (e.currentTarget as HTMLElement).style.color =
+              "rgba(255,255,255,0.4)";
           }}
         >
           <ArrowLeft size={16} />
         </Link>
         <div>
-          <h1 className="text-[28px] font-bold text-white tracking-tight">New invoice</h1>
-          <p className="text-[15px] text-white/40 mt-1">Fill in the details below</p>
+          <h1 className="text-[22px] sm:text-[28px] font-bold text-white tracking-tight">
+            New invoice
+          </h1>
+          <p className="text-[15px] text-white/40 mt-1">
+            Fill in the details below
+          </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6">
-
         {/* ── Main form column ── */}
         <div className="space-y-5">
-
           {/* Client + dates card */}
           <div className="rounded-2xl p-6" style={cardStyle}>
             <h2 className="text-[15px] font-semibold text-white/60 uppercase tracking-widest mb-5">
@@ -224,7 +243,9 @@ export default function CreateInvoicePage() {
                   }}
                 >
                   No clients yet.{" "}
-                  <Link href="/clients" className="font-semibold underline">Add one first →</Link>
+                  <Link href="/clients" className="font-semibold underline">
+                    Add one first →
+                  </Link>
                 </div>
               ) : (
                 <div className="relative">
@@ -237,16 +258,26 @@ export default function CreateInvoicePage() {
                     style={darkInputStyle}
                   >
                     {clients.map((c) => (
-                      <option key={c.id} value={c.id} style={{ background: "#1c2333", color: "white" }}>
-                        {c.name}{c.companyName ? ` — ${c.companyName}` : ""}
+                      <option
+                        key={c.id}
+                        value={c.id}
+                        style={{ background: "#1c2333", color: "white" }}
+                      >
+                        {c.name}
+                        {c.companyName ? ` — ${c.companyName}` : ""}
                       </option>
                     ))}
                   </select>
-                  <ChevronDown size={15} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none" />
+                  <ChevronDown
+                    size={15}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 pointer-events-none"
+                  />
                 </div>
               )}
               {errors.clientId && (
-                <p className="text-[12px] text-red-400 mt-1.5">{errors.clientId}</p>
+                <p className="text-[12px] text-red-400 mt-1.5">
+                  {errors.clientId}
+                </p>
               )}
             </div>
 
@@ -277,89 +308,131 @@ export default function CreateInvoicePage() {
               Line items
             </h2>
 
-            {/* Table header */}
-            <div className="grid grid-cols-[1fr_80px_100px_80px_36px] gap-3 mb-3 px-1">
-              {["Description", "Qty", "Rate", "Amount", ""].map((h) => (
-                <p key={h} className="text-[12px] font-semibold text-white/30 uppercase tracking-widest">
-                  {h}
-                </p>
-              ))}
-            </div>
+            {/* Line items — scrollable on narrow screens */}
+            <div className="overflow-x-auto -mx-2">
+              <div style={{ minWidth: "480px" }} className="px-2">
+                {/* Table header */}
+                <div className="grid grid-cols-[1fr_80px_100px_80px_36px] gap-3 mb-3 px-1">
+                  {["Description", "Qty", "Rate", "Amount", ""].map((h) => (
+                    <p
+                      key={h}
+                      className="text-[12px] font-semibold text-white/30 uppercase tracking-widest"
+                    >
+                      {h}
+                    </p>
+                  ))}
+                </div>
 
-            {/* Rows */}
-            <div className="space-y-2.5">
-              {items.map((item, i) => {
-                const amount = (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
+                {/* Rows */}
+                <div className="space-y-2.5">
+                  {items.map((item, i) => {
+                    const amount =
+                      (parseFloat(item.quantity) || 0) *
+                      (parseFloat(item.rate) || 0);
 
-                return (
-                  <div key={item.id} className="grid grid-cols-[1fr_80px_100px_80px_36px] gap-3 items-start">
-                    {/* Description */}
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="e.g. Frontend development"
-                        value={item.description}
-                        onChange={(e) => updateItem(item.id, "description", e.target.value)}
-                        className={darkInput}
-                        style={errors[`item_${i}_desc`] ? darkInputErrorStyle : darkInputStyle}
-                      />
-                    </div>
-
-                    {/* Quantity */}
-                    <div>
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.5"
-                        placeholder="1"
-                        value={item.quantity}
-                        onChange={(e) => updateItem(item.id, "quantity", e.target.value)}
-                        className={darkInput}
-                        style={errors[`item_${i}_qty`] ? darkInputErrorStyle : darkInputStyle}
-                      />
-                    </div>
-
-                    {/* Rate */}
-                    <div className="relative">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-[14px]">$</span>
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        placeholder="0.00"
-                        value={item.rate}
-                        onChange={(e) => updateItem(item.id, "rate", e.target.value)}
-                        className={`${darkInput} pl-6`}
-                        style={errors[`item_${i}_rate`] ? darkInputErrorStyle : darkInputStyle}
-                      />
-                    </div>
-
-                    {/* Computed amount */}
-                    <div className="flex items-center py-2.5">
-                      <span className="font-mono text-[14px] font-medium text-white/60">
-                        {amount > 0 ? formatCurrency(amount) : "—"}
-                      </span>
-                    </div>
-
-                    {/* Remove row */}
-                    <div className="flex items-center">
-                      <button
-                        type="button"
-                        onClick={() => removeItem(item.id)}
-                        disabled={items.length === 1}
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-white/20
-                                   hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                    return (
+                      <div
+                        key={item.id}
+                        className="grid grid-cols-[1fr_80px_100px_80px_36px] gap-3 items-start"
                       >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+                        {/* Description */}
+                        <div>
+                          <input
+                            type="text"
+                            placeholder="e.g. Frontend development"
+                            value={item.description}
+                            onChange={(e) =>
+                              updateItem(item.id, "description", e.target.value)
+                            }
+                            className={darkInput}
+                            style={
+                              errors[`item_${i}_desc`]
+                                ? darkInputErrorStyle
+                                : darkInputStyle
+                            }
+                          />
+                        </div>
+
+                        {/* Quantity */}
+                        <div>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.5"
+                            placeholder="1"
+                            value={item.quantity}
+                            onChange={(e) =>
+                              updateItem(item.id, "quantity", e.target.value)
+                            }
+                            className={darkInput}
+                            style={
+                              errors[`item_${i}_qty`]
+                                ? darkInputErrorStyle
+                                : darkInputStyle
+                            }
+                          />
+                        </div>
+
+                        {/* Rate */}
+                        <div className="relative">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-[14px]">
+                            ₦
+                          </span>
+                          <input
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            value={item.rate}
+                            onChange={(e) =>
+                              updateItem(item.id, "rate", e.target.value)
+                            }
+                            className={`${darkInput} pl-6`}
+                            style={
+                              errors[`item_${i}_rate`]
+                                ? darkInputErrorStyle
+                                : darkInputStyle
+                            }
+                          />
+                        </div>
+
+                        {/* Computed amount */}
+                        <div className="flex items-center py-2.5">
+                          <span className="font-mono text-[14px] font-medium text-white/60">
+                            {amount > 0 ? formatCurrency(amount) : "—"}
+                          </span>
+                        </div>
+
+                        {/* Remove row */}
+                        <div className="flex items-center">
+                          <button
+                            type="button"
+                            onClick={() => removeItem(item.id)}
+                            disabled={items.length === 1}
+                            title={
+                              items.length === 1
+                                ? "At least one line item is required"
+                                : "Remove row"
+                            }
+                            className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors
+                                       text-white/25 hover:text-red-400 hover:bg-red-500/10
+                                       disabled:opacity-15 disabled:cursor-not-allowed disabled:pointer-events-none"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
 
             {/* Divider */}
-            <div className="mt-5 mb-4" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }} />
+            <div
+              className="mt-5 mb-4"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
+            />
 
             {/* Add row */}
             <button
@@ -387,7 +460,10 @@ export default function CreateInvoicePage() {
 
         {/* ── Sidebar: totals + actions ── */}
         <div className="space-y-4">
-          <div className="rounded-2xl p-5 sticky top-6" style={cardStyle}>
+          <div
+            className="rounded-2xl p-5 sm:sticky sm:top-[88px]"
+            style={cardStyle}
+          >
             <h2 className="text-[15px] font-semibold text-white/60 uppercase tracking-widest mb-5">
               Summary
             </h2>
@@ -395,11 +471,13 @@ export default function CreateInvoicePage() {
             <div className="space-y-3 text-[14px]">
               <div className="flex justify-between text-white/50">
                 <span>Subtotal</span>
-                <span className="font-mono text-white/70">{formatCurrency(subtotal)}</span>
+                <span className="font-mono text-white/70">
+                  {formatCurrency(subtotal)}
+                </span>
               </div>
               <div className="flex justify-between text-white/50">
                 <span>Tax</span>
-                <span className="font-mono text-white/25">$0.00</span>
+                <span className="font-mono text-white/25">₦0.00</span>
               </div>
               <div
                 className="flex justify-between font-bold text-white pt-3 text-[15px]"

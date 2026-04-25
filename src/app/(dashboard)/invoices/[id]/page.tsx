@@ -371,11 +371,11 @@ export default function InvoiceDetailPage() {
   return (
     <>
       {/* Page header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
+        <div className="flex items-center gap-3 sm:gap-4">
           <Link
             href="/invoices"
-            className="w-9 h-9 rounded-xl flex items-center justify-center transition-colors"
+            className="w-9 h-9 rounded-xl flex items-center justify-center transition-colors shrink-0"
             style={{
               border: "1px solid rgba(255,255,255,0.1)",
               color: "rgba(255,255,255,0.4)",
@@ -395,8 +395,8 @@ export default function InvoiceDetailPage() {
             <ArrowLeft size={16} />
           </Link>
           <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-[28px] font-bold text-white font-mono tracking-tight">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <h1 className="text-[20px] sm:text-[28px] font-bold text-white font-mono tracking-tight">
                 {invoice.invoiceNumber}
               </h1>
               <span
@@ -414,7 +414,7 @@ export default function InvoiceDetailPage() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Download PDF */}
           <button
             onClick={handleDownloadPDF}
@@ -519,10 +519,10 @@ export default function InvoiceDetailPage() {
 
           {/* Invoice header */}
           <div
-            className="p-8"
+            className="p-5 sm:p-8"
             style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
           >
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-6">
                   <FileText size={18} className="text-brand-500" />
@@ -562,7 +562,7 @@ export default function InvoiceDetailPage() {
 
           {/* Bill To */}
           <div
-            className="px-8 py-6 grid grid-cols-2 gap-8"
+            className="px-5 sm:px-8 py-6 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-8"
             style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
           >
             <div>
@@ -587,52 +587,56 @@ export default function InvoiceDetailPage() {
           </div>
 
           {/* Line items */}
-          <div className="px-8 py-6">
-            {/* Table header */}
-            <div
-              className="grid grid-cols-[1fr_80px_110px_110px] gap-4 pb-3 mb-1"
-              style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
-            >
-              {["Item", "Qty", "Rate", "Amount"].map((h) => (
-                <p
-                  key={h}
-                  className="text-[12px] font-semibold text-white/30 uppercase tracking-widest text-right first:text-left"
+          <div className="px-5 sm:px-8 py-6">
+            <div className="overflow-x-auto">
+              <div style={{ minWidth: "400px" }}>
+                {/* Table header */}
+                <div
+                  className="grid grid-cols-[1fr_70px_100px_100px] gap-3 sm:gap-4 pb-3 mb-1"
+                  style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
                 >
-                  {h}
-                </p>
-              ))}
-            </div>
+                  {["Item", "Qty", "Rate", "Amount"].map((h) => (
+                    <p
+                      key={h}
+                      className="text-[12px] font-semibold text-white/30 uppercase tracking-widest text-right first:text-left"
+                    >
+                      {h}
+                    </p>
+                  ))}
+                </div>
 
-            {invoice.items.map((item, idx) => (
-              <div
-                key={item.id}
-                className="grid grid-cols-[1fr_80px_110px_110px] gap-4 py-4"
-                style={{
-                  borderBottom:
-                    idx < invoice.items.length - 1
-                      ? "1px solid rgba(255,255,255,0.04)"
-                      : "none",
-                }}
-              >
-                <p className="text-[15px] font-medium text-white/80">
-                  {item.description}
-                </p>
-                <p className="text-[14px] font-mono text-white/45 text-right">
-                  {Number(item.quantity)}
-                </p>
-                <p className="text-[14px] font-mono text-white/45 text-right">
-                  {formatCurrency(Number(item.rate))}
-                </p>
-                <p className="text-[14px] font-mono font-semibold text-white/80 text-right">
-                  {formatCurrency(Number(item.amount))}
-                </p>
+                {invoice.items.map((item, idx) => (
+                  <div
+                    key={item.id}
+                    className="grid grid-cols-[1fr_70px_100px_100px] gap-3 sm:gap-4 py-4"
+                    style={{
+                      borderBottom:
+                        idx < invoice.items.length - 1
+                          ? "1px solid rgba(255,255,255,0.04)"
+                          : "none",
+                    }}
+                  >
+                    <p className="text-[14px] sm:text-[15px] font-medium text-white/80">
+                      {item.description}
+                    </p>
+                    <p className="text-[13px] sm:text-[14px] font-mono text-white/45 text-right">
+                      {Number(item.quantity)}
+                    </p>
+                    <p className="text-[13px] sm:text-[14px] font-mono text-white/45 text-right">
+                      {formatCurrency(Number(item.rate))}
+                    </p>
+                    <p className="text-[13px] sm:text-[14px] font-mono font-semibold text-white/80 text-right">
+                      {formatCurrency(Number(item.amount))}
+                    </p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
 
           {/* Totals */}
           <div
-            className="px-8 pb-8 space-y-3"
+            className="px-5 sm:px-8 pb-6 sm:pb-8 space-y-3"
             style={{
               borderTop: "1px solid rgba(255,255,255,0.06)",
               paddingTop: "1.5rem",
@@ -660,7 +664,7 @@ export default function InvoiceDetailPage() {
           {/* Notes */}
           {invoice.notes && (
             <div
-              className="px-8 pb-8"
+              className="px-5 sm:px-8 pb-6 sm:pb-8"
               style={{
                 borderTop: "1px solid rgba(255,255,255,0.06)",
                 paddingTop: "1.5rem",
@@ -894,7 +898,6 @@ export default function InvoiceDetailPage() {
         }
       >
         <div className="space-y-5">
-          {/* Summary row */}
           <div
             className="rounded-xl p-4 flex items-center gap-4"
             style={{
@@ -930,7 +933,6 @@ export default function InvoiceDetailPage() {
               </p>
             </div>
           </div>
-
           <p className="text-[14px] text-white/55 leading-relaxed">
             This will email the invoice to{" "}
             <span className="text-white/80 font-medium">
@@ -938,7 +940,6 @@ export default function InvoiceDetailPage() {
             </span>{" "}
             with a Paystack payment link so they can pay directly.
           </p>
-
           <div
             className="rounded-xl px-4 py-3 flex items-start gap-2.5"
             style={{

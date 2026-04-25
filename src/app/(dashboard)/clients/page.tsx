@@ -2,7 +2,16 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Search, Pencil, Trash2, Users, Mail, Phone, Building2 } from "lucide-react";
+import {
+  Plus,
+  Search,
+  Pencil,
+  Trash2,
+  Users,
+  Mail,
+  Phone,
+  Building2,
+} from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
@@ -16,38 +25,42 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 // ─── Form data shape ──────────────────────────────────────────────────────────
 interface ClientFormData {
-  name:        string;
-  email:       string;
+  name: string;
+  email: string;
   companyName: string;
-  phone:       string;
-  address:     string;
+  phone: string;
+  address: string;
 }
 
 const emptyForm: ClientFormData = {
-  name: "", email: "", companyName: "", phone: "", address: "",
+  name: "",
+  email: "",
+  companyName: "",
+  phone: "",
+  address: "",
 };
 
 // ─── Main Page Component ──────────────────────────────────────────────────────
 
 export default function ClientsPage() {
-  const toast  = useToast();
+  const toast = useToast();
   const router = useRouter();
 
   // ── Data state ──
-  const [clients,     setClients]     = useState<Client[]>([]);
-  const [loading,     setLoading]     = useState(true);
+  const [clients, setClients] = useState<Client[]>([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
   // ── Modal state ──
-  const [showFormModal,   setShowFormModal]   = useState(false);
+  const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [selectedClient,  setSelectedClient]  = useState<Client | null>(null);
-  const [isEditing,       setIsEditing]       = useState(false);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   // ── Form state ──
-  const [formData,    setFormData]    = useState<ClientFormData>(emptyForm);
-  const [formErrors,  setFormErrors]  = useState<Partial<ClientFormData>>({});
-  const [submitting,  setSubmitting]  = useState(false);
+  const [formData, setFormData] = useState<ClientFormData>(emptyForm);
+  const [formErrors, setFormErrors] = useState<Partial<ClientFormData>>({});
+  const [submitting, setSubmitting] = useState(false);
 
   // ── Fetch clients ─────────────────────────────────────────────────────────
   const fetchClients = useCallback(async (search?: string) => {
@@ -67,7 +80,9 @@ export default function ClientsPage() {
     }
   }, []);
 
-  useEffect(() => { fetchClients(); }, [fetchClients]);
+  useEffect(() => {
+    fetchClients();
+  }, [fetchClients]);
 
   // Debounce search
   useEffect(() => {
@@ -89,11 +104,11 @@ export default function ClientsPage() {
     setIsEditing(true);
     setSelectedClient(client);
     setFormData({
-      name:        client.name,
-      email:       client.email,
+      name: client.name,
+      email: client.email,
       companyName: client.companyName ?? "",
-      phone:       client.phone       ?? "",
-      address:     client.address     ?? "",
+      phone: client.phone ?? "",
+      address: client.address ?? "",
     });
     setFormErrors({});
     setShowFormModal(true);
@@ -108,9 +123,10 @@ export default function ClientsPage() {
 
   const validate = (): boolean => {
     const errors: Partial<ClientFormData> = {};
-    if (!formData.name.trim())              errors.name  = "Name is required";
-    if (!formData.email.trim())             errors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) errors.email = "Invalid email address";
+    if (!formData.name.trim()) errors.name = "Name is required";
+    if (!formData.email.trim()) errors.email = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      errors.email = "Invalid email address";
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -122,21 +138,25 @@ export default function ClientsPage() {
     setSubmitting(true);
 
     try {
-      const url    = isEditing ? `${API_URL}/clients/${selectedClient!.id}` : `${API_URL}/clients`;
+      const url = isEditing
+        ? `${API_URL}/clients/${selectedClient!.id}`
+        : `${API_URL}/clients`;
       const method = isEditing ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method,
         credentials: "include",
-        headers:     { "Content-Type": "application/json" },
-        body:        JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Something went wrong");
 
       if (isEditing) {
-        setClients((prev) => prev.map((c) => c.id === json.data.id ? json.data : c));
+        setClients((prev) =>
+          prev.map((c) => (c.id === json.data.id ? json.data : c)),
+        );
         toast.success("Client updated successfully");
       } else {
         setClients((prev) => [json.data, ...prev]);
@@ -159,7 +179,7 @@ export default function ClientsPage() {
 
     try {
       const res = await fetch(`${API_URL}/clients/${selectedClient.id}`, {
-        method:      "DELETE",
+        method: "DELETE",
         credentials: "include",
       });
 
@@ -183,10 +203,12 @@ export default function ClientsPage() {
   return (
     <>
       {/* ── Page Header ── */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-[28px] font-bold text-white tracking-tight">Clients</h1>
-          <p className="text-[15px] text-white/40 mt-1">
+          <h1 className="text-[22px] sm:text-[28px] font-bold text-white tracking-tight">
+            Clients
+          </h1>
+          <p className="text-[14px] sm:text-[15px] text-white/40 mt-0.5 sm:mt-1">
             Manage your clients and their information
           </p>
         </div>
@@ -199,7 +221,10 @@ export default function ClientsPage() {
       {/* ── Content Card ── */}
       <div
         className="rounded-2xl overflow-hidden"
-        style={{ background: "#161b27", border: "1px solid rgba(255,255,255,0.07)" }}
+        style={{
+          background: "#161b27",
+          border: "1px solid rgba(255,255,255,0.07)",
+        }}
       >
         {/* ── Search bar ── */}
         <div
@@ -207,7 +232,10 @@ export default function ClientsPage() {
           style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
         >
           <div className="relative max-w-sm">
-            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30" />
+            <Search
+              size={15}
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30"
+            />
             <input
               type="text"
               placeholder="Search clients..."
@@ -236,98 +264,204 @@ export default function ClientsPage() {
                 ? `No clients match "${searchQuery}". Try a different search.`
                 : "Add your first client to start creating invoices."
             }
-            action={!searchQuery ? { label: "Add your first client", onClick: openAddModal } : undefined}
+            action={
+              !searchQuery
+                ? { label: "Add your first client", onClick: openAddModal }
+                : undefined
+            }
           />
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)" }}>
-                  <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">Client</th>
-                  <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">Email</th>
-                  <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">Phone</th>
-                  <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">Added</th>
-                  <th className="px-6 py-4" />
-                </tr>
-              </thead>
-              <tbody>
-                {clients.map((client) => (
-                  <tr
-                    key={client.id}
-                    onClick={() => router.push(`/clients/${client.id}`)}
-                    className="group transition-colors cursor-pointer"
-                    style={{ borderBottom: "1px solid rgba(255,255,255,0.04)" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.03)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+          <>
+            {/* ── Mobile card list (hidden on sm+) ── */}
+            <div
+              className="sm:hidden divide-y"
+              style={{ borderColor: "rgba(255,255,255,0.04)" }}
+            >
+              {clients.map((client) => (
+                <div
+                  key={client.id}
+                  onClick={() => router.push(`/clients/${client.id}`)}
+                  className="flex items-center gap-3 px-4 py-4 cursor-pointer transition-colors"
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.background =
+                      "rgba(255,255,255,0.025)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.background = "transparent")
+                  }
+                >
+                  {/* Avatar */}
+                  <div className="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center text-[13px] font-bold text-white shrink-0">
+                    {client.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()
+                      .slice(0, 2)}
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-semibold text-white truncate leading-tight">
+                      {client.name}
+                    </p>
+                    {client.companyName && (
+                      <p className="text-[12px] text-white/40 flex items-center gap-1 mt-0.5 truncate">
+                        <Building2 size={11} className="shrink-0" />{" "}
+                        {client.companyName}
+                      </p>
+                    )}
+                    <p className="text-[12px] text-white/35 mt-0.5 truncate">
+                      {client.email}
+                    </p>
+                  </div>
+
+                  {/* Actions */}
+                  <div
+                    className="flex items-center gap-1 shrink-0"
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    {/* Name + company */}
-                    <td className="px-6 py-5">
-                      <div className="flex items-center gap-3.5">
-                        <div className="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center text-[13px] font-bold text-white shrink-0">
-                          {client.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
-                        </div>
-                        <div>
-                          <p className="text-[15px] font-semibold text-white leading-tight">{client.name}</p>
-                          {client.companyName && (
-                            <p className="text-[13px] text-white/40 flex items-center gap-1.5 mt-0.5">
-                              <Building2 size={12} /> {client.companyName}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </td>
+                    <button
+                      onClick={() => openEditModal(client)}
+                      className="p-2 rounded-lg text-white/25 hover:text-brand-400 hover:bg-white/[0.06] transition-colors"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
+                      onClick={() => openDeleteModal(client)}
+                      className="p-2 rounded-lg text-white/25 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-                    {/* Email */}
-                    <td className="px-6 py-5" onClick={(e) => e.stopPropagation()}>
-                      <a href={`mailto:${client.email}`}
-                        className="text-[14px] text-white/60 hover:text-brand-400 flex items-center gap-2 transition-colors">
-                        <Mail size={14} />
-                        {client.email}
-                      </a>
-                    </td>
-
-                    {/* Phone */}
-                    <td className="px-6 py-5 text-[14px] text-white/50">
-                      {client.phone ? (
-                        <span className="flex items-center gap-2">
-                          <Phone size={14} />
-                          {client.phone}
-                        </span>
-                      ) : (
-                        <span className="text-white/20">—</span>
-                      )}
-                    </td>
-
-                    {/* Date added */}
-                    <td className="px-6 py-5 text-[14px] text-white/35">
-                      {formatDate(client.createdAt)}
-                    </td>
-
-                    {/* Actions */}
-                    <td className="px-6 py-5" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => openEditModal(client)}
-                          className="p-2 rounded-lg text-white/30 hover:text-brand-400 hover:bg-white/[0.06] transition-colors">
-                          <Pencil size={15} />
-                        </button>
-                        <button onClick={() => openDeleteModal(client)}
-                          className="p-2 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-colors">
-                          <Trash2 size={15} />
-                        </button>
-                      </div>
-                    </td>
+            {/* ── Desktop table (hidden below sm) ── */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr
+                    style={{
+                      borderBottom: "1px solid rgba(255,255,255,0.06)",
+                      background: "rgba(255,255,255,0.02)",
+                    }}
+                  >
+                    <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">
+                      Client
+                    </th>
+                    <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">
+                      Email
+                    </th>
+                    <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">
+                      Phone
+                    </th>
+                    <th className="text-left px-6 py-4 text-[12px] font-semibold text-white/30 uppercase tracking-widest">
+                      Added
+                    </th>
+                    <th className="px-6 py-4" />
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {clients.map((client) => (
+                    <tr
+                      key={client.id}
+                      onClick={() => router.push(`/clients/${client.id}`)}
+                      className="group transition-colors cursor-pointer"
+                      style={{
+                        borderBottom: "1px solid rgba(255,255,255,0.04)",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255,255,255,0.03)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background = "transparent")
+                      }
+                    >
+                      <td className="px-6 py-5">
+                        <div className="flex items-center gap-3.5">
+                          <div className="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center text-[13px] font-bold text-white shrink-0">
+                            {client.name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                              .toUpperCase()
+                              .slice(0, 2)}
+                          </div>
+                          <div>
+                            <p className="text-[15px] font-semibold text-white leading-tight">
+                              {client.name}
+                            </p>
+                            {client.companyName && (
+                              <p className="text-[13px] text-white/40 flex items-center gap-1.5 mt-0.5">
+                                <Building2 size={12} /> {client.companyName}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td
+                        className="px-6 py-5"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <a
+                          href={`mailto:${client.email}`}
+                          className="text-[14px] text-white/60 hover:text-brand-400 flex items-center gap-2 transition-colors"
+                        >
+                          <Mail size={14} />
+                          {client.email}
+                        </a>
+                      </td>
+                      <td className="px-6 py-5 text-[14px] text-white/50">
+                        {client.phone ? (
+                          <span className="flex items-center gap-2">
+                            <Phone size={14} />
+                            {client.phone}
+                          </span>
+                        ) : (
+                          <span className="text-white/20">—</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-5 text-[14px] text-white/35">
+                        {formatDate(client.createdAt)}
+                      </td>
+                      <td
+                        className="px-6 py-5"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={() => openEditModal(client)}
+                            className="p-2 rounded-lg text-white/30 hover:text-brand-400 hover:bg-white/[0.06] transition-colors"
+                          >
+                            <Pencil size={15} />
+                          </button>
+                          <button
+                            onClick={() => openDeleteModal(client)}
+                            className="p-2 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
 
         {/* ── Footer count ── */}
         {clients.length > 0 && (
           <div
             className="px-6 py-4"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.01)" }}
+            style={{
+              borderTop: "1px solid rgba(255,255,255,0.05)",
+              background: "rgba(255,255,255,0.01)",
+            }}
           >
             <p className="text-[14px] text-white/30">
               {clients.length} {clients.length === 1 ? "client" : "clients"}
@@ -344,7 +478,11 @@ export default function ClientsPage() {
         size="md"
         footer={
           <>
-            <Button variant="secondary" onClick={() => setShowFormModal(false)} disabled={submitting}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowFormModal(false)}
+              disabled={submitting}
+            >
               Cancel
             </Button>
             <Button onClick={handleSubmit} loading={submitting}>
@@ -354,12 +492,14 @@ export default function ClientsPage() {
         }
       >
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="Full name"
               placeholder="Ikenna Obi"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               error={formErrors.name}
               required
             />
@@ -367,7 +507,9 @@ export default function ClientsPage() {
               label="Company name"
               placeholder="Acme Corp (optional)"
               value={formData.companyName}
-              onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, companyName: e.target.value })
+              }
             />
           </div>
           <Input
@@ -375,7 +517,9 @@ export default function ClientsPage() {
             type="email"
             placeholder="client@example.com"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             error={formErrors.email}
             required
           />
@@ -384,13 +528,17 @@ export default function ClientsPage() {
             type="tel"
             placeholder="+234 800 000 0000 (optional)"
             value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, phone: e.target.value })
+            }
           />
           <Textarea
             label="Address"
             placeholder="123 Main St, Lagos, Nigeria (optional)"
             value={formData.address}
-            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, address: e.target.value })
+            }
           />
         </div>
       </Modal>
@@ -403,10 +551,18 @@ export default function ClientsPage() {
         size="sm"
         footer={
           <>
-            <Button variant="secondary" onClick={() => setShowDeleteModal(false)} disabled={submitting}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteModal(false)}
+              disabled={submitting}
+            >
               Cancel
             </Button>
-            <Button variant="danger" onClick={handleDelete} loading={submitting}>
+            <Button
+              variant="danger"
+              onClick={handleDelete}
+              loading={submitting}
+            >
               Delete client
             </Button>
           </>
@@ -422,10 +578,14 @@ export default function ClientsPage() {
           <div>
             <p className="text-[15px] text-white/80">
               Are you sure you want to delete{" "}
-              <span className="font-semibold text-white">{selectedClient?.name}</span>?
+              <span className="font-semibold text-white">
+                {selectedClient?.name}
+              </span>
+              ?
             </p>
             <p className="text-[14px] text-white/40 mt-1.5 leading-relaxed">
-              This will also delete all invoices associated with this client. This action cannot be undone.
+              This will also delete all invoices associated with this client.
+              This action cannot be undone.
             </p>
           </div>
         </div>
