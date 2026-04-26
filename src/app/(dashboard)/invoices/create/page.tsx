@@ -85,6 +85,7 @@ export default function CreateInvoicePage() {
       }
     };
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ── Line item helpers ────────────────────────────────────────────────────────
@@ -470,41 +471,4 @@ export default function CreateInvoicePage() {
 
             <div className="space-y-3 text-[14px]">
               <div className="flex justify-between text-white/50">
-                <span>Subtotal</span>
-                <span className="font-mono text-white/70">
-                  {formatCurrency(subtotal)}
-                </span>
-              </div>
-              <div className="flex justify-between text-white/50">
-                <span>Tax</span>
-                <span className="font-mono text-white/25">₦0.00</span>
-              </div>
-              <div
-                className="flex justify-between font-bold text-white pt-3 text-[15px]"
-                style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
-              >
-                <span>Total</span>
-                <span className="font-mono">{formatCurrency(subtotal)}</span>
-              </div>
-            </div>
-
-            <div className="mt-6 space-y-3">
-              <Button
-                onClick={handleSubmit}
-                loading={submitting}
-                disabled={clients.length === 0}
-                className="w-full"
-                size="md"
-              >
-                Save as draft
-              </Button>
-              <p className="text-[13px] text-center text-white/25">
-                You can send it to the client from the invoice page.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+             

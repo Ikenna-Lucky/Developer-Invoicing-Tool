@@ -161,6 +161,7 @@ function AvatarEditor({
           }}
         >
           {avatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={avatarUrl}
               alt={name}
@@ -640,54 +641,4 @@ export default function SettingsPage() {
                       setPrefs((p) => ({ ...p, defaultNotes: e.target.value }))
                     }
                     placeholder={
-                      "Payment due within 14 days.\nBank transfer preferred.\nThank you for your business."
-                    }
-                    rows={4}
-                    hint="Pre-filled on every new invoice. You can always edit per invoice."
-                  />
-                </div>
-
-                <div className="mt-6 flex justify-end">
-                  <SaveButton
-                    onClick={() => save("preferences")}
-                    saving={saving === "preferences"}
-                  />
-                </div>
-              </Section>
-
-              {/* Danger zone */}
-              <Section
-                title="Danger zone"
-                description="Permanent actions that cannot be undone."
-                accent="#f87171"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div>
-                    <p className="text-[14px] font-semibold text-white/70">
-                      Delete account
-                    </p>
-                    <p className="text-[13px] text-white/30 mt-0.5">
-                      Permanently remove your account and all invoice data.
-                    </p>
-                  </div>
-                  <button
-                    disabled
-                    className="px-4 py-2 rounded-xl text-[14px] font-semibold transition-colors"
-                    style={{
-                      background: "rgba(239,68,68,0.08)",
-                      border: "1px solid rgba(239,68,68,0.2)",
-                      color: "rgba(248,113,113,0.5)",
-                      cursor: "not-allowed",
-                    }}
-                  >
-                    Delete account
-                  </button>
-                </div>
-              </Section>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
+                      "Payment due within 14 days.\nBank transfer pre

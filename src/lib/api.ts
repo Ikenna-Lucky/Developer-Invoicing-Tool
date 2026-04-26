@@ -7,7 +7,7 @@ type RequestOptions = {
 
 export async function apiRequest<T>(
   path: string,
-  options: RequestOptions = {}
+  options: RequestOptions = {},
 ): Promise<T> {
   const { method = "GET", body } = options;
 
@@ -19,7 +19,9 @@ export async function apiRequest<T>(
   });
 
   if (!res.ok) {
-    const errorData = await res.json().catch(() => ({ error: "Unknown error" }));
+    const errorData = await res
+      .json()
+      .catch(() => ({ error: "Unknown error" }));
     throw new Error(errorData.error ?? `API error: ${res.status}`);
   }
 

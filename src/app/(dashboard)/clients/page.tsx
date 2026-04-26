@@ -78,6 +78,7 @@ export default function ClientsPage() {
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -526,70 +527,4 @@ export default function ClientsPage() {
           <Input
             label="Phone number"
             type="tel"
-            placeholder="+234 800 000 0000 (optional)"
-            value={formData.phone}
-            onChange={(e) =>
-              setFormData({ ...formData, phone: e.target.value })
-            }
-          />
-          <Textarea
-            label="Address"
-            placeholder="123 Main St, Lagos, Nigeria (optional)"
-            value={formData.address}
-            onChange={(e) =>
-              setFormData({ ...formData, address: e.target.value })
-            }
-          />
-        </div>
-      </Modal>
-
-      {/* ── Delete Confirmation Modal ── */}
-      <Modal
-        open={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
-        title="Delete client"
-        size="sm"
-        footer={
-          <>
-            <Button
-              variant="secondary"
-              onClick={() => setShowDeleteModal(false)}
-              disabled={submitting}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="danger"
-              onClick={handleDelete}
-              loading={submitting}
-            >
-              Delete client
-            </Button>
-          </>
-        }
-      >
-        <div className="flex gap-4">
-          <div
-            className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-            style={{ background: "rgba(239,68,68,0.15)" }}
-          >
-            <Trash2 size={18} className="text-red-400" />
-          </div>
-          <div>
-            <p className="text-[15px] text-white/80">
-              Are you sure you want to delete{" "}
-              <span className="font-semibold text-white">
-                {selectedClient?.name}
-              </span>
-              ?
-            </p>
-            <p className="text-[14px] text-white/40 mt-1.5 leading-relaxed">
-              This will also delete all invoices associated with this client.
-              This action cannot be undone.
-            </p>
-          </div>
-        </div>
-      </Modal>
-    </>
-  );
-}
+            placeholder="+234

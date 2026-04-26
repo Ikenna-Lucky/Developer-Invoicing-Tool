@@ -46,6 +46,7 @@ function AvatarBubble({
       }}
     >
       {avatarUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={avatarUrl}
           alt=""
@@ -709,57 +710,4 @@ function MenuToggle({
         />
         {/* Line 2 — shorter, offset left for editorial character */}
         <span
-          className="block h-[1.5px] rounded-full bg-current transition-all duration-[200ms] ease-in-out"
-          style={{
-            width: "10px",
-            marginLeft: "-4px",
-            marginTop: "4px",
-            color: isOpen ? "#60a5fa" : "rgba(255,255,255,0.45)",
-            opacity: isOpen ? 0 : 1,
-            transform: isOpen ? "scaleX(0)" : "none",
-            transformOrigin: "left center",
-          }}
-        />
-        {/* Line 3 */}
-        <span
-          className="block h-[1.5px] rounded-full bg-current transition-all duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)]"
-          style={{
-            width: "14px",
-            marginTop: "4px",
-            color: isOpen ? "#60a5fa" : "rgba(255,255,255,0.75)",
-            transform: isOpen ? "translateY(-6.5px) rotate(-45deg)" : "none",
-            transformOrigin: "center",
-          }}
-        />
-      </span>
-    </button>
-  );
-}
-
-// ─── Main header export ───────────────────────────────────────────────────────
-
-export function DashboardHeader() {
-  const { isOpen, toggle } = useSidebar();
-
-  return (
-    <header
-      className="sticky top-0 z-30 flex items-center gap-2 sm:gap-3 px-3 sm:px-5 lg:px-10 h-[68px] overflow-hidden"
-      style={{
-        background: "rgba(13,17,23,0.9)",
-        backdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-      }}
-    >
-      {/* Hamburger toggle — mobile only */}
-      <MenuToggle isOpen={isOpen} onClick={toggle} />
-
-      {/* Search — fills all remaining space, min-w-0 lets it shrink */}
-      <div className="flex-1 min-w-0">
-        <HeaderSearch />
-      </div>
-
-      {/* Profile — right side */}
-      <ProfileMenu />
-    </header>
-  );
-}
+          className="block h-[1.5px] rounded-full bg-cur

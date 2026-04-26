@@ -269,6 +269,7 @@ export default function InvoiceDetailPage() {
       }
     };
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   // ── Status update ──────────────────────────────────────────────────────────
@@ -944,18 +945,4 @@ export default function InvoiceDetailPage() {
             className="rounded-xl px-4 py-3 flex items-start gap-2.5"
             style={{
               background: "rgba(74,222,128,0.07)",
-              border: "1px solid rgba(74,222,128,0.15)",
-            }}
-          >
-            <CheckCircle size={15} className="text-green-400 mt-0.5 shrink-0" />
-            <p className="text-[13px] text-green-400/80 leading-relaxed">
-              The invoice status will automatically change to{" "}
-              <strong className="text-green-400">Sent</strong> and a Paystack
-              payment link will be generated.
-            </p>
-          </div>
-        </div>
-      </Modal>
-    </>
-  );
-}
+              border: "1px solid rg

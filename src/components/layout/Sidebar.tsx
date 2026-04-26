@@ -180,6 +180,7 @@ export function Sidebar() {
               }}
             >
               {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={avatarUrl}
                   alt={user?.fullName ?? ""}
@@ -202,17 +203,4 @@ export function Sidebar() {
               onClick={handleLogout}
               disabled={signingOut}
               title={signingOut ? "Signing out…" : "Sign out"}
-              className="p-1.5 rounded-lg text-white/25 hover:text-white/70 transition-colors opacity-0 group-hover:opacity-100 disabled:cursor-not-allowed"
-            >
-              {signingOut ? (
-                <Loader2 size={14} className="animate-spin" />
-              ) : (
-                <LogOut size={14} />
-              )}
-            </button>
-          </Link>
-        </div>
-      </aside>
-    </>
-  );
-}
+              className="p-1.5 rounded-lg text-white/25 

@@ -272,6 +272,7 @@ export default function ClientDetailPage() {
     } finally {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   useEffect(() => {
@@ -748,94 +749,4 @@ export default function ClientDetailPage() {
           </>
         }
       >
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Input
-              label="Full name"
-              value={editForm.name}
-              onChange={(e) =>
-                setEditForm({ ...editForm, name: e.target.value })
-              }
-              required
-            />
-            <Input
-              label="Company name"
-              value={editForm.companyName}
-              onChange={(e) =>
-                setEditForm({ ...editForm, companyName: e.target.value })
-              }
-              placeholder="Optional"
-            />
-          </div>
-          <Input
-            label="Email address"
-            type="email"
-            value={editForm.email}
-            onChange={(e) =>
-              setEditForm({ ...editForm, email: e.target.value })
-            }
-            required
-          />
-          <Input
-            label="Phone"
-            type="tel"
-            value={editForm.phone}
-            onChange={(e) =>
-              setEditForm({ ...editForm, phone: e.target.value })
-            }
-            placeholder="Optional"
-          />
-          <Textarea
-            label="Address"
-            value={editForm.address}
-            onChange={(e) =>
-              setEditForm({ ...editForm, address: e.target.value })
-            }
-            placeholder="Optional"
-          />
-        </div>
-      </Modal>
-
-      {/* ── Delete modal ── */}
-      <Modal
-        open={showDelete}
-        onClose={() => setShowDelete(false)}
-        title="Delete client"
-        size="sm"
-        footer={
-          <>
-            <Button
-              variant="secondary"
-              onClick={() => setShowDelete(false)}
-              disabled={deleting}
-            >
-              Cancel
-            </Button>
-            <Button variant="danger" onClick={handleDelete} loading={deleting}>
-              Delete client
-            </Button>
-          </>
-        }
-      >
-        <div className="flex gap-4">
-          <div
-            className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-            style={{ background: "rgba(239,68,68,0.15)" }}
-          >
-            <Trash2 size={18} className="text-red-400" />
-          </div>
-          <div>
-            <p className="text-[15px] text-white/80">
-              Delete{" "}
-              <span className="font-semibold text-white">{client.name}</span>?
-            </p>
-            <p className="text-[14px] text-white/40 mt-1.5 leading-relaxed">
-              This removes the client and all their invoices permanently. Cannot
-              be undone.
-            </p>
-          </div>
-        </div>
-      </Modal>
-    </>
-  );
-}
+        <div className=

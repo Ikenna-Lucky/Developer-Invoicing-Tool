@@ -81,6 +81,7 @@ export default function InvoicesPage() {
         setLoading(false);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
 
@@ -490,97 +491,4 @@ export default function InvoicesPage() {
                           className="px-6 py-5"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Link
-                              href={`/invoices/${inv.id}`}
-                              className="p-2 rounded-lg text-white/30 hover:text-brand-400 hover:bg-white/[0.06] transition-colors"
-                            >
-                              <Eye size={15} />
-                            </Link>
-                            <button
-                              onClick={() => {
-                                setDeleteTarget(inv);
-                                setShowDelete(true);
-                              }}
-                              className="p-2 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-colors"
-                            >
-                              <Trash2 size={15} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </>
-        )}
-
-        {invoices.length > 0 && (
-          <div
-            className="px-6 py-4"
-            style={{
-              borderTop: "1px solid rgba(255,255,255,0.05)",
-              background: "rgba(255,255,255,0.01)",
-            }}
-          >
-            <p className="text-[14px] text-white/50">
-              {invoices.length} {invoices.length === 1 ? "invoice" : "invoices"}
-              {statusFilter !== "all" && (
-                <span className="text-white/30">
-                  {" "}
-                  · filtered by{" "}
-                  <span className="capitalize">{statusFilter}</span>
-                </span>
-              )}
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* Delete modal */}
-      <Modal
-        open={showDelete}
-        onClose={() => setShowDelete(false)}
-        title="Delete invoice"
-        size="sm"
-        footer={
-          <>
-            <Button
-              variant="secondary"
-              onClick={() => setShowDelete(false)}
-              disabled={deleting}
-            >
-              Cancel
-            </Button>
-            <Button variant="danger" onClick={handleDelete} loading={deleting}>
-              Delete invoice
-            </Button>
-          </>
-        }
-      >
-        <div className="flex gap-4">
-          <div
-            className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-            style={{ background: "rgba(239,68,68,0.15)" }}
-          >
-            <Trash2 size={18} className="text-red-400" />
-          </div>
-          <div>
-            <p className="text-[15px] text-white/80">
-              Delete{" "}
-              <span className="font-semibold font-mono text-white">
-                {deleteTarget?.invoiceNumber}
-              </span>
-              ?
-            </p>
-            <p className="text-[14px] text-white/40 mt-1.5 leading-relaxed">
-              All line items will be removed. This cannot be undone.
-            </p>
-          </div>
-        </div>
-      </Modal>
-    </>
-  );
-}
+                          <div className="flex items-center justify-end gap-1 opacit
