@@ -203,4 +203,17 @@ export function Sidebar() {
               onClick={handleLogout}
               disabled={signingOut}
               title={signingOut ? "Signing out…" : "Sign out"}
-              className="p-1.5 rounded-lg text-white/25 
+              className="p-1.5 rounded-lg text-white/25 hover:text-white/60 hover:bg-white/[0.06] transition-colors shrink-0"
+            >
+              {signingOut ? (
+                <Loader2 size={15} className="animate-spin" />
+              ) : (
+                <LogOut size={15} />
+              )}
+            </button>
+          </Link>
+        </div>
+      </aside>
+    </>
+  );
+} 

@@ -749,4 +749,84 @@ export default function ClientDetailPage() {
           </>
         }
       >
-        <div className=
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Full name"
+              placeholder="Ikenna Obi"
+              value={editForm.name}
+              onChange={(e) =>
+                setEditForm({ ...editForm, name: e.target.value })
+              }
+              required
+            />
+            <Input
+              label="Company name"
+              placeholder="Acme Corp (optional)"
+              value={editForm.companyName}
+              onChange={(e) =>
+                setEditForm({ ...editForm, companyName: e.target.value })
+              }
+            />
+          </div>
+          <Input
+            label="Email address"
+            type="email"
+            placeholder="client@example.com"
+            value={editForm.email}
+            onChange={(e) =>
+              setEditForm({ ...editForm, email: e.target.value })
+            }
+            required
+          />
+          <Input
+            label="Phone number"
+            type="tel"
+            placeholder="+234 801 234 5678"
+            value={editForm.phone}
+            onChange={(e) =>
+              setEditForm({ ...editForm, phone: e.target.value })
+            }
+          />
+          <Textarea
+            label="Address"
+            placeholder="12 Lagos Street, Ikeja, Lagos"
+            value={editForm.address}
+            onChange={(e) =>
+              setEditForm({ ...editForm, address: e.target.value })
+            }
+            rows={2}
+          />
+        </div>
+      </Modal>
+
+      {/* ── Delete Confirmation Modal ── */}
+      <Modal
+        open={showDelete}
+        onClose={() => setShowDelete(false)}
+        title="Delete client"
+        size="sm"
+        footer={
+          <>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDelete(false)}
+              disabled={deleting}
+            >
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={handleDelete} loading={deleting}>
+              Delete
+            </Button>
+          </>
+        }
+      >
+        <p className="text-[15px] text-white/60 leading-relaxed">
+          Are you sure you want to delete{" "}
+          <span className="text-white font-semibold">{client.name}</span>? This
+          will permanently remove the client and all associated invoices.
+        </p>
+      </Modal>
+    </>
+  );
+}

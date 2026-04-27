@@ -491,4 +491,81 @@ export default function InvoicesPage() {
                           className="px-6 py-5"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          <div className="flex items-center justify-end gap-1 opacit
+                          <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button
+                              onClick={() => router.push(`/invoices/${inv.id}`)}
+                              className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/[0.07] transition-colors"
+                              title="View invoice"
+                            >
+                              <Eye size={14} />
+                            </button>
+                            <button
+                              onClick={() => {
+                                setDeleteTarget(inv);
+                                setShowDelete(true);
+                              }}
+                              className="p-1.5 rounded-lg text-white/40 hover:text-red-400 hover:bg-red-500/[0.08] transition-colors"
+                              title="Delete invoice"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Footer */}
+            {invoices.length > 0 && (
+              <div
+                className="px-6 py-4"
+                style={{
+                  borderTop: "1px solid rgba(255,255,255,0.05)",
+                  background: "rgba(255,255,255,0.01)",
+                }}
+              >
+                <p className="text-[14px] text-white/30">
+                  {invoices.length}{" "}
+                  {invoices.length === 1 ? "invoice" : "invoices"}
+                </p>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* ── Delete Confirmation Modal ── */}
+      <Modal
+        open={showDelete}
+        onClose={() => setShowDelete(false)}
+        title="Delete invoice"
+        size="sm"
+        footer={
+          <>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDelete(false)}
+              disabled={deleting}
+            >
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={handleDelete} loading={deleting}>
+              Delete
+            </Button>
+          </>
+        }
+      >
+        <p className="text-[15px] text-white/60 leading-relaxed">
+          Are you sure you want to delete invoice{" "}
+          <span className="text-white font-semibold font-mono">
+            {deleteTarget?.invoiceNumber}
+          </span>
+          ? This action cannot be undone.
+        </p>
+      </Modal>
+    </>
+  );
+}

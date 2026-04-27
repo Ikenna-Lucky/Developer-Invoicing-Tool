@@ -527,4 +527,53 @@ export default function ClientsPage() {
           <Input
             label="Phone number"
             type="tel"
-            placeholder="+234
+            placeholder="+234 801 234 5678"
+            value={formData.phone}
+            onChange={(e) =>
+              setFormData({ ...formData, phone: e.target.value })
+            }
+          />
+          <Textarea
+            label="Address"
+            placeholder="12 Lagos Street, Ikeja, Lagos"
+            value={formData.address}
+            onChange={(e) =>
+              setFormData({ ...formData, address: e.target.value })
+            }
+            rows={2}
+          />
+        </div>
+      </Modal>
+
+      {/* ── Delete Confirmation Modal ── */}
+      <Modal
+        open={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        title="Delete client"
+        size="sm"
+        footer={
+          <>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteModal(false)}
+              disabled={submitting}
+            >
+              Cancel
+            </Button>
+            <Button variant="danger" onClick={handleDelete} loading={submitting}>
+              Delete
+            </Button>
+          </>
+        }
+      >
+        <p className="text-[15px] text-white/60 leading-relaxed">
+          Are you sure you want to delete{" "}
+          <span className="text-white font-semibold">
+            {selectedClient?.name}
+          </span>
+          ? This will permanently remove the client and all associated invoices.
+        </p>
+      </Modal>
+    </>
+  );
+}

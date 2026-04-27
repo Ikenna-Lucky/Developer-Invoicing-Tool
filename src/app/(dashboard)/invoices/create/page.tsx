@@ -471,4 +471,39 @@ export default function CreateInvoicePage() {
 
             <div className="space-y-3 text-[14px]">
               <div className="flex justify-between text-white/50">
-             
+                <span>Subtotal</span>
+                <span className="font-mono">{formatCurrency(subtotal)}</span>
+              </div>
+              <div
+                className="h-px"
+                style={{ background: "rgba(255,255,255,0.07)" }}
+              />
+              <div className="flex justify-between text-white font-semibold text-[16px]">
+                <span>Total</span>
+                <span className="font-mono">{formatCurrency(subtotal)}</span>
+              </div>
+            </div>
+
+            <Button
+              className="w-full mt-6"
+              onClick={handleSubmit}
+              loading={submitting}
+              disabled={submitting}
+            >
+              Create invoice
+            </Button>
+          </div>
+
+          {/* Cancel */}
+          <Link
+            href="/invoices"
+            className="flex items-center gap-2 text-[13px] text-white/35 hover:text-white/60 transition-colors"
+          >
+            <ArrowLeft size={14} />
+            Cancel
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

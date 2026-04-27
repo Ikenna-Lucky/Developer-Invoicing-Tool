@@ -641,4 +641,24 @@ export default function SettingsPage() {
                       setPrefs((p) => ({ ...p, defaultNotes: e.target.value }))
                     }
                     placeholder={
-                      "Payment due within 14 days.\nBank transfer pre
+                      "Payment due within 14 days.\nBank transfer preferred.\nAccount: 0123456789 (GTBank)"
+                    }
+                    rows={3}
+                    hint="Pre-filled on every new invoice. You can always override it per invoice."
+                  />
+                </div>
+
+                <div className="mt-6 flex justify-end">
+                  <SaveButton
+                    onClick={() => save("preferences")}
+                    saving={saving === "preferences"}
+                  />
+                </div>
+              </Section>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

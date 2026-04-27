@@ -710,4 +710,26 @@ function MenuToggle({
         />
         {/* Line 2 — shorter, offset left for editorial character */}
         <span
-          className="block h-[1.5px] rounded-full bg-cur
+          className="block h-[1.5px] rounded-full bg-current transition-all duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)]"
+          style={{
+            width: isOpen ? "0px" : "10px",
+            marginLeft: isOpen ? "0px" : "-4px",
+            color: isOpen ? "#60a5fa" : "rgba(255,255,255,0.75)",
+            opacity: isOpen ? 0 : 1,
+            transformOrigin: "center",
+          }}
+        />
+        {/* Line 3 */}
+        <span
+          className="block h-[1.5px] rounded-full bg-current transition-all duration-[280ms] ease-[cubic-bezier(0.32,0.72,0,1)]"
+          style={{
+            width: "14px",
+            color: isOpen ? "#60a5fa" : "rgba(255,255,255,0.75)",
+            transform: isOpen ? "translateY(-6px) rotate(-45deg)" : "none",
+            transformOrigin: "center",
+          }}
+        />
+      </span>
+    </button>
+  );
+}
