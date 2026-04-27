@@ -733,3 +733,32 @@ function MenuToggle({
     </button>
   );
 }
+
+// ─── DashboardHeader — the exported top bar ───────────────────────────────────
+
+export function DashboardHeader() {
+  const { isOpen, toggle } = useSidebar();
+
+  return (
+    <header
+      className="h-[70px] flex items-center gap-3 sm:gap-4 px-4 sm:px-6 shrink-0 sticky top-0 z-30"
+      style={{
+        background: "rgba(10,15,30,0.85)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+      }}
+    >
+      {/* Hamburger — mobile only, opens the sidebar */}
+      <MenuToggle isOpen={isOpen} onClick={toggle} />
+
+      {/* Command-palette search — fills remaining space */}
+      <div className="flex-1 min-w-0">
+        <HeaderSearch />
+      </div>
+
+      {/* Profile / account dropdown */}
+      <ProfileMenu />
+    </header>
+  );
+}
