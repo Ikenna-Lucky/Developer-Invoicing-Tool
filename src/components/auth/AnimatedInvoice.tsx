@@ -209,23 +209,25 @@ export function AnimatedInvoice() {
             <span>Tax (0%)</span>
             <span className="font-mono">$0.00</span>
           </div>
-          <div className="flex justify-between text-sm font-bold text-gray-900 pt-2 border-t border-gray-200 mt-1">
+          <div className="flex justify-between text-[11px] font-bold text-gray-900 pt-2 border-t border-gray-100 mt-1">
             <span>Total</span>
             <span className="font-mono">$5,120.00</span>
           </div>
         </motion.div>
 
-        {/* PAID rubber stamp — overlaid, rotated */}
+        {/* Paid stamp */}
         <motion.div
           variants={stamp}
           initial="hidden"
           animate="show"
-          className="absolute bottom-8 right-5 pointer-events-none select-none"
+          className="absolute bottom-12 right-4 pointer-events-none"
+          style={{ transformOrigin: "center" }}
         >
-          <div className="border-[3px] border-green-500 rounded-lg px-3 py-1.5">
-            <p className="text-green-500 font-black text-xl tracking-[0.3em] uppercase leading-none">
-              PAID
-            </p>
+          <div
+            className="px-3 py-1.5 rounded-lg border-2 border-green-400 text-green-400
+                       text-[14px] font-black uppercase tracking-widest opacity-70"
+          >
+            PAID
           </div>
         </motion.div>
       </motion.div>

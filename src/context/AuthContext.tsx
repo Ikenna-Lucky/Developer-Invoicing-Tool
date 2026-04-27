@@ -7,19 +7,27 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface AuthUser {
-  id:           string;
-  email:        string;
-  fullName:     string;
+  id:            string;
+  email:         string;
+  fullName:      string;
   businessName?: string;
-  logoUrl?:     string;
+  logoUrl?:      string;
+  phone?:        string;
+  address?:      string;
 }
 
 interface AuthContextValue {
-  user:     AuthUser | null;
-  loading:  boolean;
-  login:    (email: string, password: string) => Promise<void>;
-  register: (fullName: string, email: string, password: string) => Promise<void>;
-  logout:   () => Promise<void>;
+  user:          AuthUser | null;
+  loading:       boolean;
+  /** Live avatar URL — updated immediately on upload and after DB sync */
+  avatarUrl:     string;
+  /** Call this when the user uploads a new photo so all components update instantly */
+  setAvatarUrl:  (url: string) => void;
+  login:         (email: string, password: string) => Promise<void>;
+  register:      (fullName: string, email: string, password: string) => Promise<void>;
+  logout:        () => Promise<void>;
+  /** Re-fetch /auth/me and sync user state + avatarUrl from DB */
+  refreshUser:   () => Promise<void>;
 }
 
 // ─── Context ──────────────────────────────────────────────────────────────────
@@ -29,34 +37,38 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 // ─── Provider ─────────────────────────────────────────────────────────────────
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user,    setUser]    = useState<AuthUser | null>(null);
-  const [loading, setLoading] = useState(true); // true until we know auth state
+  const [user,      setUser]      = useState<AuthUser | null>(null);
+  const [loading,   setLoading]   = useState(true);
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
 
-  // On mount — try to fetch the current user from /auth/me
-  // If the access_token cookie is valid, this succeeds silently.
-  // If expired, we attempt a token refresh first.
+  // ─── Internal helper: apply a user payload from the API ───────────────────
+  const applyUser = useCallback((data: AuthUser) => {
+    setUser(data);
+    // Only overwrite avatarUrl when the DB has a value — preserves any
+    // in-session upload the user did before saving.
+    if (data.logoUrl) setAvatarUrl(data.logoUrl);
+  }, []);
+
+  // ─── Initial load ─────────────────────────────────────────────────────────
   const loadUser = useCallback(async () => {
     try {
       const res = await fetch(`${API_URL}/auth/me`, { credentials: "include" });
 
       if (res.ok) {
-        const data = await res.json();
-        setUser(data);
+        applyUser(await res.json());
         return;
       }
 
-      // Access token expired — try refreshing
+      // Access token expired — try a silent refresh
       if (res.status === 401) {
         const refreshRes = await fetch(`${API_URL}/auth/refresh`, {
-          method: "POST",
+          method:      "POST",
           credentials: "include",
         });
-
         if (refreshRes.ok) {
-          // Retry /me with the new access token
           const retryRes = await fetch(`${API_URL}/auth/me`, { credentials: "include" });
           if (retryRes.ok) {
-            setUser(await retryRes.json());
+            applyUser(await retryRes.json());
             return;
           }
         }
@@ -68,11 +80,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [applyUser]);
 
-  useEffect(() => {
-    loadUser();
-  }, [loadUser]);
+  useEffect(() => { loadUser(); }, [loadUser]);
+
+  // ─── refreshUser — call after profile PATCH so UI reflects DB ─────────────
+  const refreshUser = useCallback(async () => {
+    try {
+      const res = await fetch(`${API_URL}/auth/me`, { credentials: "include" });
+      if (res.ok) applyUser(await res.json());
+    } catch { /* silent */ }
+  }, [applyUser]);
 
   // ─── Auth actions ──────────────────────────────────────────────────────────
 
@@ -83,12 +101,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       headers:     { "Content-Type": "application/json" },
       body:        JSON.stringify({ email, password }),
     });
-
     const data = await res.json();
-
     if (!res.ok) throw new Error(data.error ?? "Login failed");
-
-    setUser(data.user);
+    applyUser(data.user);
   };
 
   const register = async (fullName: string, email: string, password: string) => {
@@ -98,24 +113,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       headers:     { "Content-Type": "application/json" },
       body:        JSON.stringify({ fullName, email, password }),
     });
-
     const data = await res.json();
-
     if (!res.ok) throw new Error(data.error ?? "Registration failed");
-
-    setUser(data.user);
+    applyUser(data.user);
   };
 
   const logout = async () => {
-    await fetch(`${API_URL}/auth/logout`, {
-      method:      "POST",
-      credentials: "include",
-    });
+    // Clear local state IMMEDIATELY — the UI feels instant regardless of server speed.
     setUser(null);
+    setAvatarUrl("");
+
+    // Tell the server to clear cookies + revoke the refresh token.
+    // We still await so the browser receives the Set-Cookie: delete headers
+    // before the caller does router.push("/sign-in"). Without this, the
+    // middleware would still see the access_token cookie and redirect back.
+    try {
+      await fetch(`${API_URL}/auth/logout`, {
+        method:      "POST",
+        credentials: "include",
+      });
+    } catch {
+      // Network failure — the server couldn't clear the cookies.
+      // The access token expires in 15 min anyway; nothing else we can do
+      // from JS since the cookies are httpOnly.
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ user, loading, avatarUrl, setAvatarUrl, login, register, logout, refreshUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

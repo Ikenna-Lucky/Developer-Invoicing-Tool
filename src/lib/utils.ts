@@ -6,9 +6,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/** Formats a number as currency (USD by default) */
-export function formatCurrency(amount: number | string, currency = "USD"): string {
-  return new Intl.NumberFormat("en-US", {
+/** Formats a number as currency (NGN by default) */
+export function formatCurrency(
+  amount: number | string,
+  currency = "NGN",
+): string {
+  return new Intl.NumberFormat("en-NG", {
     style: "currency",
     currency,
   }).format(Number(amount));
