@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { ToastProvider } from "@/components/ui/Toast";
 import { SidebarProvider } from "@/context/SidebarContext";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Manage your clients, invoices, and payments with Billd.",
+};
 
 export default function DashboardLayout({
   children,
