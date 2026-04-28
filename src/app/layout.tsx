@@ -21,6 +21,14 @@ export const metadata: Metadata = {
   authors: [{ name: "Billd" }],
   creator: "Billd",
   metadataBase: new URL("https://billid.netlify.app"),
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+  },
   openGraph: {
     title: "Billd — Invoice clients. Get paid faster.",
     description:
