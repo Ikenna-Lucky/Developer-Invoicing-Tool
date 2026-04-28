@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { BilldLogo } from "@/components/ui/BilldLogo";
 import { AnimatedInvoice } from "@/components/auth/AnimatedInvoice";
+
+export const metadata: Metadata = {
+  title: "Sign in",
+  description:
+    "Sign in to your Billd account to manage invoices and get paid faster.",
+};
 
 export default function AuthLayout({
   children,
@@ -10,12 +17,12 @@ export default function AuthLayout({
     <div className="min-h-screen flex">
       {/* ── Left panel ── */}
       <div className="hidden lg:flex lg:w-[54%] flex-col p-10 relative overflow-hidden bg-[#0a0f1e]">
-
         {/* Animated gradient base layer */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            background: "linear-gradient(135deg, #060d1f, #0f1f4a, #1a0a3c, #071428, #060d1f)",
+            background:
+              "linear-gradient(135deg, #060d1f, #0f1f4a, #1a0a3c, #071428, #060d1f)",
             backgroundSize: "400% 400%",
             animation: "auth-gradient 12s ease infinite",
           }}
@@ -25,15 +32,28 @@ export default function AuthLayout({
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div
             className="absolute -top-32 -left-16 w-[500px] h-[500px] rounded-full animate-orb-a"
-            style={{ background: "radial-gradient(circle, rgba(37,99,235,0.5), transparent 70%)", filter: "blur(80px)" }}
+            style={{
+              background:
+                "radial-gradient(circle, rgba(37,99,235,0.5), transparent 70%)",
+              filter: "blur(80px)",
+            }}
           />
           <div
             className="absolute -bottom-20 -right-10 w-[420px] h-[420px] rounded-full animate-orb-b"
-            style={{ background: "radial-gradient(circle, rgba(124,58,237,0.45), transparent 70%)", filter: "blur(80px)" }}
+            style={{
+              background:
+                "radial-gradient(circle, rgba(124,58,237,0.45), transparent 70%)",
+              filter: "blur(80px)",
+            }}
           />
           <div
             className="absolute top-1/3 left-1/3 w-[320px] h-[320px] rounded-full animate-orb-a"
-            style={{ background: "radial-gradient(circle, rgba(56,189,248,0.15), transparent 70%)", filter: "blur(70px)", animationDelay: "-7s" }}
+            style={{
+              background:
+                "radial-gradient(circle, rgba(56,189,248,0.15), transparent 70%)",
+              filter: "blur(70px)",
+              animationDelay: "-7s",
+            }}
           />
         </div>
 
@@ -41,7 +61,8 @@ export default function AuthLayout({
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
-            backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px)",
+            backgroundImage:
+              "radial-gradient(circle, rgba(255,255,255,0.055) 1px, transparent 1px)",
             backgroundSize: "30px 30px",
           }}
         />
@@ -69,7 +90,10 @@ export default function AuthLayout({
               <br />
               <span
                 className="text-transparent bg-clip-text"
-                style={{ backgroundImage: "linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)" }}
+                style={{
+                  backgroundImage:
+                    "linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)",
+                }}
               >
                 Get paid faster.
               </span>
@@ -91,7 +115,10 @@ export default function AuthLayout({
       </div>
 
       {/* ── Right panel ── */}
-      <div className="w-full lg:w-[46%] flex flex-col items-center justify-center bg-[#0d1117] px-8 py-12 min-h-screen relative" style={{ borderLeft: "1px solid rgba(255,255,255,0.06)" }}>
+      <div
+        className="w-full lg:w-[46%] flex flex-col items-center justify-center bg-[#0d1117] px-8 py-12 min-h-screen relative"
+        style={{ borderLeft: "1px solid rgba(255,255,255,0.06)" }}
+      >
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-brand-600 lg:hidden" />
 
         <div className="flex justify-center mb-10 lg:hidden">
