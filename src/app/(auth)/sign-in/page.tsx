@@ -279,7 +279,7 @@ function SignInForm() {
             )}
           </div>
           <span className="text-[14px] text-white/50 group-hover:text-white/70 transition-colors">
-            Remember me for 30 days
+            Keep me signed in
           </span>
         </label>
 
@@ -290,30 +290,4 @@ function SignInForm() {
           className="w-full flex items-center justify-center gap-2 text-white font-semibold
                      text-[15px] py-3.5 rounded-xl mt-1 transition-all duration-200
                      disabled:opacity-60 disabled:cursor-not-allowed"
-          style={{
-            background: "linear-gradient(135deg, #2563eb, #7c3aed)",
-            boxShadow: "0 4px 20px rgba(37,99,235,0.35)",
-          }}
-        >
-          {loading ? (
-            <>
-              <Loader2 size={16} className="animate-spin" /> Signing in…
-            </>
-          ) : (
-            "Sign in"
-          )}
-        </button>
-      </form>
-    </div>
-  );
-}
-
-// ─── Page export — wraps form in Suspense for useSearchParams ─────────────────
-
-export default function SignInPage() {
-  return (
-    <Suspense>
-      <SignInForm />
-    </Suspense>
-  );
-}
+          styl
