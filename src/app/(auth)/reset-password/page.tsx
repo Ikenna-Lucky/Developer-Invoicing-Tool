@@ -216,7 +216,9 @@ function ResetPasswordForm() {
             </button>
           </div>
           {confirm && confirm !== password && (
-            <p className="text-[12px] text-red-400">Passwords don't match</p>
+            <p className="text-[12px] text-red-400">
+              Passwords don&apos;t match
+            </p>
           )}
         </div>
 
