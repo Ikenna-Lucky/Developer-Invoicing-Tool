@@ -341,26 +341,4 @@ export default function TrashPage() {
       >
         <div className="flex gap-4">
           <div
-            className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-            style={{ background: "rgba(239,68,68,0.15)" }}
-          >
-            <AlertTriangle size={18} className="text-red-400" />
-          </div>
-          <div>
-            <p className="text-[15px] text-white/80">
-              Permanently delete{" "}
-              <span className="font-semibold font-mono text-white">
-                {permanentTarget?.invoiceNumber}
-              </span>
-              ?
-            </p>
-            <p className="text-[14px] text-white/40 mt-1.5 leading-relaxed">
-              This is irreversible. All line items will be gone forever with no
-              way to recover them.
-            </p>
-          </div>
-        </div>
-      </Modal>
-    </>
-  );
-}
+            className="w-10 h-10 rounded-full flex items-ce

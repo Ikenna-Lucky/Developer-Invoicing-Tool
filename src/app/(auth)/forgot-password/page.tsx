@@ -151,22 +151,4 @@ export default function ForgotPasswordPage() {
               className="w-full flex items-center justify-center gap-2 text-white font-semibold
                          text-[15px] py-3.5 rounded-xl transition-all duration-200
                          disabled:opacity-60 disabled:cursor-not-allowed"
-              style={{
-                background: "linear-gradient(135deg,#2563eb,#7c3aed)",
-                boxShadow: "0 4px 20px rgba(37,99,235,0.35)",
-              }}
-            >
-              {loading ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" /> Sending link…
-                </>
-              ) : (
-                "Send reset link"
-              )}
-            </button>
-          </form>
-        </div>
-      )}
-    </div>
-  );
-}
+         

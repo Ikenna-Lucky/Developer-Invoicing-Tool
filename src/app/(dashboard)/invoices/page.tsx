@@ -589,9 +589,4 @@ export default function InvoicesPage() {
           <span className="text-white font-semibold font-mono">
             {deleteTarget?.invoiceNumber}
           </span>{" "}
-          to Trash? You can restore it anytime from the Trash page.
-        </p>
-      </Modal>
-    </>
-  );
-}
+          to Trash? You can restore it anytime

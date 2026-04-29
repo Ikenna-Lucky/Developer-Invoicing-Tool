@@ -1060,14 +1060,4 @@ export default function InvoiceDetailPage() {
               border: "1px solid rgba(74,222,128,0.18)",
             }}
           >
-            <CheckCircle size={15} className="text-green-400 shrink-0 mt-0.5" />
-            <p className="text-[13px] text-white/55 leading-relaxed">
-              A Paystack payment link will be generated and included in the
-              email so your client can pay instantly.
-            </p>
-          </div>
-        </div>
-      </Modal>
-    </>
-  );
-}
+            <CheckCircle size={15} cl
