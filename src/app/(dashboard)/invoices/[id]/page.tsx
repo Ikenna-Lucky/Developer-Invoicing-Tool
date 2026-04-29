@@ -19,6 +19,7 @@ import {
   Pencil,
   ExternalLink,
   Loader2,
+  RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
@@ -249,6 +250,8 @@ export default function InvoiceDetailPage() {
   const [showSendModal, setShowSendModal] = useState(false);
   const [sending, setSending] = useState(false);
   const [downloadingPDF, setDownloadingPDF] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [showResendModal, setShowResendModal] = useState(false);
 
   // ── Fetch ──────────────────────────────────────────────────────────────────
 
@@ -291,19 +294,35 @@ export default function InvoiceDetailPage() {
     }
   };
 
-  // ── Delete ─────────────────────────────────────────────────────────────────
+  // ── Delete (soft) ──────────────────────────────────────────────────────────
 
   const handleDelete = async () => {
     if (!invoice) return;
     setDeleting(true);
     try {
       await apiRequest(`/invoices/${invoice.id}`, { method: "DELETE" });
-      toast.success(`${invoice.invoiceNumber} deleted`);
+      toast.success(`${invoice.invoiceNumber} moved to Trash`);
       router.push("/invoices");
     } catch (err: any) {
       toast.error(err.message);
     } finally {
       setDeleting(false);
+    }
+  };
+
+  // ── Resend email ───────────────────────────────────────────────────────────
+
+  const handleResend = async () => {
+    if (!invoice) return;
+    setResending(true);
+    try {
+      await apiRequest(`/invoices/${invoice.id}/resend`, { method: "POST" });
+      setShowResendModal(false);
+      toast.success("Invoice resent to client!");
+    } catch (err: any) {
+      toast.error(err.message ?? "Failed to resend invoice");
+    } finally {
+      setResending(false);
     }
   };
 
@@ -454,6 +473,38 @@ export default function InvoiceDetailPage() {
               <Send size={14} />
               Send to client
             </Button>
+          )}
+
+          {(invoice.status === "sent" ||
+            invoice.status === "overdue" ||
+            invoice.status === "paid") && (
+            <button
+              onClick={() => setShowResendModal(true)}
+              disabled={resending}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[14px] font-semibold transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              style={{
+                border: "1px solid rgba(96,165,250,0.25)",
+                color: "#60a5fa",
+                background: "rgba(37,99,235,0.08)",
+              }}
+              onMouseEnter={(e) => {
+                if (!resending) {
+                  (e.currentTarget as HTMLElement).style.background =
+                    "rgba(37,99,235,0.16)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background =
+                  "rgba(37,99,235,0.08)";
+              }}
+            >
+              {resending ? (
+                <Loader2 size={14} className="animate-spin" />
+              ) : (
+                <RefreshCw size={14} />
+              )}
+              Resend email
+            </button>
           )}
 
           {(invoice.status === "sent" || invoice.status === "overdue") && (
@@ -837,7 +888,7 @@ export default function InvoiceDetailPage() {
       <Modal
         open={showDelete}
         onClose={() => setShowDelete(false)}
-        title="Delete invoice"
+        title="Move to Trash"
         size="sm"
         footer={
           <>
@@ -849,7 +900,7 @@ export default function InvoiceDetailPage() {
               Cancel
             </Button>
             <Button variant="danger" onClick={handleDelete} loading={deleting}>
-              Delete invoice
+              Move to Trash
             </Button>
           </>
         }
@@ -863,16 +914,77 @@ export default function InvoiceDetailPage() {
           </div>
           <div>
             <p className="text-[15px] text-white/80">
-              Delete{" "}
+              Move{" "}
               <span className="font-semibold font-mono text-white">
                 {invoice.invoiceNumber}
-              </span>
-              ?
+              </span>{" "}
+              to Trash?
             </p>
             <p className="text-[14px] text-white/40 mt-1.5 leading-relaxed">
-              All line items will be removed. This cannot be undone.
+              The invoice will be moved to Trash and can be restored anytime
+              from the Trash page.
             </p>
           </div>
+        </div>
+      </Modal>
+
+      {/* Resend email modal */}
+      <Modal
+        open={showResendModal}
+        onClose={() => !resending && setShowResendModal(false)}
+        title="Resend invoice email"
+        size="sm"
+        footer={
+          <>
+            <Button
+              variant="secondary"
+              onClick={() => setShowResendModal(false)}
+              disabled={resending}
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleResend} loading={resending}>
+              <Send size={14} />
+              Resend email
+            </Button>
+          </>
+        }
+      >
+        <div className="space-y-4">
+          <div
+            className="rounded-xl p-4 flex items-center gap-4"
+            style={{
+              background: "rgba(37,99,235,0.08)",
+              border: "1px solid rgba(37,99,235,0.18)",
+            }}
+          >
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 font-bold text-[13px] text-white"
+              style={{ background: "linear-gradient(135deg,#2563eb,#7c3aed)" }}
+            >
+              {invoice.client.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase()
+                .slice(0, 2)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold text-white text-[15px] truncate">
+                {invoice.client.name}
+              </p>
+              <p className="text-[13px] text-white/40 truncate">
+                {invoice.client.email}
+              </p>
+            </div>
+          </div>
+          <p className="text-[14px] text-white/55 leading-relaxed">
+            This will resend the invoice email to{" "}
+            <span className="text-white/80 font-medium">
+              {invoice.client.email}
+            </span>
+            . The invoice status will not change.
+          </p>
         </div>
       </Modal>
 

@@ -102,7 +102,7 @@ export default function InvoicesPage() {
     try {
       await apiRequest(`/invoices/${deleteTarget.id}`, { method: "DELETE" });
       setInvoices((prev) => prev.filter((i) => i.id !== deleteTarget.id));
-      toast.success(`${deleteTarget.invoiceNumber} deleted`);
+      toast.success(`${deleteTarget.invoiceNumber} moved to Trash`);
       setShowDelete(false);
     } catch (err: any) {
       toast.error(err.message);
@@ -134,15 +134,41 @@ export default function InvoicesPage() {
             Create, send, and track all your invoices
           </p>
         </div>
-        <Link
-          href="/invoices/create"
-          className="inline-flex items-center gap-2 text-white font-semibold text-[13px] sm:text-[14px]
-                     px-4 sm:px-5 py-2.5 rounded-xl transition-all duration-150 shadow-lg shadow-brand-600/20 shrink-0"
-          style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
-        >
-          <Plus size={15} />
-          New invoice
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/invoices/trash"
+            className="inline-flex items-center gap-2 text-[13px] sm:text-[14px] font-semibold px-4 py-2.5 rounded-xl transition-colors shrink-0"
+            style={{
+              border: "1px solid rgba(255,255,255,0.1)",
+              color: "rgba(255,255,255,0.4)",
+              background: "rgba(255,255,255,0.03)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLElement).style.background =
+                "rgba(255,255,255,0.07)";
+              (e.currentTarget as HTMLElement).style.color =
+                "rgba(255,255,255,0.7)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLElement).style.background =
+                "rgba(255,255,255,0.03)";
+              (e.currentTarget as HTMLElement).style.color =
+                "rgba(255,255,255,0.4)";
+            }}
+          >
+            <Trash2 size={14} />
+            Trash
+          </Link>
+          <Link
+            href="/invoices/create"
+            className="inline-flex items-center gap-2 text-white font-semibold text-[13px] sm:text-[14px]
+                       px-4 sm:px-5 py-2.5 rounded-xl transition-all duration-150 shadow-lg shadow-brand-600/20 shrink-0"
+            style={{ background: "linear-gradient(135deg, #2563eb, #7c3aed)" }}
+          >
+            <Plus size={15} />
+            New invoice
+          </Link>
+        </div>
       </div>
 
       {/* ── Stats bar ── */}
@@ -541,7 +567,7 @@ export default function InvoicesPage() {
       <Modal
         open={showDelete}
         onClose={() => setShowDelete(false)}
-        title="Delete invoice"
+        title="Move to Trash"
         size="sm"
         footer={
           <>
@@ -559,11 +585,11 @@ export default function InvoicesPage() {
         }
       >
         <p className="text-[15px] text-white/60 leading-relaxed">
-          Are you sure you want to delete invoice{" "}
+          Move{" "}
           <span className="text-white font-semibold font-mono">
             {deleteTarget?.invoiceNumber}
-          </span>
-          ? This action cannot be undone.
+          </span>{" "}
+          to Trash? You can restore it anytime from the Trash page.
         </p>
       </Modal>
     </>
