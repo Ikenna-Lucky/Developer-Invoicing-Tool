@@ -69,11 +69,11 @@ export default function ForgotPasswordPage() {
           </h1>
           <p className="text-[15px] text-white/50 leading-relaxed max-w-xs mx-auto mb-8">
             If an account exists for{" "}
-            <span className="text-white/80 font-medium">{email}</span>, we've
-            sent a password reset link. It expires in 1 hour.
+            <span className="text-white/80 font-medium">{email}</span>,
+            we&apos;ve sent a password reset link. It expires in 1 hour.
           </p>
           <p className="text-[13px] text-white/30">
-            Didn't receive it?{" "}
+            Didn&apos;t receive it?{" "}
             <button
               onClick={() => {
                 setSent(false);
@@ -96,7 +96,7 @@ export default function ForgotPasswordPage() {
               Forgot your password?
             </h1>
             <p className="text-[15px] text-white/50">
-              Enter your email and we'll send you a reset link.
+              Enter your email and we&apos;ll send you a reset link.
             </p>
           </div>
 
