@@ -25,11 +25,16 @@ export interface AuthUser {
 interface AuthContextValue {
   user: AuthUser | null;
   loading: boolean;
+  loggingOut: boolean;
   /** Live avatar URL — updated immediately on upload and after DB sync */
   avatarUrl: string;
   /** Call this when the user uploads a new photo so all components update instantly */
   setAvatarUrl: (url: string) => void;
-  login: (email: string, password: string) => Promise<void>;
+  login: (
+    email: string,
+    password: string,
+    rememberMe?: boolean,
+  ) => Promise<void>;
   register: (
     fullName: string,
     email: string,
@@ -66,6 +71,7 @@ function clearSessionCookie() {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string>("");
 
   // ─── Internal helper: apply a user payload from the API ───────────────────
@@ -129,17 +135,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // ─── Auth actions ──────────────────────────────────────────────────────────
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string, rememberMe = false) => {
     const res = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, rememberMe }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error ?? "Login failed");
     applyUser(data.user);
-    setSessionCookie(); // let middleware know this domain has an active session
+    // Session cookie lifetime matches the refresh token duration
+    const maxAge = rememberMe ? 60 * 60 * 24 * 30 : 60 * 60 * 24 * 7;
+    const secure = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `billd_session=1; path=/; max-age=${maxAge}; SameSite=Lax${secure}`;
   };
 
   const register = async (
@@ -160,24 +169,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
-    // Clear local state IMMEDIATELY — the UI feels instant regardless of server speed.
+    setLoggingOut(true);
+    // Clear local state immediately so the UI starts transitioning
     setUser(null);
     setAvatarUrl("");
     clearSessionCookie();
 
     // Tell the server to clear cookies + revoke the refresh token.
-    // We still await so the browser receives the Set-Cookie: delete headers
-    // before the caller does router.push("/sign-in"). Without this, the
-    // middleware would still see the access_token cookie and redirect back.
     try {
       await fetch(`${API_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
     } catch {
-      // Network failure — the server couldn't clear the cookies.
-      // The access token expires in 15 min anyway; nothing else we can do
-      // from JS since the cookies are httpOnly.
+      // Network failure is non-fatal — access token expires in 15 min anyway.
+    } finally {
+      setLoggingOut(false);
     }
   };
 
@@ -186,6 +193,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         loading,
+        loggingOut,
         avatarUrl,
         setAvatarUrl,
         login,
@@ -195,6 +203,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
+
+      {/* Full-screen sign-out overlay — rendered at the root so it covers
+          the entire dashboard while the logout request is in-flight. */}
+      {loggingOut && (
+        <div
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-4"
+          style={{
+            background: "rgba(6,9,20,0.92)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          {/* Spinning gradient ring */}
+          <div className="relative w-14 h-14">
+            <div
+              className="absolute inset-0 rounded-full animate-spin"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, #2563eb, #7c3aed, #ec4899, transparent)",
+                WebkitMask:
+                  "radial-gradient(farthest-side, transparent calc(100% - 3px), white calc(100% - 3px))",
+                mask: "radial-gradient(farthest-side, transparent calc(100% - 3px), white calc(100% - 3px))",
+              }}
+            />
+            <div
+              className="absolute inset-[5px] rounded-full flex items-center justify-center"
+              style={{ background: "rgba(6,9,20,0.9)" }}
+            >
+              <div
+                className="w-5 h-5 rounded-full"
+                style={{
+                  background: "linear-gradient(135deg,#2563eb,#7c3aed)",
+                }}
+              />
+            </div>
+          </div>
+          <p className="text-[15px] font-semibold text-white/70 tracking-wide">
+            Signing out…
+          </p>
+        </div>
+      )}
     </AuthContext.Provider>
   );
 }
