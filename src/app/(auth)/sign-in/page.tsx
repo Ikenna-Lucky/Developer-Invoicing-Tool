@@ -279,7 +279,7 @@ function SignInForm() {
             )}
           </div>
           <span className="text-[14px] text-white/50 group-hover:text-white/70 transition-colors">
-            Remember me for 30 days
+            Stay signed in
           </span>
         </label>
 
