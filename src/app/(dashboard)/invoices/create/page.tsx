@@ -11,7 +11,7 @@ import { formatCurrency } from "@/lib/utils";
 import { apiRequest, API_BASE } from "@/lib/api";
 import type { Client, ApiResponse, Invoice } from "@/types";
 
-// ─── Types ─────────────────────────────────────────────────────────────────────
+// Types
 
 interface LineItem {
   id: string;
@@ -27,7 +27,7 @@ const emptyItem = (): LineItem => ({
   rate: "",
 });
 
-// ─── Shared dark input class ────────────────────────────────────────────────────
+// Shared dark input class
 
 const darkInput =
   "w-full rounded-xl px-3 py-2.5 text-[14px] text-white placeholder:text-white/20 " +
@@ -43,13 +43,13 @@ const darkInputErrorStyle = {
   border: "1px solid rgba(239,68,68,0.45)",
 };
 
-// ─── Main Component ────────────────────────────────────────────────────────────
+// Main Component
 
 export default function CreateInvoicePage() {
   const router = useRouter();
   const toast = useToast();
 
-  // ── Form state ──────────────────────────────────────────────────────────────
+  // Form state
   const [clients, setClients] = useState<Client[]>([]);
   const [clientId, setClientId] = useState("");
   const [issueDate, setIssueDate] = useState(
@@ -66,7 +66,7 @@ export default function CreateInvoicePage() {
   const [submitting, setSubmitting] = useState(false);
   const [loadingClients, setLoadingClients] = useState(true);
 
-  // ── Load clients on mount ────────────────────────────────────────────────────
+  // Load clients on mount
 
   useEffect(() => {
     const load = async () => {
@@ -88,7 +88,7 @@ export default function CreateInvoicePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Line item helpers ────────────────────────────────────────────────────────
+  // Line item helpers
 
   const addItem = () => setItems((prev) => [...prev, emptyItem()]);
 
@@ -107,7 +107,7 @@ export default function CreateInvoicePage() {
     );
   };
 
-  // ── Live totals ──────────────────────────────────────────────────────────────
+  // Live totals
 
   const subtotal = items.reduce((sum, item) => {
     const qty = parseFloat(item.quantity) || 0;
@@ -115,7 +115,7 @@ export default function CreateInvoicePage() {
     return sum + qty * rate;
   }, 0);
 
-  // ── Validation ───────────────────────────────────────────────────────────────
+  // Validation
 
   const validate = (): boolean => {
     const errs: Record<string, string> = {};
@@ -138,7 +138,7 @@ export default function CreateInvoicePage() {
     return Object.keys(errs).length === 0;
   };
 
-  // ── Submit ───────────────────────────────────────────────────────────────────
+  // Submit
 
   const handleSubmit = async () => {
     if (!validate()) return;
@@ -171,14 +171,14 @@ export default function CreateInvoicePage() {
     }
   };
 
-  // ── Card style helpers ───────────────────────────────────────────────────────
+  // Card style helpers
 
   const cardStyle = {
     background: "#161b27",
     border: "1px solid rgba(255,255,255,0.07)",
   };
 
-  // ─── Render ────────────────────────────────────────────────────────────────
+  // Render
 
   return (
     <div className="max-w-4xl">
@@ -216,7 +216,7 @@ export default function CreateInvoicePage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6">
-        {/* ── Main form column ── */}
+        {/* Main form column */}
         <div className="space-y-5">
           {/* Client + dates card */}
           <div className="rounded-2xl p-6" style={cardStyle}>
@@ -459,7 +459,7 @@ export default function CreateInvoicePage() {
           </div>
         </div>
 
-        {/* ── Sidebar: totals + actions ── */}
+        {/* Sidebar: totals + actions */}
         <div className="space-y-4">
           <div
             className="rounded-2xl p-5 sm:sticky sm:top-[88px]"

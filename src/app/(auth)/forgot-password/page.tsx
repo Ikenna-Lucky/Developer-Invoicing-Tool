@@ -53,7 +53,7 @@ export default function ForgotPasswordPage() {
       </Link>
 
       {sent ? (
-        /* ── Success state ── */
+        /* Success state */
         <div className="text-center">
           <div
             className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
           </p>
         </div>
       ) : (
-        /* ── Form state ── */
+        /* Form state */
         <div>
           <div className="mb-8">
             <p className="text-[12px] font-semibold text-brand-400 uppercase tracking-widest mb-2">

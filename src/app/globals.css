@@ -1,30 +1,14 @@
-/* ─── Google Fonts ───────────────────────────────────────────────────────────
- *
- * Bricolage Grotesque → hero headlines, display text, big statements
- *   Why: Variable weight (400–800), distinctive personality, widely used by
- *   design-forward startups in 2024/2025 (Resend, etc.). Looks extraordinary
- *   at large sizes. The slight quirks in letterforms give it premium character.
- *
- * Inter → body text, UI labels, table data, form inputs, buttons, captions
- *   Why: Purpose-built for screen readability. Optimised pixel-by-pixel at
- *   small sizes. Still the undisputed standard for product UI in 2025.
- *
- * JetBrains Mono → invoice numbers, amounts, IDs, date values in tables
- *   Why: Monospaced digits align perfectly in columns. Numbers are easier
- *   to compare and scan when they all take the same horizontal space.
- *
- * NOTE: @import must come before all other rules (CSS spec).
- */
+/* Bricolage Grotesque for hero/display text, Inter for body/UI, JetBrains Mono
+ * for numbers (invoice amounts, IDs, dates) so digits line up in columns.
+ * @import has to come before all other rules per the CSS spec. */
 @import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 @import "tailwindcss";
 
-/* ─── Theme tokens ───────────────────────────────────────────────────────────
- * Tailwind v4 reads @theme to generate utility classes.
- * font-display → Bricolage Grotesque   (use on h1, h2, logo, hero text)
- * font-sans    → Inter                 (default for everything else)
- * font-mono    → JetBrains Mono        (numbers, amounts, IDs)
- */
+/* Tailwind v4 reads @theme to generate utility classes.
+ * font-display = Bricolage Grotesque (h1, h2, logo, hero text)
+ * font-sans    = Inter (default)
+ * font-mono    = JetBrains Mono (numbers, amounts, IDs) */
 @theme {
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-display: "Bricolage Grotesque", system-ui, sans-serif;
@@ -40,7 +24,7 @@
   --color-brand-900: #1e3a8a;
 }
 
-/* ─── Base styles ────────────────────────────────────────────────────────────*/
+/* Base styles */
 @layer base {
   *,
   *::before,
@@ -60,32 +44,6 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-
-  /*
-   * WHERE EACH FONT IS USED:
-   *
-   * font-display (Bricolage Grotesque):
-   *   - Landing page hero H1
-   *   - Section headings on landing page
-   *   - Sidebar logo text
-   *   - Page titles inside the app (h1 on each page)
-   *   - Any text > 24px that needs visual impact
-   *
-   * font-sans (Inter) — the DEFAULT, no class needed:
-   *   - Navigation labels
-   *   - Button text
-   *   - Body paragraphs
-   *   - Form labels and inputs
-   *   - Table data
-   *   - Badges and chips
-   *   - Any text under 20px
-   *
-   * font-mono (JetBrains Mono):
-   *   - Invoice numbers (INV-0001)
-   *   - Currency amounts ($4,200.00)
-   *   - Date values in table cells
-   *   - Any ID or reference number
-   */
 
   /* Headings inherit display font by default */
   h1,
@@ -107,7 +65,7 @@
   }
 }
 
-/* ─── Reusable component classes ─────────────────────────────────────────────*/
+/* Reusable component classes */
 @layer components {
   .btn-primary {
     display: inline-flex;
@@ -162,7 +120,7 @@
   }
 }
 
-/* ─── Keyframe animations ────────────────────────────────────────────────────*/
+/* Keyframe animations */
 
 @keyframes float {
   0%,
@@ -279,11 +237,8 @@
   background-size: 28px 28px;
 }
 
-/* ─── Reduced motion — respect user OS preference ────────────────────────────
- * If the user has "Reduce Motion" enabled in their OS accessibility settings,
- * we disable all animations. This is both an accessibility requirement and
- * good practice — some users get motion sickness from animations.
- */
+/* Respect the OS-level "reduce motion" preference — disables animations for
+ * users who get motion sickness from them or just prefer things to hold still. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

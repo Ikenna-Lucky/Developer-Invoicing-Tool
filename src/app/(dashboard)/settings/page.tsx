@@ -15,7 +15,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/components/ui/Toast";
 import { apiRequest } from "@/lib/api";
 
-// ─── Types ─────────────────────────────────────────────────────────────────────
+// Types
 
 type Tab = "profile" | "business" | "preferences";
 
@@ -25,7 +25,7 @@ const TABS: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "preferences", label: "Preferences", icon: SlidersHorizontal },
 ];
 
-// ─── Save button — animates to checkmark ───────────────────────────────────────
+// Save button — animates to checkmark
 
 function SaveButton({
   onClick,
@@ -66,7 +66,7 @@ function SaveButton({
   );
 }
 
-// ─── Section wrapper ───────────────────────────────────────────────────────────
+// Section wrapper
 
 function Section({
   title,
@@ -106,7 +106,7 @@ function Section({
   );
 }
 
-// ─── Avatar editor ─────────────────────────────────────────────────────────────
+// Avatar editor
 
 function AvatarEditor({
   name,
@@ -246,13 +246,13 @@ function AvatarEditor({
   );
 }
 
-// ─── Divider ───────────────────────────────────────────────────────────────────
+// Divider
 
 const Divider = () => (
   <div className="h-px my-6" style={{ background: "rgba(255,255,255,0.06)" }} />
 );
 
-// ─── Main page ─────────────────────────────────────────────────────────────────
+// Main page
 
 const LS_KEY = "billd_settings";
 
@@ -261,7 +261,7 @@ export default function SettingsPage() {
   const toast = useToast();
   const [tab, setTab] = useState<Tab>("profile");
 
-  // ── Form state (loads from localStorage) ──────────────────────────────────
+  // Form state (loads from localStorage)
   const [profile, setProfile] = useState({
     fullName: user?.fullName ?? "",
     phone: "",
@@ -307,7 +307,7 @@ export default function SettingsPage() {
     }));
   }, [user]);
 
-  // ── Save helpers ───────────────────────────────────────────────────────────
+  // Save helpers
   const [saving, setSaving] = useState<Tab | null>(null);
 
   const save = async (section: Tab) => {
@@ -370,7 +370,7 @@ export default function SettingsPage() {
     setTimeout(() => setSaving(null), 2000);
   };
 
-  // ─── Render ────────────────────────────────────────────────────────────────
+  // Render
 
   return (
     <div>
@@ -386,7 +386,7 @@ export default function SettingsPage() {
 
       {/* Layout: stacked on mobile, side-by-side on lg+ */}
       <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 lg:items-start">
-        {/* ── Tab rail — horizontal pill strip on mobile, vertical sidebar on desktop ── */}
+        {/* Tab rail — horizontal pill strip on mobile, vertical sidebar on desktop */}
         <div
           className="w-full lg:w-52 lg:shrink-0 lg:sticky lg:top-[80px] rounded-2xl p-1.5 lg:p-2"
           style={{
@@ -425,9 +425,9 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        {/* ── Right content ── */}
+        {/* Right content */}
         <div className="w-full lg:flex-1 min-w-0 space-y-4">
-          {/* ── PROFILE TAB ── */}
+          {/* PROFILE TAB */}
           {tab === "profile" && (
             <>
               <Section
@@ -488,7 +488,7 @@ export default function SettingsPage() {
             </>
           )}
 
-          {/* ── BUSINESS TAB ── */}
+          {/* BUSINESS TAB */}
           {tab === "business" && (
             <>
               <Section
@@ -552,7 +552,7 @@ export default function SettingsPage() {
             </>
           )}
 
-          {/* ── PREFERENCES TAB ── */}
+          {/* PREFERENCES TAB */}
           {tab === "preferences" && (
             <>
               <Section

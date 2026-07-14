@@ -1,4 +1,4 @@
-// ─── Shared TypeScript types (mirrors the DB schema) ───────────────────────
+// Shared TypeScript types (mirrors the DB schema)
 
 export type InvoiceStatus = "draft" | "sent" | "paid" | "overdue";
 
@@ -63,7 +63,7 @@ export interface Payment {
   createdAt: string;
 }
 
-// ─── API response wrappers ──────────────────────────────────────────────────
+// API response wrappers
 
 export interface ApiResponse<T> {
   data: T;
@@ -74,7 +74,7 @@ export interface ApiError {
   error: string;
 }
 
-// ─── Dashboard stats ────────────────────────────────────────────────────────
+// Dashboard stats
 
 export interface DashboardStats {
   totalEarned: number;

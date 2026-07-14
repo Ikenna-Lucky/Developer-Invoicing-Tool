@@ -29,7 +29,7 @@ import { formatDate, formatCurrency } from "@/lib/utils";
 import { API_BASE } from "@/lib/api";
 import type { Client, Invoice, InvoiceStatus } from "@/types";
 
-// ─── Helpers ───────────────────────────────────────────────────────────────────
+// Helpers
 
 const STATUS_CFG: Record<
   InvoiceStatus,
@@ -73,7 +73,7 @@ function initials(name: string) {
   );
 }
 
-// ─── Count-up animation ────────────────────────────────────────────────────────
+// Count-up animation
 
 function useCountUp(target: number, duration = 900, delay = 0) {
   const [val, setVal] = useState(0);
@@ -102,7 +102,7 @@ function useCountUp(target: number, duration = 900, delay = 0) {
   return val;
 }
 
-// ─── Stat pill ────────────────────────────────────────────────────────────────
+// Stat pill
 
 function StatPill({
   label,
@@ -143,7 +143,7 @@ function StatPill({
   );
 }
 
-// ─── Invoice timeline row ──────────────────────────────────────────────────────
+// Invoice timeline row
 
 function InvoiceRow({ inv, index }: { inv: Invoice; index: number }) {
   const cfg = STATUS_CFG[inv.status];
@@ -211,7 +211,7 @@ function InvoiceRow({ inv, index }: { inv: Invoice; index: number }) {
   );
 }
 
-// ─── Edit client form (inline modal) ─────────────────────────────────────────
+// Edit client form (inline modal)
 
 interface EditForm {
   name: string;
@@ -221,7 +221,7 @@ interface EditForm {
   address: string;
 }
 
-// ─── Main page ─────────────────────────────────────────────────────────────────
+// Main page
 
 export default function ClientDetailPage() {
   const params = useParams<{ id: string }>();
@@ -247,7 +247,7 @@ export default function ClientDetailPage() {
   const [showDelete, setShowDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  // ── Fetch ─────────────────────────────────────────────────────────────────
+  // Fetch
 
   const load = useCallback(async () => {
     try {
@@ -279,7 +279,7 @@ export default function ClientDetailPage() {
     load();
   }, [load]);
 
-  // ── Computed stats ─────────────────────────────────────────────────────────
+  // Computed stats
 
   const totalBilled = invoices.reduce((s, i) => s + Number(i.totalAmount), 0);
   const totalCollected = invoices
@@ -297,7 +297,7 @@ export default function ClientDetailPage() {
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
 
-  // ── Edit handler ───────────────────────────────────────────────────────────
+  // Edit handler
 
   const openEdit = () => {
     if (!client) return;
@@ -332,7 +332,7 @@ export default function ClientDetailPage() {
     }
   };
 
-  // ── Delete handler ─────────────────────────────────────────────────────────
+  // Delete handler
 
   const handleDelete = async () => {
     setDeleting(true);
@@ -354,7 +354,7 @@ export default function ClientDetailPage() {
     }
   };
 
-  // ─── Loading ───────────────────────────────────────────────────────────────
+  // Loading
 
   if (loading) return <PageLoader />;
   if (!client)
@@ -365,7 +365,7 @@ export default function ClientDetailPage() {
       </div>
     );
 
-  // ─── Render ────────────────────────────────────────────────────────────────
+  // Render
 
   return (
     <>
@@ -381,7 +381,7 @@ export default function ClientDetailPage() {
         All clients
       </button>
 
-      {/* ── Hero card ── */}
+      {/* Hero card */}
       <div
         className="rounded-2xl p-5 sm:p-8 mb-5 relative overflow-hidden"
         style={{
@@ -536,7 +536,7 @@ export default function ClientDetailPage() {
         </div>
       </div>
 
-      {/* ── Stats row ── */}
+      {/* Stats row */}
       <div className="grid grid-cols-2 sm:flex gap-3 sm:gap-4 mb-5">
         <StatPill
           label="Total Billed"
@@ -603,7 +603,7 @@ export default function ClientDetailPage() {
         </div>
       </div>
 
-      {/* ── Invoice timeline ── */}
+      {/* Invoice timeline */}
       <div
         className="rounded-2xl overflow-hidden"
         style={{
@@ -728,7 +728,7 @@ export default function ClientDetailPage() {
         )}
       </div>
 
-      {/* ── Edit modal ── */}
+      {/* Edit modal */}
       <Modal
         open={showEdit}
         onClose={() => setShowEdit(false)}
@@ -800,7 +800,7 @@ export default function ClientDetailPage() {
         </div>
       </Modal>
 
-      {/* ── Delete Confirmation Modal ── */}
+      {/* Delete Confirmation Modal */}
       <Modal
         open={showDelete}
         onClose={() => setShowDelete(false)}

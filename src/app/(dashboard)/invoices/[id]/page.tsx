@@ -35,14 +35,14 @@ import type {
   ApiResponse,
 } from "@/types";
 
-// ─── Types ─────────────────────────────────────────────────────────────────────
+// Types
 
 interface FullInvoice extends Invoice {
   items: InvoiceItem[];
   client: Client;
 }
 
-// ─── Status config ─────────────────────────────────────────────────────────────
+// Status config
 
 const STATUS_CONFIG: Record<
   InvoiceStatus,
@@ -58,7 +58,7 @@ const STATUS_CONFIG: Record<
   overdue: { label: "Overdue", bg: "rgba(239,68,68,0.12)", color: "#f87171" },
 };
 
-// ─── Status stepper ────────────────────────────────────────────────────────────
+// Status stepper
 
 const STEPS: { status: InvoiceStatus; label: string; icon: React.ReactNode }[] =
   [
@@ -206,7 +206,7 @@ function StatusStepper({
   );
 }
 
-// ─── Copy button ──────────────────────────────────────────────────────────────
+// Copy button
 
 function CopyButton({ text, label }: { text: string; label?: string }) {
   const [copied, setCopied] = useState(false);
@@ -235,7 +235,7 @@ function CopyButton({ text, label }: { text: string; label?: string }) {
   );
 }
 
-// ─── Main Component ────────────────────────────────────────────────────────────
+// Main Component
 
 export default function InvoiceDetailPage() {
   const params = useParams<{ id: string }>();
@@ -253,7 +253,7 @@ export default function InvoiceDetailPage() {
   const [resending, setResending] = useState(false);
   const [showResendModal, setShowResendModal] = useState(false);
 
-  // ── Fetch ──────────────────────────────────────────────────────────────────
+  // Fetch
 
   useEffect(() => {
     const load = async () => {
@@ -275,7 +275,7 @@ export default function InvoiceDetailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
-  // ── Status update ──────────────────────────────────────────────────────────
+  // Status update
 
   const updateStatus = async (status: InvoiceStatus) => {
     if (!invoice) return;
@@ -294,7 +294,7 @@ export default function InvoiceDetailPage() {
     }
   };
 
-  // ── Delete (soft) ──────────────────────────────────────────────────────────
+  // Delete (soft)
 
   const handleDelete = async () => {
     if (!invoice) return;
@@ -310,7 +310,7 @@ export default function InvoiceDetailPage() {
     }
   };
 
-  // ── Resend email ───────────────────────────────────────────────────────────
+  // Resend email
 
   const handleResend = async () => {
     if (!invoice) return;
@@ -326,7 +326,7 @@ export default function InvoiceDetailPage() {
     }
   };
 
-  // ── Send invoice ───────────────────────────────────────────────────────────
+  // Send invoice
 
   const handleSendInvoice = async () => {
     if (!invoice) return;
@@ -346,7 +346,7 @@ export default function InvoiceDetailPage() {
     }
   };
 
-  // ── PDF download ───────────────────────────────────────────────────────────
+  // PDF download
 
   const handleDownloadPDF = async () => {
     if (!invoice || downloadingPDF) return;
@@ -373,7 +373,7 @@ export default function InvoiceDetailPage() {
     }
   };
 
-  // ─── Render ────────────────────────────────────────────────────────────────
+  // Render
 
   if (loading) return <PageLoader />;
   if (!invoice) return null;
@@ -559,7 +559,7 @@ export default function InvoiceDetailPage() {
 
       {/* Content */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-6">
-        {/* ── Invoice document card ── */}
+        {/* Invoice document card */}
         <div className="rounded-2xl overflow-hidden" style={cardStyle}>
           {/* Brand bar — gradient */}
           <div
@@ -732,7 +732,7 @@ export default function InvoiceDetailPage() {
           )}
         </div>
 
-        {/* ── Sidebar ── */}
+        {/* Sidebar */}
         <div className="space-y-4">
           {/* Status stepper */}
           <StatusStepper

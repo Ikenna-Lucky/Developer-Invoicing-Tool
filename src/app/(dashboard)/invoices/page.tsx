@@ -13,7 +13,7 @@ import { formatDate, formatCurrency } from "@/lib/utils";
 import { apiRequest, API_BASE } from "@/lib/api";
 import type { Invoice, InvoiceStatus } from "@/types";
 
-// ─── Status config ─────────────────────────────────────────────────────────────
+// Status config
 
 const STATUS_CONFIG: Record<
   InvoiceStatus,
@@ -43,7 +43,7 @@ interface InvoiceRow extends Invoice {
   clientCompany: string | null;
 }
 
-// ─── Main Component ────────────────────────────────────────────────────────────
+// Main Component
 
 export default function InvoicesPage() {
   const router = useRouter();
@@ -59,7 +59,7 @@ export default function InvoicesPage() {
   const [showDelete, setShowDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  // ── Fetch ──────────────────────────────────────────────────────────────────
+  // Fetch
 
   const fetchInvoices = useCallback(
     async (search?: string, status?: InvoiceStatus | "all") => {
@@ -94,7 +94,7 @@ export default function InvoicesPage() {
     return () => clearTimeout(t);
   }, [searchQuery, statusFilter, fetchInvoices]);
 
-  // ── Delete ─────────────────────────────────────────────────────────────────
+  // Delete
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -120,7 +120,7 @@ export default function InvoicesPage() {
     {} as Record<string, number>,
   );
 
-  // ─── Render ────────────────────────────────────────────────────────────────
+  // Render
 
   return (
     <>
@@ -171,7 +171,7 @@ export default function InvoicesPage() {
         </div>
       </div>
 
-      {/* ── Stats bar ── */}
+      {/* Stats bar */}
       {!loading &&
         invoices.length > 0 &&
         (() => {
@@ -340,7 +340,7 @@ export default function InvoicesPage() {
           />
         ) : (
           <>
-            {/* ── Mobile card list (hidden on sm+) ── */}
+            {/* Mobile card list (hidden on sm+) */}
             <div
               className="sm:hidden divide-y"
               style={{ borderColor: "rgba(255,255,255,0.04)" }}
@@ -420,7 +420,7 @@ export default function InvoicesPage() {
               })}
             </div>
 
-            {/* ── Desktop table (hidden below sm) ── */}
+            {/* Desktop table (hidden below sm) */}
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -563,7 +563,7 @@ export default function InvoicesPage() {
         )}
       </div>
 
-      {/* ── Delete Confirmation Modal ── */}
+      {/* Delete Confirmation Modal */}
       <Modal
         open={showDelete}
         onClose={() => setShowDelete(false)}

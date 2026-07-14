@@ -23,7 +23,7 @@ import { formatCurrency } from "@/lib/utils";
 import type { Client, Invoice } from "@/types";
 import Link from "next/link";
 
-// ─── Avatar bubble ────────────────────────────────────────────────────────────
+// Avatar bubble
 
 function AvatarBubble({
   avatarUrl,
@@ -60,7 +60,7 @@ function AvatarBubble({
   );
 }
 
-// ─── Inline search with results dropdown ─────────────────────────────────────
+// Inline search with results dropdown
 
 type CommandItem = {
   id: string;
@@ -84,7 +84,7 @@ function HeaderSearch() {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // ── ⌘K / Ctrl+K global shortcut ───────────────────────────────────────────
+  // ⌘K / Ctrl+K global shortcut
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -101,7 +101,7 @@ function HeaderSearch() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  // ── Click outside to close ─────────────────────────────────────────────────
+  // Click outside to close
   useEffect(() => {
     const close = (e: MouseEvent) => {
       if (
@@ -115,7 +115,7 @@ function HeaderSearch() {
     return () => document.removeEventListener("mousedown", close);
   }, []);
 
-  // ── Lazy-load clients + invoices on first open ────────────────────────────
+  // Lazy-load clients + invoices on first open
   useEffect(() => {
     if (!open || dataLoaded) return;
     Promise.all([
@@ -142,7 +142,7 @@ function HeaderSearch() {
     [router],
   );
 
-  // ── Quick actions ──────────────────────────────────────────────────────────
+  // Quick actions
 
   const QUICK_ACTIONS: CommandItem[] = [
     {
@@ -295,7 +295,7 @@ function HeaderSearch() {
     setIdx(0);
   }, [query]);
 
-  // ─── Render ────────────────────────────────────────────────────────────────
+  // Render
 
   return (
     <div
@@ -303,7 +303,7 @@ function HeaderSearch() {
       className="relative w-full min-w-0"
       style={{ maxWidth: 540 }}
     >
-      {/* ── Search input bar ── */}
+      {/* Search input bar */}
       <div
         className="flex items-center gap-3 h-10 px-4 rounded-xl transition-all duration-200 cursor-text"
         style={{
@@ -353,7 +353,7 @@ function HeaderSearch() {
         )}
       </div>
 
-      {/* ── Dropdown results panel ── */}
+      {/* Dropdown results panel */}
       {open && (
         <div
           className="absolute left-0 right-0 rounded-2xl overflow-hidden z-[200]"
@@ -505,7 +505,7 @@ function HeaderSearch() {
   );
 }
 
-// ─── Profile dropdown ─────────────────────────────────────────────────────────
+// Profile dropdown
 
 function ProfileMenu() {
   const { user, logout } = useAuth();
@@ -547,7 +547,7 @@ function ProfileMenu() {
 
   return (
     <div ref={ref} className="relative shrink-0">
-      {/* ── Trigger button ── */}
+      {/* Trigger button */}
       <button
         onClick={() => setOpen((v) => !v)}
         className="flex items-center gap-2 sm:gap-3 h-10 pl-1.5 pr-1.5 sm:pl-2.5 sm:pr-4 rounded-xl transition-all duration-150"
@@ -576,7 +576,7 @@ function ProfileMenu() {
         />
       </button>
 
-      {/* ── Dropdown panel ── */}
+      {/* Dropdown panel */}
       {open && (
         <div
           className="absolute right-0 rounded-2xl overflow-hidden z-[200]"
@@ -663,7 +663,7 @@ function ProfileMenu() {
   );
 }
 
-// ─── Animated hamburger / X toggle (mobile only) ─────────────────────────────
+// Animated hamburger / X toggle (mobile only)
 
 function MenuToggle({
   isOpen,
@@ -734,7 +734,7 @@ function MenuToggle({
   );
 }
 
-// ─── DashboardHeader — the exported top bar ───────────────────────────────────
+// DashboardHeader — the exported top bar
 
 export function DashboardHeader() {
   const { isOpen, toggle } = useSidebar();

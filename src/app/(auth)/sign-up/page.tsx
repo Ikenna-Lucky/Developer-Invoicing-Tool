@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
-// ─── Google error messages (shared with sign-in) ──────────────────────────────
+// Google error messages (shared with sign-in)
 
 const GOOGLE_ERRORS: Record<string, string> = {
   google_denied:           "Google sign-in was cancelled. Please try again.",
@@ -18,7 +18,7 @@ const GOOGLE_ERRORS: Record<string, string> = {
   google_auth_failed:      "Google sign-in failed. Please try again or use email and password.",
 };
 
-// ─── Shared input styles ──────────────────────────────────────────────────────
+// Shared input styles
 
 const darkInput =
   "w-full rounded-xl px-4 py-3.5 text-[15px] text-white placeholder:text-white/25 " +
@@ -30,7 +30,7 @@ const darkInputStyle = {
   border:     "1px solid rgba(255,255,255,0.1)",
 };
 
-// ─── Google OAuth button ──────────────────────────────────────────────────────
+// Google OAuth button
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
@@ -73,7 +73,7 @@ function GoogleButton() {
   );
 }
 
-// ─── Error banner ─────────────────────────────────────────────────────────────
+// Error banner
 
 function ErrorBanner({ message }: { message: string }) {
   return (
@@ -92,7 +92,7 @@ function ErrorBanner({ message }: { message: string }) {
   );
 }
 
-// ─── Inner page (needs useSearchParams — must be wrapped in Suspense) ─────────
+// Inner page (needs useSearchParams — must be wrapped in Suspense)
 
 function SignUpForm() {
   const { register } = useAuth();
@@ -286,7 +286,7 @@ function SignUpForm() {
   );
 }
 
-// ─── Page export — wraps form in Suspense for useSearchParams ─────────────────
+// Page export — wraps form in Suspense for useSearchParams
 
 export default function SignUpPage() {
   return (

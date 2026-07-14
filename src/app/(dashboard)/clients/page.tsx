@@ -23,7 +23,7 @@ import type { Client } from "@/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
-// ─── Form data shape ──────────────────────────────────────────────────────────
+// Form data shape
 interface ClientFormData {
   name: string;
   email: string;
@@ -40,29 +40,29 @@ const emptyForm: ClientFormData = {
   address: "",
 };
 
-// ─── Main Page Component ──────────────────────────────────────────────────────
+// Main Page Component
 
 export default function ClientsPage() {
   const toast = useToast();
   const router = useRouter();
 
-  // ── Data state ──
+  // Data state
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // ── Modal state ──
+  // Modal state
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  // ── Form state ──
+  // Form state
   const [formData, setFormData] = useState<ClientFormData>(emptyForm);
   const [formErrors, setFormErrors] = useState<Partial<ClientFormData>>({});
   const [submitting, setSubmitting] = useState(false);
 
-  // ── Fetch clients ─────────────────────────────────────────────────────────
+  // Fetch clients
   const fetchClients = useCallback(async (search?: string) => {
     try {
       const url = search
@@ -91,7 +91,7 @@ export default function ClientsPage() {
     return () => clearTimeout(timer);
   }, [searchQuery, fetchClients]);
 
-  // ── Open modals ───────────────────────────────────────────────────────────
+  // Open modals
 
   const openAddModal = () => {
     setIsEditing(false);
@@ -120,7 +120,7 @@ export default function ClientsPage() {
     setShowDeleteModal(true);
   };
 
-  // ── Form validation ───────────────────────────────────────────────────────
+  // Form validation
 
   const validate = (): boolean => {
     const errors: Partial<ClientFormData> = {};
@@ -132,7 +132,7 @@ export default function ClientsPage() {
     return Object.keys(errors).length === 0;
   };
 
-  // ── Submit (create or edit) ────────────────────────────────────────────────
+  // Submit (create or edit)
 
   const handleSubmit = async () => {
     if (!validate()) return;
@@ -172,7 +172,7 @@ export default function ClientsPage() {
     }
   };
 
-  // ── Delete ────────────────────────────────────────────────────────────────
+  // Delete
 
   const handleDelete = async () => {
     if (!selectedClient) return;
@@ -199,11 +199,11 @@ export default function ClientsPage() {
     }
   };
 
-  // ─── Render ───────────────────────────────────────────────────────────────
+  // Render
 
   return (
     <>
-      {/* ── Page Header ── */}
+      {/* Page Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-6 sm:mb-8">
         <div>
           <h1 className="text-[22px] sm:text-[28px] font-bold text-white tracking-tight">
@@ -219,7 +219,7 @@ export default function ClientsPage() {
         </Button>
       </div>
 
-      {/* ── Content Card ── */}
+      {/* Content Card */}
       <div
         className="rounded-2xl overflow-hidden"
         style={{
@@ -227,7 +227,7 @@ export default function ClientsPage() {
           border: "1px solid rgba(255,255,255,0.07)",
         }}
       >
-        {/* ── Search bar ── */}
+        {/* Search bar */}
         <div
           className="px-6 py-5"
           style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
@@ -253,7 +253,7 @@ export default function ClientsPage() {
           </div>
         </div>
 
-        {/* ── Table or states ── */}
+        {/* Table or states */}
         {loading ? (
           <PageLoader />
         ) : clients.length === 0 ? (
@@ -273,7 +273,7 @@ export default function ClientsPage() {
           />
         ) : (
           <>
-            {/* ── Mobile card list (hidden on sm+) ── */}
+            {/* Mobile card list (hidden on sm+) */}
             <div
               className="sm:hidden divide-y"
               style={{ borderColor: "rgba(255,255,255,0.04)" }}
@@ -339,7 +339,7 @@ export default function ClientsPage() {
               ))}
             </div>
 
-            {/* ── Desktop table (hidden below sm) ── */}
+            {/* Desktop table (hidden below sm) */}
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -455,7 +455,7 @@ export default function ClientsPage() {
           </>
         )}
 
-        {/* ── Footer count ── */}
+        {/* Footer count */}
         {clients.length > 0 && (
           <div
             className="px-6 py-4"
@@ -471,7 +471,7 @@ export default function ClientsPage() {
         )}
       </div>
 
-      {/* ── Add / Edit Modal ── */}
+      {/* Add / Edit Modal */}
       <Modal
         open={showFormModal}
         onClose={() => setShowFormModal(false)}
@@ -545,7 +545,7 @@ export default function ClientsPage() {
         </div>
       </Modal>
 
-      {/* ── Delete Confirmation Modal ── */}
+      {/* Delete Confirmation Modal */}
       <Modal
         open={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}

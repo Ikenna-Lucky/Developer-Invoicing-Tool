@@ -15,14 +15,14 @@ import { formatCurrency, formatDate } from "@/lib/utils";
 import { API_BASE } from "@/lib/api";
 import type { Invoice, InvoiceStatus } from "@/types";
 
-// ─── Types ─────────────────────────────────────────────────────────────────────
+// Types
 
 interface InvoiceRow extends Invoice {
   clientName: string;
   clientCompany: string | null;
 }
 
-// ─── Count-up hook ─────────────────────────────────────────────────────────────
+// Count-up hook
 
 function useCountUp(target: number, duration = 1400, delay = 0) {
   const [value, setValue] = useState(0);
@@ -48,7 +48,7 @@ function useCountUp(target: number, duration = 1400, delay = 0) {
   return value;
 }
 
-// ─── Collection ring (SVG arc) ─────────────────────────────────────────────────
+// Collection ring (SVG arc)
 
 function CollectionRing({
   rate,
@@ -141,7 +141,7 @@ function CollectionRing({
   );
 }
 
-// ─── Status config ─────────────────────────────────────────────────────────────
+// Status config
 
 const STATUS_CONFIG: Record<
   InvoiceStatus,
@@ -157,7 +157,7 @@ const STATUS_CONFIG: Record<
   overdue: { label: "Overdue", bg: "rgba(239,68,68,0.12)", color: "#f87171" },
 };
 
-// ─── Fade-slide wrapper ────────────────────────────────────────────────────────
+// Fade-slide wrapper
 
 function FadeUp({
   children,
@@ -184,7 +184,7 @@ function FadeUp({
   );
 }
 
-// ─── Main page ─────────────────────────────────────────────────────────────────
+// Main page
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -218,7 +218,7 @@ export default function DashboardPage() {
     fetchData();
   }, [fetchData]);
 
-  // ── Derived stats ──────────────────────────────────────────────────────────
+  // Derived stats
   const totalInvoiced = invoices.reduce((s, i) => s + Number(i.totalAmount), 0);
   const totalCollected = invoices
     .filter((i) => i.status === "paid")
@@ -255,7 +255,7 @@ export default function DashboardPage() {
     return "Good evening";
   })();
 
-  // ── Loading skeleton ───────────────────────────────────────────────────────
+  // Loading skeleton
   if (loading)
     return (
       <div className="space-y-4">
@@ -301,7 +301,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-4">
-      {/* ── Header ── */}
+      {/* Header */}
       <FadeUp show={show} delay={0}>
         <div className="flex items-center justify-between gap-3 mb-3">
           <div>
@@ -327,9 +327,9 @@ export default function DashboardPage() {
         </div>
       </FadeUp>
 
-      {/* ── Row 1: Hero card (2/3) + Collection ring (1/3) ── */}
+      {/* Row 1: Hero card (2/3) + Collection ring (1/3) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {/* ── HERO CARD ── */}
+        {/* HERO CARD */}
         <FadeUp show={show} delay={60} className="sm:col-span-2">
           <div
             className="rounded-2xl p-5 sm:p-7 relative overflow-hidden h-full"
@@ -477,7 +477,7 @@ export default function DashboardPage() {
           </div>
         </FadeUp>
 
-        {/* ── COLLECTION RING ── */}
+        {/* COLLECTION RING */}
         <FadeUp show={show} delay={140}>
           <div
             className="rounded-2xl p-6 flex flex-col items-center justify-center h-full relative overflow-hidden"
@@ -513,7 +513,7 @@ export default function DashboardPage() {
         </FadeUp>
       </div>
 
-      {/* ── Row 2: Three compact metric tiles ── */}
+      {/* Row 2: Three compact metric tiles */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Pipeline */}
         <FadeUp show={show} delay={220}>
@@ -652,7 +652,7 @@ export default function DashboardPage() {
         </FadeUp>
       </div>
 
-      {/* ── Recently Issued ── */}
+      {/* Recently Issued */}
       <FadeUp show={show} delay={460}>
         <div
           className="rounded-2xl overflow-hidden"

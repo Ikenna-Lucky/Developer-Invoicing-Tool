@@ -21,7 +21,7 @@ import { API_BASE } from "@/lib/api";
 import { formatCurrency } from "@/lib/utils";
 import type { Client, Invoice } from "@/types";
 
-// ─── Types ─────────────────────────────────────────────────────────────────────
+// Types
 
 interface CommandItem {
   id: string;
@@ -34,7 +34,7 @@ interface CommandItem {
   keywords?: string;
 }
 
-// ─── Keyboard shortcut hint ────────────────────────────────────────────────────
+// Keyboard shortcut hint
 
 export function CmdKHint({ onClick }: { onClick?: () => void }) {
   return (
@@ -61,7 +61,7 @@ export function CmdKHint({ onClick }: { onClick?: () => void }) {
   );
 }
 
-// ─── Main palette ──────────────────────────────────────────────────────────────
+// Main palette
 
 export function CommandPalette() {
   const router = useRouter();
@@ -72,7 +72,7 @@ export function CommandPalette() {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // ── Global keyboard trigger ───────────────────────────────────────────────
+  // Global keyboard trigger
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -95,7 +95,7 @@ export function CommandPalette() {
     }
   }, [open]);
 
-  // ── Fetch data lazily ──────────────────────────────────────────────────────
+  // Fetch data lazily
 
   useEffect(() => {
     if (!open) return;
@@ -112,7 +112,7 @@ export function CommandPalette() {
     });
   }, [open]);
 
-  // ── Build command list ─────────────────────────────────────────────────────
+  // Build command list
 
   const navigate = useCallback(
     (path: string) => {
@@ -253,7 +253,7 @@ export function CommandPalette() {
   const flat = groups.flatMap((g) => g.items);
   const safeIdx = Math.min(idx, Math.max(0, flat.length - 1));
 
-  // ── Keyboard nav inside palette ────────────────────────────────────────────
+  // Keyboard nav inside palette
 
   const handleKey = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
@@ -280,7 +280,7 @@ export function CommandPalette() {
 
   if (!open) return null;
 
-  // ─── Render ───────────────────────────────────────────────────────────────
+  // Render
 
   return (
     <div
