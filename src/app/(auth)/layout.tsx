@@ -15,7 +15,7 @@ export default function AuthLayout({
 }) {
   return (
     <div className="min-h-screen flex">
-      {/* ── Left panel ── */}
+      {/* Left panel */}
       <div className="hidden lg:flex lg:w-[54%] flex-col p-10 relative overflow-hidden bg-[#0a0f1e]">
         {/* Animated gradient base layer */}
         <div
@@ -114,7 +114,7 @@ export default function AuthLayout({
         </div>
       </div>
 
-      {/* ── Right panel ── */}
+      {/* Right panel */}
       <div
         className="w-full lg:w-[46%] flex flex-col items-center justify-center bg-[#0d1117] px-8 py-12 min-h-screen relative"
         style={{ borderLeft: "1px solid rgba(255,255,255,0.06)" }}

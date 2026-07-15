@@ -1,19 +1,5 @@
-/**
- * TOAST NOTIFICATION SYSTEM
- *
- * A Toast is the small pop-up notification that appears at the corner of
- * the screen — "Client created successfully" or "Something went wrong".
- *
- * This is built with React Context — the same pattern as AuthContext.
- * Any component anywhere in the app can call `useToast()` and fire a toast
- * without needing to pass props through multiple levels (prop drilling).
- *
- * How it works:
- * 1. ToastProvider holds a list of active toasts in state
- * 2. Components call toast.success() or toast.error() from useToast()
- * 3. Each toast auto-dismisses after 4 seconds via setTimeout
- * 4. ToastContainer renders all active toasts in the top-right corner
- */
+// Small pop-up notifications ("Client created successfully", etc). Same
+// Context pattern as AuthContext — call useToast() from anywhere to fire one.
 
 "use client";
 
@@ -21,7 +7,7 @@ import { createContext, useContext, useState, useCallback } from "react";
 import { CheckCircle, XCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// Types
 
 type ToastType = "success" | "error";
 
@@ -36,11 +22,11 @@ interface ToastContextValue {
   error:   (message: string) => void;
 }
 
-// ─── Context ──────────────────────────────────────────────────────────────────
+// Context
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
-// ─── Provider ─────────────────────────────────────────────────────────────────
+// Provider
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
@@ -72,7 +58,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ─── Container — renders toasts in top-right corner ──────────────────────────
+// Container — renders toasts in top-right corner
 
 function ToastContainer({
   toasts,
@@ -114,7 +100,7 @@ function ToastContainer({
   );
 }
 
-// ─── Hook ─────────────────────────────────────────────────────────────────────
+// Hook
 
 export function useToast(): ToastContextValue {
   const ctx = useContext(ToastContext);

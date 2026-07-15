@@ -19,7 +19,7 @@ import { formatDate, formatCurrency } from "@/lib/utils";
 import { apiRequest, API_BASE } from "@/lib/api";
 import type { Metadata } from "next";
 
-// ─── Types ─────────────────────────────────────────────────────────────────────
+// Types
 
 interface TrashedInvoice {
   id: string;
@@ -34,7 +34,7 @@ interface TrashedInvoice {
   clientEmail: string | null;
 }
 
-// ─── Days remaining helper ─────────────────────────────────────────────────────
+// Days remaining helper
 
 function daysUntilPurge(deletedAt: string): number {
   const deleted = new Date(deletedAt).getTime();
@@ -42,7 +42,7 @@ function daysUntilPurge(deletedAt: string): number {
   return Math.max(0, Math.ceil((purgeAt - Date.now()) / (24 * 60 * 60 * 1000)));
 }
 
-// ─── Status colors ─────────────────────────────────────────────────────────────
+// Status colors
 
 const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
   draft: { bg: "rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.4)" },
@@ -51,7 +51,7 @@ const STATUS_COLORS: Record<string, { bg: string; color: string }> = {
   overdue: { bg: "rgba(239,68,68,0.12)", color: "#f87171" },
 };
 
-// ─── Component ─────────────────────────────────────────────────────────────────
+// Component
 
 export default function TrashPage() {
   const router = useRouter();
@@ -65,7 +65,7 @@ export default function TrashPage() {
   );
   const [deleting, setDeleting] = useState(false);
 
-  // ── Fetch ────────────────────────────────────────────────────────────────
+  // Fetch
 
   useEffect(() => {
     const load = async () => {
@@ -86,7 +86,7 @@ export default function TrashPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Restore ──────────────────────────────────────────────────────────────
+  // Restore
 
   const handleRestore = async (invoice: TrashedInvoice) => {
     setRestoring(invoice.id);
@@ -101,7 +101,7 @@ export default function TrashPage() {
     }
   };
 
-  // ── Permanent delete ─────────────────────────────────────────────────────
+  // Permanent delete
 
   const handlePermanentDelete = async () => {
     if (!permanentTarget) return;
@@ -120,7 +120,7 @@ export default function TrashPage() {
     }
   };
 
-  // ── Render ───────────────────────────────────────────────────────────────
+  // Render
 
   if (loading) return <PageLoader />;
 

@@ -25,7 +25,7 @@ export function LandingNav() {
 
   return (
     <>
-      {/* ── Floating pill navbar ─────────────────────────────────────────────── */}
+      {/* Floating pill navbar */}
       <div className="fixed top-5 right-0 left-0 z-50 flex justify-center px-4">
         <motion.nav
           initial={{ y: -60, opacity: 0 }}
@@ -129,7 +129,7 @@ export function LandingNav() {
         </motion.nav>
       </div>
 
-      {/* ── Full-screen mobile menu (slides in from the right) ───────────────── */}
+      {/* Full-screen mobile menu (slides in from the right) */}
       <AnimatePresence>
         {mobileOpen && (
           <>

@@ -5,7 +5,7 @@ import { AuthProvider } from "@/context/AuthContext";
 export const metadata: Metadata = {
   title: {
     // Landing page and any page without its own title use the default
-    default: "Billd — Invoice clients. Get paid faster.",
+    default: "Billd | Invoice clients. Get paid faster.",
     // Pages that export their own `title` string get: "Dashboard | Billd"
     template: "%s | Billd",
   },
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     apple: { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
   },
   openGraph: {
-    title: "Billd — Invoice clients. Get paid faster.",
+    title: "Billd | Invoice clients. Get paid faster.",
     description:
       "Stop chasing payments. Billd turns your work into a polished invoice, emails it to your client, and collects payments — automatically.",
     url: "https://billid.netlify.app",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Billd — Invoice clients. Get paid faster.",
+    title: "Billd | Invoice clients. Get paid faster.",
     description:
       "Stop chasing payments. Create polished invoices and get paid faster with Billd.",
   },

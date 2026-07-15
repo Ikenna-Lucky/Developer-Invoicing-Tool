@@ -10,7 +10,7 @@ import {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// Types
 
 export interface AuthUser {
   id: string;
@@ -45,16 +45,14 @@ interface AuthContextValue {
   refreshUser: () => Promise<void>;
 }
 
-// ─── Context ──────────────────────────────────────────────────────────────────
+// Context
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-// ─── Session-indicator cookie helpers ─────────────────────────────────────────
-// The real auth tokens (access_token, refresh_token) are httpOnly cookies set
-// by the backend on onrender.com. Next.js middleware runs on the frontend domain
-// (netlify.app) and cannot see those cookies. We set/clear a plain "billd_session"
-// cookie here on the frontend domain so the middleware knows whether to let the
-// user through to protected routes.
+// The real auth cookies are httpOnly and set by the backend on onrender.com,
+// so the frontend's middleware (running on netlify.app) can't see them. This
+// plain "billd_session" cookie lives on the frontend domain instead, just so
+// middleware knows whether to let someone through to protected routes.
 
 function setSessionCookie() {
   const secure = window.location.protocol === "https:" ? "; Secure" : "";
@@ -66,7 +64,7 @@ function clearSessionCookie() {
   document.cookie = "billd_session=; path=/; max-age=0";
 }
 
-// ─── Provider ─────────────────────────────────────────────────────────────────
+// Provider
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -74,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loggingOut, setLoggingOut] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string>("");
 
-  // ─── Internal helper: apply a user payload from the API ───────────────────
+  // Internal helper: apply a user payload from the API
   const applyUser = useCallback((data: AuthUser) => {
     setUser(data);
     // Only overwrite avatarUrl when the DB has a value — preserves any
@@ -82,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (data.logoUrl) setAvatarUrl(data.logoUrl);
   }, []);
 
-  // ─── Initial load ─────────────────────────────────────────────────────────
+  // Initial load
   const loadUser = useCallback(async () => {
     try {
       const res = await fetch(`${API_URL}/auth/me`, { credentials: "include" });
@@ -123,7 +121,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     loadUser();
   }, [loadUser]);
 
-  // ─── refreshUser — call after profile PATCH so UI reflects DB ─────────────
+  // refreshUser — call after profile PATCH so UI reflects DB
   const refreshUser = useCallback(async () => {
     try {
       const res = await fetch(`${API_URL}/auth/me`, { credentials: "include" });
@@ -133,7 +131,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [applyUser]);
 
-  // ─── Auth actions ──────────────────────────────────────────────────────────
+  // Auth actions
 
   const login = async (email: string, password: string, rememberMe = false) => {
     const res = await fetch(`${API_URL}/auth/login`, {
@@ -247,7 +245,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ─── Hook ─────────────────────────────────────────────────────────────────────
+// Hook
 
 export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
