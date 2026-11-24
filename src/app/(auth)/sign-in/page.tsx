@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 // Google error messages
 
 const GOOGLE_ERRORS: Record<string, string> = {
+  verify_email_before_google_link: "Sign in with your password and verify your email before linking Google. If you did not create the account, reset its password first.",
   google_denied: "Google sign-in was cancelled. Please try again.",
   google_no_code:
     "Google did not return an authorisation code. Please try again.",
@@ -114,7 +115,7 @@ function ErrorBanner({ message }: { message: string }) {
 // Inner page (needs useSearchParams — must be wrapped in Suspense)
 
 function SignInForm() {
-  const { login } = useAuth();
+  const { login, user, loading: authLoading } = useAuth();
   const router = useRouter();
   const params = useSearchParams();
 
@@ -130,6 +131,9 @@ function SignInForm() {
     const code = params.get("error");
     if (code && GOOGLE_ERRORS[code]) setError(GOOGLE_ERRORS[code]);
   }, [params]);
+  useEffect(() => {
+    if (!authLoading && user && !params.get("error")) router.replace(user.emailVerifiedAt ? "/dashboard" : "/verify-email");
+  }, [authLoading, user, params, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

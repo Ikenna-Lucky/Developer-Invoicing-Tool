@@ -42,7 +42,7 @@ const STATUS_CFG: Record<
     dot: "rgba(255,255,255,0.3)",
   },
   sent: {
-    label: "Sent",
+    label: "Issued",
     bg: "rgba(59,130,246,0.13)",
     color: "#60a5fa",
     dot: "#60a5fa",

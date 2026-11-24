@@ -27,6 +27,7 @@ import { PageLoader } from "@/components/ui/Spinner";
 import { useToast } from "@/components/ui/Toast";
 import { formatDate, formatCurrency } from "@/lib/utils";
 import { apiRequest, API_BASE } from "@/lib/api";
+import { EmailDeliveryStatus } from "@/components/invoices/EmailDeliveryStatus";
 import type {
   Invoice,
   InvoiceItem,
@@ -53,7 +54,7 @@ const STATUS_CONFIG: Record<
     bg: "rgba(255,255,255,0.08)",
     color: "rgba(255,255,255,0.5)",
   },
-  sent: { label: "Sent", bg: "rgba(59,130,246,0.15)", color: "#60a5fa" },
+  sent: { label: "Issued", bg: "rgba(59,130,246,0.15)", color: "#60a5fa" },
   paid: { label: "Paid", bg: "rgba(34,197,94,0.12)", color: "#4ade80" },
   overdue: { label: "Overdue", bg: "rgba(239,68,68,0.12)", color: "#f87171" },
 };
@@ -63,7 +64,7 @@ const STATUS_CONFIG: Record<
 const STEPS: { status: InvoiceStatus; label: string; icon: React.ReactNode }[] =
   [
     { status: "draft", label: "Draft", icon: <Pencil size={14} /> },
-    { status: "sent", label: "Sent", icon: <Send size={14} /> },
+    { status: "sent", label: "Issued", icon: <Send size={14} /> },
     { status: "paid", label: "Paid", icon: <CheckCircle size={14} /> },
   ];
 
@@ -243,6 +244,7 @@ export default function InvoiceDetailPage() {
   const toast = useToast();
 
   const [invoice, setInvoice] = useState<FullInvoice | null>(null);
+  const [emailRefresh, setEmailRefresh] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showDelete, setShowDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -318,7 +320,8 @@ export default function InvoiceDetailPage() {
     try {
       await apiRequest(`/invoices/${invoice.id}/resend`, { method: "POST" });
       setShowResendModal(false);
-      toast.success("Invoice resent to client!");
+      setEmailRefresh(value => value + 1);
+      toast.success("Invoice email queued");
     } catch (err: any) {
       toast.error(err.message ?? "Failed to resend invoice");
     } finally {
@@ -338,7 +341,8 @@ export default function InvoiceDetailPage() {
       );
       setInvoice(res.data);
       setShowSendModal(false);
-      toast.success("Invoice sent to client!");
+      setEmailRefresh(value => value + 1);
+      toast.success("Invoice issued; email queued");
     } catch (err: any) {
       toast.error(err.message ?? "Failed to send invoice");
     } finally {
@@ -735,6 +739,7 @@ export default function InvoiceDetailPage() {
         {/* Sidebar */}
         <div className="space-y-4">
           {/* Status stepper */}
+          <EmailDeliveryStatus invoiceId={invoice.id} refreshKey={String(emailRefresh)} />
           <StatusStepper
             current={invoice.status}
             onStep={updateStatus}

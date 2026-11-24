@@ -152,7 +152,7 @@ const STATUS_CONFIG: Record<
     bg: "rgba(255,255,255,0.08)",
     color: "rgba(255,255,255,0.5)",
   },
-  sent: { label: "Sent", bg: "rgba(59,130,246,0.15)", color: "#60a5fa" },
+  sent: { label: "Issued", bg: "rgba(59,130,246,0.15)", color: "#60a5fa" },
   paid: { label: "Paid", bg: "rgba(34,197,94,0.12)", color: "#4ade80" },
   overdue: { label: "Overdue", bg: "rgba(239,68,68,0.12)", color: "#f87171" },
 };

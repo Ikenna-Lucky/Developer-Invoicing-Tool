@@ -34,7 +34,7 @@ export function Badge({ variant = "neutral", children, className }: BadgeProps) 
 export function InvoiceStatusBadge({ status }: { status: string }) {
   const map: Record<string, { variant: BadgeVariant; label: string }> = {
     paid:    { variant: "success", label: "Paid" },
-    sent:    { variant: "info",    label: "Sent" },
+    sent:    { variant: "info",    label: "Issued" },
     overdue: { variant: "danger",  label: "Overdue" },
     draft:   { variant: "neutral", label: "Draft" },
   };

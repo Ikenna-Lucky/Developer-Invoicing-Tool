@@ -15,6 +15,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 export interface AuthUser {
   id: string;
   email: string;
+  emailVerifiedAt: string | null;
   fullName: string;
   businessName?: string;
   logoUrl?: string;
@@ -75,6 +76,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Internal helper: apply a user payload from the API
   const applyUser = useCallback((data: AuthUser) => {
     setUser(data);
+    if (!document.cookie.split("; ").some(value => value.startsWith("billd_session="))) setSessionCookie();
     // Only overwrite avatarUrl when the DB has a value — preserves any
     // in-session upload the user did before saving.
     if (data.logoUrl) setAvatarUrl(data.logoUrl);
@@ -168,19 +170,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     setLoggingOut(true);
-    // Clear local state immediately so the UI starts transitioning
-    setUser(null);
-    setAvatarUrl("");
-    clearSessionCookie();
-
-    // Tell the server to clear cookies + revoke the refresh token.
     try {
-      await fetch(`${API_URL}/auth/logout`, {
+      const response = await fetch(`${API_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
-    } catch {
-      // Network failure is non-fatal — access token expires in 15 min anyway.
+      if (!response.ok) throw new Error("Could not sign out. Please try again.");
+      setUser(null);
+      setAvatarUrl("");
+      clearSessionCookie();
     } finally {
       setLoggingOut(false);
     }
