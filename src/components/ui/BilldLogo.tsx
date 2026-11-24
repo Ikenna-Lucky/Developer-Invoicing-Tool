@@ -58,6 +58,7 @@ export function BilldLogo({
   className = "",
 }: BilldLogoProps) {
   const s = sizes[size];
+  const ink = theme === "dark" ? "#102033" : "white";
 
   const logo = (
     <svg
@@ -79,7 +80,7 @@ export function BilldLogo({
         width={s.lineW[0]}
         height={s.lineH}
         rx={s.lineH / 2}
-        fill="white"
+        fill={ink}
         opacity="0.95"
       />
       <rect
@@ -88,7 +89,7 @@ export function BilldLogo({
         width={s.lineW[1]}
         height={s.lineH}
         rx={s.lineH / 2}
-        fill="white"
+        fill={ink}
         opacity="0.95"
       />
       <rect
@@ -97,7 +98,7 @@ export function BilldLogo({
         width={s.lineW[2]}
         height={s.lineH}
         rx={s.lineH / 2}
-        fill="white"
+        fill={ink}
         opacity="0.95"
       />
 
@@ -107,7 +108,7 @@ export function BilldLogo({
         y={s.height * 0.25}
         width={1}
         height={s.height * 0.5}
-        fill="white"
+        fill={ink}
         opacity="0.25"
       />
 
@@ -118,7 +119,7 @@ export function BilldLogo({
         fontFamily="system-ui, -apple-system, sans-serif"
         fontSize={s.fontSize}
         fontWeight="700"
-        fill="white"
+        fill={ink}
         letterSpacing="-0.3"
       >
         billd
